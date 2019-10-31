@@ -1,0 +1,33 @@
+{
+  "name": "oshiot-hub",
+  "version": "0.0.1",
+  "description": "Home Hub",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel -d bin src --source-maps",
+    "debug": "npm run build && ./node_modules/.bin/babel-node --inspect=0.0.0.0:9229 bin/index.js",
+    "start": "npm run build && node bin/index.js"
+  },
+  "author": "Seth Lessard",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.17.1",
+    "helmet": "3.20.0",
+    "node-ssdp": "4.0.0",
+    "request": "2.88.0",
+    "serverline": "1.4.0",
+    "socket.io": "2.2.0",
+    "sqlite3": "4.1.0",
+    "websocket": "1.0.29",
+    "ws": "7.1.2",
+    "xml2js": "0.4.19"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "7.5.5",
+    "@babel/preset-env": "7.5.5"
+  }
+}
