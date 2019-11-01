@@ -1,4 +1,4 @@
-import DeviceManager from "../DeviceManager";
+import DeviceManager from "./DeviceManager";
 
 const serverline = require("serverline");
 
