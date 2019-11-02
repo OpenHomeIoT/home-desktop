@@ -1,11 +1,13 @@
 import sqlite3 from "sqlite3";
+import SqlHelper from "./helper/SqlHelper";
+import DatabaseHelper from "./helper/DatabaseHelper";
 
 class Database {
 
   /**
    * Database constructor.
    * @param {string} tableName the name of the table this db is in charge of.
-   * @param {Array<{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }>} fields the fields of the table.
+   * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} fields the fields of the table.
    */
   constructor(tableName, fields) {
     this._db = new sqlite3.Database("oshiot.db");
@@ -14,11 +16,15 @@ class Database {
     this._tableName = tableName;
     this._tableFields = fields;
 
-    this._insertSql = this._generateInsertSql(fields);
-    this._updateSql = this._generateUpdateSql(fields);
-    this._getOneSql = this._generateGetByPrimaryKeySql(fields);
-    this._getAllSql = this._generateGetAllSql(fields);
-    this._deleteSql = this._generateDeleteByPrimaryKeySql(fields);
+    const primaryKey = this._getPrimaryKey();
+
+    this._insertSql = SqlHelper.generateInsertSql(tableName, fields);
+    // TODO: check if should update
+    this._updateSql = SqlHelper.generateUpdateByPrimaryKeySql(tableName, fields, primaryKey);
+    this._getOneSql = SqlHelper.generateGetByPrimaryKeySql(tableName, primaryKey);
+    this._getAllSql = SqlHelper.generateGetAllSql(tableName);
+    // TODO: check if should delete
+    this._deleteSql = SqlHelper.generateDeleteByPrimaryKeySql(tableName, primaryKey);
 
     // binding
     this.initialize = this._initialize.bind(this);
@@ -35,12 +41,59 @@ class Database {
     this._db.close();
   }
 
+  get(pk) {
+
+  }
+
+  getAll() {
+    
+  }
+
   /**
    * 
-   * @param {Object} data 
+   * @param {*} data the data. 
    */
   insert(data) {
-    data.uyes;
+    return new Promise((resolve, reject) => {
+      if (DatabaseHelper.isValidInsertData(this._tableFields, data)) {
+        const preparedData = DatabaseHelper.prepareDataForInsert(this._tableFields, data);
+        this._db.run(this._insertSql, preparedData, (err) => {
+          if (err) reject(err);
+          else resolve();
+        })
+      }
+    });
+  }
+
+  /**
+   * 
+   * @param {*} data the data. 
+   */
+  update(data) {
+    // TODO: check if update is allowed.
+    return new Promise((resolve, reject) => {
+      if (DatabaseHelper.isValidUpdateData(this._tableFields, data)) {
+        const preparedData = DatabaseHelper.prepareDataForUpdate(this._tableFields, data);
+        this._db.run(this._updateSql, preparedData, (err) => {
+          if (err) reject(err);
+          else resolve();
+        })
+      }
+    });
+  }
+
+  delete(pk) {
+    // TODO: check if delete is allowed
+    return new Promise((resolve, reject) => {
+      const primaryKey = this._getPrimaryKey();
+      const key = `$${primaryKey}`;
+      const params = {};
+      params[key] = pk;
+      this._db.run(this._deleteSql, params, (err) => {
+        if (err) reject(err);
+        else resolve();
+      })
+    });
   }
 
   /**
@@ -55,65 +108,6 @@ class Database {
         .catch(err => reject(err));
       });
     });
-  }
-
-  /**
-   * Generate the sql that deletes an object by its primary key.
-   * @returns {string} the sql.
-   */
-  _generateDeleteByPrimaryKeySql() {
-    const primaryKey = this._getPrimaryKey();
-    return `DELETE FROM ${this._tableName} WHERE ${primaryKey} = $${primaryKey}`;
-  }
-
-  /**
-   * Generate the sql that returns all objects in the table.
-   * @returns {string} the sql.
-   */
-  _generateGetAllSql() {
-    return `SELECT * FROM ${this._tableName}`;
-  }
-
-  /**
-   * Generate the sql that gets an object from the table by its primary key.
-   * @returns {string} the sql.
-   */
-  _generateGetByPrimaryKeySql() {
-    const primaryKey = this._getPrimaryKey();
-    return `SELECT * FROM ${this._tableName} WHERE ${primaryKey} = $${primaryKey}`;
-  }
-
-  /**
-   * Generate the sql that inserts an object into the table.
-   * @returns {string} the sql.
-   */
-  _generateInsertSql() {
-    let fields = [];
-    let values = [];
-    for (const { name, type, isPrimaryKey, autoincrement } of this._tableFields) {
-      let field = `${name} ${type}`;
-      if (isPrimaryKey) field += " PRIMARY KEY";
-      if (autoincrement) field += " AUTOINCREMENT";
-
-      let value = `$${name}`;
-
-      fields.push(field);
-      values.push(value);
-    }
-
-    return `INSERT INTO ${this._tableName} (${fields.join(",")}) VALUES (${values.join(",")})`;
-  }
-
-  /**
-   * Generate the sql that updates an object by its primary key.
-   * @returns {string|null} the sql.
-   */
-  _generateUpdateSql() {
-    const primaryKey = this._getPrimaryKey();
-    const fieldUpdates = this._tableFields.filter(({ includeInUpdate }) => includeInUpdate).map(({ name }) => `${name} = $${name}`);
-    if (fieldUpdates.length === 0) return null;
-
-    return `UPDATE ${this._tableName} SET ${fieldUpdates.join(",")} WHERE ${primaryKey} = $${primaryKey}`;
   }
 
   /**
@@ -139,22 +133,7 @@ class Database {
    */
   _createTable() {
     return new Promise((resolve, reject) => {
-      const tableName = this._tableName;
-      const fields = this._tableFields;
-      const values = [];
-      for (const field of fields) {
-        const { name, type, isPrimaryKey, autoincrement } = field;
-        let value = `${name} ${type}`;
-        if (isPrimaryKey) {
-          value += " PRIMARY KEY";
-        }
-        if (autoincrement) {
-          value += " AUTOINCREMENT";
-        }
-        values.push(value);
-      }
-      const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (${values.join(",")})`;
-      this._db.run(sql, (error) => {
+      this._db.run(SqlHelper.generateCreateTableSql(this._tableName, this._tableFields), (error) => {
         if (error) {
           reject(error);
         } else {
