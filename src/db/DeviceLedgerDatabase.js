@@ -20,13 +20,13 @@ class DeviceLedgerDatabase extends Database {
   constructor() {
     super(TABLE_DEVICE_LEDGER, [
       { name: "usn", type: "TEXT", isPrimaryKey: true },
-      { name: "ssdpDescriptionLocation", type: "TEXT" },
-      { name: "ipAddress", type: "TEXT" },
-      { name: "services", type: "TEXT" },
-      { name: "configuredAsChild", type: "INTEGER" },
-      { name: "timeLastSeen", type: "BIGINT" },
+      { name: "ssdpDescriptionLocation", type: "TEXT", includeInUpdate: true },
+      { name: "ipAddress", type: "TEXT", includeInUpdate: true },
+      { name: "services", type: "TEXT", includeInUpdate: true },
+      { name: "configuredAsChild", type: "INTEGER", includeInUpdate: true },
+      { name: "timeLastSeen", type: "BIGINT", includeInUpdate: true },
       { name: "timeDiscovered", type: "BIGINT" },
-      { name: "isOnline", type: "INTEGER" },
+      { name: "isOnline", type: "INTEGER", includeInUpdate: true },
     ]);
 
     // TODO: getDeviceByUsn(usn);

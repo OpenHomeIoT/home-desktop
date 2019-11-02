@@ -1,3 +1,5 @@
+// TODO:  services need to be able to create their own databases
+
 /**
  * 
  * @param {*} socket the shared socket.
@@ -29,21 +31,14 @@ const commandGetByID = (socket, id) => {
  */
 const commandGetIDs = (socket) => {
   console.log(`[SwitchService] Executing ListIDs`);
-  socket.emit("getAllIDs"); 
+  socket.emit("getAllIDs");
   // TODO: finish
 };
 
-const routeGetByID = (socket, data) => {
-
-};
-
-const routeGetAllIDs = (socket, data) => {
-
-};
-
-const routeUpdate = (socket, data) => {
-
-};
+// TODO: finish routes
+const routeGetByID = (socket, data) => {};
+const routeGetAllIDs = (socket, data) => {};
+const routeUpdate = (socket, data) => {};
 
 export default {
   name: "oshiot:service:switch",
@@ -70,5 +65,13 @@ export default {
       path: "update",
       handler: routeUpdate
     }
-  ]
+  ],
+
+  /**
+   * Called when the service is loaded and should initialize.
+   * @param {{ socket: *, }} param0 object containing the databases
+   */
+  onInitializeService: ({ socket,}) => {
+
+  }
 };
