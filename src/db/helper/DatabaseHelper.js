@@ -52,8 +52,8 @@ class DatabaseHelper {
    */
   static prepareDataForUpdate(tableFields, data) {
     const prepared = {};
-    tableFields.forEach(({ name, includeInUpdate }) => {
-      if (includeInUpdate) prepared[`$${name}`] = data[name];
+    tableFields.forEach(({ name, includeInUpdate, isPrimaryKey }) => {
+      if (includeInUpdate || isPrimaryKey) prepared[`$${name}`] = data[name];
     });
     return prepared;
   }

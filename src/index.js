@@ -7,8 +7,8 @@ import CosnsoleManager from "./manager/ConsoleManager";
 import SsdpManager from "./manager/SsdpManager";
 import WebsocketServer from "./manager/WebsocketServer";
 
-import DeviceLedgerDatabase from "./db/DeviceLedgerDatabase";
-import DeviceOnlineHistoryDatabase from "./db/DeviceOnlineHistoryDatabase";
+import DeviceDatabase from "./db/DeviceDatabase";
+import DeviceOnlineHistoryDatabase from "./db/DeviceOnlineOfflineHistoryDatabase";
 import ReconnectionBufferDatabase from "./db/ReconnectionBufferDatabase";
 import ServiceLedgerDatabase from "./db/ServiceLedgerDatabase";
 import ServiceVersionLedgerDatabase from "./db/ServiceVersionLedgerDatabase";
@@ -21,8 +21,9 @@ const PORT = 30021;
  * @returns {Promise<void>}
  */
 function initializeDatabases() {
+  // TODO: initialize service databases.
   return Promise.resolve()
-  .then(() => DeviceLedgerDatabase.getInstance().open())
+  .then(() => DeviceDatabase.getInstance().open())
   .then(() => DeviceOnlineHistoryDatabase.getInstance().open())
   .then(() => ReconnectionBufferDatabase.getInstance().open())
   .then(() => ServiceLedgerDatabase.getInstance().open())

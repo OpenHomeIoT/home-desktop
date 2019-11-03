@@ -57,19 +57,9 @@ class SqlHelper {
    * @returns {string} the sql.
    */
   static generateInsertSql(tableName, tableFields) {
-    let fields = [];
-    let values = [];
-    tableFields.forEach(({ name, type, isPrimaryKey, autoincrement }) => {
-      let field = `${name} ${type}`;
-      if (isPrimaryKey) field += " PRIMARY KEY";
-      if (autoincrement) field += " AUTOINCREMENT";
-
-      let value = `$${name}`;
-
-      fields.push(field);
-      values.push(value);
-    });
-
+    let fields = tableFields.map(({ name }) => name);
+    let values = tableFields.map(({ name }) => `$${name}`);
+   
     return `INSERT INTO ${tableName} (${fields.join(",")}) VALUES (${values.join(",")})`;
   }
 

@@ -1,6 +1,6 @@
 import ReconnectionBufferDatabase from "../db/ReconnectionBufferDatabase";
-import DeviceOnlineHistoryDatabase from "../db/DeviceOnlineHistoryDatabase";
-import DeviceLedgerDatabase from "../db/DeviceLedgerDatabase";
+import DeviceOnlineOfflineHistoryDatabase from "../db/DeviceOnlineOfflineHistoryDatabase";
+import DeviceDatabase from "../db/DeviceDatabase";
 import DeviceManager from "./DeviceManager";
 
 class DeviceStatusManager {
@@ -18,8 +18,8 @@ class DeviceStatusManager {
   }
 
   constructor() {
-    this._deviceLedgerDatabase = DeviceLedgerDatabase.getInstance(); // TODO: device online offline toggles
-    this._deviceOnlineHistoryDatabase = DeviceOnlineHistoryDatabase.getInstance();
+    this._deviceLedgerDatabase = DeviceDatabase.getInstance(); // TODO: device online offline toggles
+    this._onlineOfflineHistoryDatabase = DeviceOnlineOfflineHistoryDatabase.getInstance();
     this._reconnectionBufferDatabase = ReconnectionBufferDatabase.getInstance();
 
     this._deviceManager = DeviceManager.getInstance();
@@ -39,9 +39,9 @@ class DeviceStatusManager {
    * @return {Promise<boolean>}
    */
   isDeviceReconnecting(usn) {
-    return this._reconnectionBufferDatabase.hasReconnectionEntry(usn);
+    return this._reconnectionBufferDatabase.get(usn)
+    .then(reconnectionInfo => reconnectionInfo != null && reconnectionInfo != undefined);
   }
-
 
   /**
    * Set that a device has disconnected from the hub.
@@ -60,7 +60,7 @@ class DeviceStatusManager {
   setDeviceHasConnected(usn) {
     return Promise.resolve()
     .then(() => this._setDeviceIsOnline(usn, true))
-    .then(() => this._reconnectionBufferDatabase.removeReconnectionEntry(usn));
+    .then(() => this._reconnectionBufferDatabase.delete(usn));
   }
 
   /**
@@ -70,15 +70,10 @@ class DeviceStatusManager {
   setDeviceIsReconnecting(usn) {
     const now = Date.now();
     
-    return this._reconnectionBufferDatabase.addReconnectionEntry({ usn, timeAdded: now });
-  }
-
-  /**
-   * Add a device to the reconnection queue.
-   * @param {string} usn the device's usn.
-   */
-  _addDeviceToReconnectionQueue(usn) {
-
+    return this._reconnectionBufferDatabase.get(usn)
+    .then(reconnectionInfo => { 
+      if (!reconnectionInfo) return this._reconnectionBufferDatabase.insert({ usn, timeAdded: now });
+    });
   }
 
   /**
@@ -96,8 +91,8 @@ class DeviceStatusManager {
       iotDevice.setOnline(isOnline);
       return this._deviceManager.updateDevice(iotDevice);
     })
-    .then(() => this._deviceOnlineHistoryDatabase.storeDeviceOnlineHistory({ usn, time: Date.now(), isOnline }))
-    .then(() => (isOnline) ? this._addDeviceToReconnectionQueue(usn) : Promise.resolve());
+    .then(() => this._onlineOfflineHistoryDatabase.insert({ usn, time: Date.now(), isOnline }))
+    .then(() => (isOnline) ? this.setDeviceIsReconnecting(usn) : Promise.resolve());
   }
 }
 

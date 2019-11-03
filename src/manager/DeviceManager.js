@@ -1,7 +1,7 @@
 //@ts-check
 import request from "request";
 
-import DeviceLedgerDatabase from "../db/DeviceLedgerDatabase";
+import DeviceDatabase from "../db/DeviceDatabase";
 import IoTDevice from "../IoTDevice";
 
 class DeviceManager {
@@ -23,7 +23,7 @@ class DeviceManager {
    * DeviceManager constructor.
    */
   constructor() {
-    this._deviceLedgerDatabase = DeviceLedgerDatabase.getInstance();
+    this._deviceLedgerDatabase = DeviceDatabase.getInstance();
 
     // binding
     this.addDevice = this.addDevice.bind(this);
@@ -39,7 +39,7 @@ class DeviceManager {
    * @param {number} port the port
    */
   addDevice(device, host, port) {
-    return this._deviceLedgerDatabase.insertDevice(device.toJson())
+    return this._deviceLedgerDatabase.insert(device.toJson())
       .then(() => this.configureDeviceAsChild(device.getUSN(), host, port))
       .then(() => console.log(`[DeviceManager] Added device: '${device.toString()}'`));
   }
@@ -85,7 +85,7 @@ class DeviceManager {
    * @returns {Promise<Array<IoTDevice>>} the IoTDevices.
    */
   getAllDevices() {
-    return this._deviceLedgerDatabase.getAllDevices()
+    return this._deviceLedgerDatabase.getAll()
       .then(deviceRecords => {
         const devices = [];
         for (const record of deviceRecords) {
@@ -101,7 +101,7 @@ class DeviceManager {
    * @return {Promise<IoTDevice | null>} the IoTDevice.
    */
   getDeviceByUsn(usn) {
-    return this._deviceLedgerDatabase.getDeviceByUsn(usn)
+    return this._deviceLedgerDatabase.get(usn)
       .then(deviceRec => { return IoTDevice.fromJson(deviceRec); });
   }
 
@@ -110,7 +110,7 @@ class DeviceManager {
    * @param {IoTDevice} iotDevice this IoTDevice.
    */
   updateDevice(iotDevice) {
-    return this._deviceLedgerDatabase.updateDevice(iotDevice.toJson());
+    return this._deviceLedgerDatabase.update(iotDevice.toJson());
   }
 };
 

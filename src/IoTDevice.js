@@ -130,7 +130,7 @@ class IoTDevice {
 
   /**
    * Create a new IoTDevice from its JSON representation.
-   * @param {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: number, timeLastSeen: number, timeDiscovered: number, isOnline: number }} json the JSON representation. 
+   * @param {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, isOnline: boolean }} json the JSON representation. 
    * @returns {IoTDevice|null} the IoTDevice or null if the json record was bad.
    */
   static fromJson(json) {
@@ -147,12 +147,12 @@ class IoTDevice {
       timeDiscovered,
       isOnline
     } = json;
-    return new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, JSON.parse(services), configuredAsChild == 1, timeLastSeen, timeDiscovered, isOnline == 1);
+    return new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, JSON.parse(services), configuredAsChild, timeLastSeen, timeDiscovered, isOnline);
   }
 
   /**
    * Convert the IoTDevice to its JSON representation.
-   * @returns {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: number, timeLastSeen: number, timeDiscovered: number, isOnline: number }} the JSON representation.
+   * @returns {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, isOnline: boolean }} the JSON representation.
    */
   toJson() {
     return {
@@ -160,10 +160,10 @@ class IoTDevice {
       ssdpDescriptionLocation: this._descriptionLocation,
       ipAddress: this._address,
       services: JSON.stringify(this._services),
-      configuredAsChild: (this._configuredChild) ? 1 : 0,
+      configuredAsChild: this._configuredChild,
       timeLastSeen: this._lastSeen,
       timeDiscovered: this._discovered,
-      isOnline: (this._isOnline) ? 1 : 0
+      isOnline: this._isOnline
     };
   }
 
