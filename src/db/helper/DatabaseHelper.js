@@ -11,29 +11,27 @@ class DatabaseHelper {
 
   /**
    * Check to see if the insert data is valid.
-   * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} tableFields the fields of the table.
+   * @param {{ name: string, isLedger?: boolean, primaryKey: string, fields: { name: string, type: string, autoincrement?: boolean, includeInUpdate?: boolean }[] }} tableDefinition the table definition.
    * @param {*} data the data
    * @returns {boolean} whether or not the data is valid for insert.
    */
-  static isValidInsertData(tableFields, data) {
-    let hasPrimaryKey = false;
-    for (const { name, type, isPrimaryKey, autoincrement } of tableFields) {
-      if (isPrimaryKey) hasPrimaryKey = true;
+  static isValidInsertData({ fields }, data) {
+    for (const { name, type, autoincrement } of fields) {
       if (!autoincrement && !DatabaseHelper._dataHasKeyOfName(data, name)) return false;
       if (!autoincrement &&!DatabaseHelper._dataKeyOfNameIsOfType(name, type, data)) return false;
     }
-    return hasPrimaryKey;
+    return true;
   }
 
   /**
    * Check to see if the update data is valid.
-   * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} tableFields the fields of the table.
+   * @param {{ name: string, isLedger?: boolean, primaryKey: string, fields: { name: string, type: string, autoincrement?: boolean, includeInUpdate?: boolean }[] }} tableDefinition the table definition.
    * @param {*} data the data
    * @returns {boolean}
    */
-  static isValidUpdateData(tableFields, data) {
-    for (const { name, type, includeInUpdate = true, isPrimaryKey } of tableFields) {
-      if (includeInUpdate || isPrimaryKey) {
+  static isValidUpdateData({ primaryKey, fields }, data) {
+    for (const { name, type, includeInUpdate = true } of fields) {
+      if (includeInUpdate || (primaryKey === name)) {
         if (DatabaseHelper._dataHasKeyOfName(data, name) && !DatabaseHelper._dataKeyOfNameIsOfType(name, type, data)) return false;
       } else if (!includeInUpdate && DatabaseHelper._dataHasKeyOfName(data, name)) {
         return false;
@@ -45,26 +43,26 @@ class DatabaseHelper {
 
   /**
    * Prepare data for insert.
-   * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} tableFields the fields of the table.
+   * @param {{ name: string, isLedger?: boolean, primaryKey: string, fields: { name: string, type: string, autoincrement?: boolean, includeInUpdate?: boolean }[] }} tableDefinition the table definition.
    * @param {*} data the data
    * @returns {*} the prepared insert data.
    */
-  static prepareDataForInsert(tableFields, data) {
+  static prepareDataForInsert({ fields }, data) {
     const prepared = {};
-    tableFields.forEach(({ name }) => prepared[`$${name}`] = data[name]);
+    fields.forEach(({ name }) => prepared[`$${name}`] = data[name]);
     return prepared;
   }
 
   /**
    * Prepare data for update.
-   * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} tableFields the fields of the table.
+   * @param {{ name: string, isLedger?: boolean, primaryKey: string, fields: { name: string, type: string, autoincrement?: boolean, includeInUpdate?: boolean }[] }} tableDefinition the table definition.
    * @param {*} data the data
    * @returns {*} the prepared update data.
    */
-  static prepareDataForUpdate(tableFields, data) {
+  static prepareDataForUpdate({ fields, primaryKey }, data) {
     const prepared = {};
-    tableFields.forEach(({ name, includeInUpdate = true, isPrimaryKey }) => {
-      if (includeInUpdate || isPrimaryKey) prepared[`$${name}`] = data[name];
+    fields.forEach(({ name, includeInUpdate = true }) => {
+      if (includeInUpdate || (primaryKey === name)) prepared[`$${name}`] = data[name];
     });
     return prepared;
   }

@@ -6,11 +6,10 @@ class Database {
 
   /**
    * Database constructor.
-   * @param {string} tableName the name of the table this db is in charge of.
-   * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} fields the fields of the table.
-   * @param {{ isMemoryDB?: boolean, isLedger?: boolean, isTest?: boolean }} options the options.
+   * @param {{ name: string, isLedger?: boolean, primaryKey: string, fields: { name: string, type: string, autoincrement?: boolean, includeInUpdate?: boolean }[] }} tableDefinition the definition for the database table.
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options the options.
    */
-  constructor(tableName, fields, options) {
+  constructor(tableDefinition, options) {
     let dbName = "oshiot.db"; // TODO: put this in a more suiting place...
     if (options) {
       const { isMemoryDB, isTest } = options;
@@ -22,21 +21,18 @@ class Database {
     }
     this._db = new sqlite3.Database(dbName);
     
-    // TODO: verify there is a (and only one) primary key defined in fields
-    // TODO: verify table name
-    this._tableName = tableName;
-    this._tableFields = fields;
+    this._tableDefinition = tableDefinition;
     this._options = options || {};
 
-    const primaryKey = this._getPrimaryKey();
+    const primaryKey = tableDefinition.primaryKey;
 
-    this._insertSql = SqlHelper.generateInsertSql(tableName, fields);
-    // TODO: check if should update
-    this._updateByPKSql = SqlHelper.generateUpdateByPrimaryKeySql(tableName, fields, primaryKey);
-    this._getOneByPKSql = SqlHelper.generateGetByPrimaryKeySql(tableName, primaryKey);
-    this._getAllSql = SqlHelper.generateGetAllSql(tableName);
-    // TODO: check if should delete
-    this._deleteByPKSql = SqlHelper.generateDeleteByPrimaryKeySql(tableName, primaryKey);
+    this._insertSql = SqlHelper.generateInsertSql(tableDefinition);
+    this._updateByPKSql = SqlHelper.generateUpdateByPrimaryKeySql(tableDefinition);
+    this._getOneByPKSql = SqlHelper.generateGetByPrimaryKeySql(tableDefinition);
+    this._getAllSql = SqlHelper.generateGetAllSql(tableDefinition);
+    this._deleteByPKSql = SqlHelper.generateDeleteByPrimaryKeySql(tableDefinition);
+
+    // TODO: implement ledger
 
     // binding
     this.initialize = this._initialize.bind(this);
@@ -62,7 +58,7 @@ class Database {
     return (this._options.isLedger)
     ? Promise.resolve()
     : new Promise((resolve, reject) => {
-      const primaryKey = this._getPrimaryKey();
+      const primaryKey = this._tableDefinition.primaryKey;
       const key = `$${primaryKey}`;
       const params = {};
       params[key] = pk;
@@ -80,7 +76,7 @@ class Database {
    */
   get(pk) {
     return new Promise((resolve, reject) => {
-      const primaryKey = this._getPrimaryKey();
+      const primaryKey = this._tableDefinition.primaryKey;
       const params = {};
       params[`$${primaryKey}`] = pk;
       this._db.get(this._getOneByPKSql, params, (err, row) => {
@@ -110,8 +106,8 @@ class Database {
    */
   insert(data) {
     return new Promise((resolve, reject) => {
-      if (DatabaseHelper.isValidInsertData(this._tableFields, data)) {
-        const preparedData = DatabaseHelper.prepareDataForInsert(this._tableFields, data);
+      if (DatabaseHelper.isValidInsertData(this._tableDefinition, data)) {
+        const preparedData = DatabaseHelper.prepareDataForInsert(this._tableDefinition, data);
         this._db.run(this._insertSql, preparedData, (err) => {
           if (err) reject(err);
           else resolve();
@@ -145,8 +141,8 @@ class Database {
     return (this._options.isLedger) 
     ? Promise.resolve()
     : new Promise((resolve, reject) => {
-      if (DatabaseHelper.isValidUpdateData(this._tableFields, data)) {
-        const preparedData = DatabaseHelper.prepareDataForUpdate(this._tableFields, data);
+      if (DatabaseHelper.isValidUpdateData(this._tableDefinition, data)) {
+        const preparedData = DatabaseHelper.prepareDataForUpdate(this._tableDefinition, data);
         this._db.run(this._updateByPKSql, preparedData, (err) => {
           if (err) reject(err);
           else resolve();
@@ -162,7 +158,7 @@ class Database {
    */
   _createTable() {
     return new Promise((resolve, reject) => {
-      this._db.run(SqlHelper.generateCreateTableSql(this._tableName, this._tableFields), (error) => {
+      this._db.run(SqlHelper.generateCreateTableSql(this._tableDefinition), (error) => {
         if (error) {
           reject(error);
         } else {
@@ -170,17 +166,6 @@ class Database {
         }
       });
     });
-  }
-
-  /**
-   * Get the name of the field that is the primary key for the table.
-   * @returns {string} the primary key.
-   */
-  _getPrimaryKey() {
-    for (const { name, isPrimaryKey } of this._tableFields) {
-      if (isPrimaryKey) return name;
-    }
-    return "";
   }
 
   /**

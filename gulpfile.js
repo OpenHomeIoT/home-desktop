@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const DIR_BIN = path.join(__dirname, "bin/")
+const TEST_DB_PATH = path.join(__dirname, "oshiot.test.db");
 
 const build = (cb) => {
   exec("npm run build", (err, stdout, stderr) => {
@@ -19,6 +20,9 @@ const build = (cb) => {
 
 const clean = (cb) => {
   deleteFolderRecursive(DIR_BIN);
+  if (fs.existsSync(TEST_DB_PATH)) {
+    fs.unlinkSync(TEST_DB_PATH);
+  }
   cb();
 }
 

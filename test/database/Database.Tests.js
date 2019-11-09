@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 
 import Database from "../../bin/db/Database";
+import DatabaseHelper from "../../bin/db/helper/DatabaseHelper";
 
 const TABLE_NAME = "DatabaseTestsTable";
 
@@ -10,23 +11,30 @@ const TABLE_NAME = "DatabaseTestsTable";
  * @returns {Database}
  */
 const createDatabase = () => {
-  const fields = [
-    { name: "pk", type: "INTEGER", isPrimaryKey: true, autoincrement: true },
-    { name: "content", type: "TEXT" }
-  ];
-
-  return new Database(TABLE_NAME, fields, { isTest: true });
+  return new Database({
+    name: TABLE_NAME,
+    isLedger: false,
+    primaryKey: "pk",
+    fields: [
+      { name: "pk", type: DatabaseHelper.INT, autoincrement: true },
+    { name: "content", type: DatabaseHelper.TEXT }
+    ]
+  }, { isTest: true });
 }
 
 /**
  * @returns {Database}
  */
 const createMemoryDatabase = () => {
-  const fields = [
-    { name: "pk", type: "INTEGER", isPrimaryKey: true, autoincrement: true },
-    { name: "content", type: "TEXT" }
-  ];
-  return new Database(TABLE_NAME, fields, { isMemoryDB: true })
+  return new Database({
+    name: TABLE_NAME,
+    isLedger: false,
+    primaryKey: "pk",
+    fields: [
+      { name: "pk", type: DatabaseHelper.INT, autoincrement: true },
+      { name: "content", type: DatabaseHelper.TEXT }
+    ]
+  }, { isMemoryDB: true });
 }
 
 const deleteTestDatabase = () => {
