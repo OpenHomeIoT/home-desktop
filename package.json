@@ -4,7 +4,6 @@
   "description": "Home Hub",
   "main": "bin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel -d bin src --source-maps",
     "debug": "npm run build && ./node_modules/.bin/babel-node --inspect-brk=0.0.0.0:9229 bin/index.js",
     "start": "npm run build && ADDRESS=0.0.0.0 PORT=30021 node bin/index.js"
@@ -26,13 +25,12 @@
   "devDependencies": {
     "@babel/cli": "7.5.5",
     "@babel/core": "7.5.5",
-    "@babel/node": "^7.5.5",
+    "@babel/node": "7.5.5",
     "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/preset-env": "7.5.5",
     "chai": "4.2.0",
     "esm": "3.2.25",
     "gulp": "4.0.2",
-    "gulp-run": "^1.7.1",
     "mocha": "6.2.2"
   }
 }
