@@ -5,5 +5,5 @@ node_js:
 before_script:
   - npm install -g gulp-cli
   - npm install
-  
-script: gulp
+
+script: gulp test
