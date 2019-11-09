@@ -29,7 +29,10 @@
     "@babel/node": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/preset-env": "7.5.5",
+    "chai": "4.2.0",
+    "esm": "3.2.25",
     "gulp": "4.0.2",
-    "gulp-run": "^1.7.1"
+    "gulp-run": "^1.7.1",
+    "mocha": "6.2.2"
   }
 }

@@ -1,4 +1,5 @@
 import Database from "./Database";
+import DatabaseHelper from "./helper/DatabaseHelper";
 
 class ServiceVersionLedgerDatabase extends Database {
 
@@ -6,18 +7,22 @@ class ServiceVersionLedgerDatabase extends Database {
 
   static getInstance() {
     if (ServiceVersionLedgerDatabase._instance === null) {
-      ServiceVersionLedgerDatabase._instance = new ServiceVersionLedgerDatabase();
+      ServiceVersionLedgerDatabase._instance = new ServiceVersionLedgerDatabase({ isLedger: true });
     }
     return ServiceVersionLedgerDatabase._instance;
   }
 
-  constructor() {
+  /**
+   * 
+   * @param {{ isMemoryDB?: boolean, isLedger?: boolean, isTest?: boolean }} options 
+   */
+  constructor(options) {
     super("ServiceVersionLedger", [
-      { name: "serviceVersionName", type: "TEXT", isPrimaryKey: true },
-      { name: "serviceName", type: "TEXT" },
-      { name: "version", type: "TEXT" },
-      { name: "timeCreated", type: "BIGINT" }
-    ], { isLedger: true });
+      { name: "serviceVersionName", type: DatabaseHelper.TEXT, isPrimaryKey: true },
+      { name: "serviceName", type: DatabaseHelper.TEXT },
+      { name: "version", type: DatabaseHelper.TEXT },
+      { name: "timeInstalledOnHub", type: DatabaseHelper.BIGINT, includeInUpdate: false }
+    ], options);
   };
 }
 

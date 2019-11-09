@@ -1,4 +1,4 @@
-import ReconnectionBufferDatabase from "../db/ReconnectionBufferDatabase";
+import ConnectionBufferDatabase from "../db/ConnectionBufferDatabase";
 import DeviceOnlineOfflineHistoryDatabase from "../db/DeviceOnlineOfflineHistoryDatabase";
 import DeviceDatabase from "../db/DeviceDatabase";
 import DeviceManager from "./DeviceManager";
@@ -12,17 +12,24 @@ class DeviceStatusManager {
    */
   static getInstance() {
     if (DeviceStatusManager._instance === null) {
-      DeviceStatusManager._instance = new DeviceStatusManager();
+      DeviceStatusManager._instance = new DeviceStatusManager(DeviceOnlineOfflineHistoryDatabase.getInstance(), ConnectionBufferDatabase.getInstance(), DeviceManager.getInstance());
     }
     return DeviceStatusManager._instance;
   }
 
-  constructor() {
-    this._deviceLedgerDatabase = DeviceDatabase.getInstance(); // TODO: device online offline toggles
-    this._onlineOfflineHistoryDatabase = DeviceOnlineOfflineHistoryDatabase.getInstance();
-    this._reconnectionBufferDatabase = ReconnectionBufferDatabase.getInstance();
 
-    this._deviceManager = DeviceManager.getInstance();
+  /**
+   * 
+   * @param {DeviceOnlineOfflineHistoryDatabase} onlineOfflineHistoryDatabase `
+   * @param {ConnectionBufferDatabase} reconnectionBufferDatabase 
+   * @param {DeviceManager} deviceManager 
+   */
+  constructor(onlineOfflineHistoryDatabase, 
+              reconnectionBufferDatabase,
+              deviceManager) {
+    this._onlineOfflineHistoryDatabase = onlineOfflineHistoryDatabase;
+    this._reconnectionBufferDatabase = reconnectionBufferDatabase;
+    this._deviceManager = deviceManager;
 
     // binding
     this.isDeviceReconnecting = this.isDeviceReconnecting.bind(this);
@@ -31,16 +38,6 @@ class DeviceStatusManager {
     this.setDeviceIsReconnecting = this.setDeviceIsReconnecting.bind(this);
 
     this._setDeviceIsOnline = this._setDeviceIsOnline.bind(this);
-  }
-
-  /**
-   * Check to see if a device is currently reconnecting.
-   * @param {string} usn the device's usn.
-   * @return {Promise<boolean>}
-   */
-  isDeviceReconnecting(usn) {
-    return this._reconnectionBufferDatabase.get(usn)
-    .then(reconnectionInfo => reconnectionInfo != null && reconnectionInfo != undefined);
   }
 
   /**

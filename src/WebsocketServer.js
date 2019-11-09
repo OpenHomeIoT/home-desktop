@@ -1,8 +1,8 @@
 //@ts-check
 import io from "socket.io";
 
-import DeviceManager from "./DeviceManager";
-import DeviceStatusManager from "./DeviceStatusManager";
+import DeviceManager from "./manager/DeviceManager";
+import DeviceStatusManager from "./manager/DeviceStatusManager";
 
 class WebsocketServer {
 
@@ -13,18 +13,19 @@ class WebsocketServer {
    */
   static getInstance() {
     if (WebsocketServer._instance === null) {
-      WebsocketServer._instance = new WebsocketServer();
+      WebsocketServer._instance = new WebsocketServer(DeviceManager.getInstance(), DeviceStatusManager.getInstance());
     }
     return WebsocketServer._instance;
   }
 
   /**
-   * WebsocketServer constructor.
-
+   * 
+   * @param {DeviceManager} deviceManager 
+   * @param {DeviceStatusManager} deviceStatusManager 
    */
-  constructor() {
-    this._deviceManager = DeviceManager.getInstance();
-    this._deviceStatusManager = DeviceStatusManager.getInstance();
+  constructor(deviceManager, deviceStatusManager) {
+    this._deviceManager = deviceManager;
+    this._deviceStatusManager = deviceStatusManager;
 
     this._connectedDevices = new Map();
     this._connectedSockets = new Map();

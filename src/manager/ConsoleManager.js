@@ -2,15 +2,18 @@ import DeviceManager from "./DeviceManager";
 
 const serverline = require("serverline");
 
-class CosnsoleManager {
+class ConsoleManager {
 
   static _instance = null;
 
+  /**
+   * @returns {ConsoleManager}
+   */
   static getInstance() {
-    if (CosnsoleManager._instance === null) {
-      CosnsoleManager._instance = new CosnsoleManager();
+    if (ConsoleManager._instance === null) {
+      ConsoleManager._instance = new ConsoleManager();
     }
-    return CosnsoleManager._instance;
+    return ConsoleManager._instance;
   }
 
   constructor() {
@@ -50,7 +53,7 @@ class CosnsoleManager {
         process.exit();
         break;
       case "help":
-        CosnsoleManager._showHelp();
+        ConsoleManager._showHelp();
         break;
       case "list":
         this._listAllDevices();
@@ -210,4 +213,4 @@ class CosnsoleManager {
   }
 }
 
-export default CosnsoleManager;
+export default ConsoleManager;

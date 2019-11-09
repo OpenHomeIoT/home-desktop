@@ -8,11 +8,20 @@ class Database {
    * Database constructor.
    * @param {string} tableName the name of the table this db is in charge of.
    * @param {{ name: string, type: string, isPrimaryKey?: boolean, autoincrement?: boolean, includeInUpdate?: boolean }[]} fields the fields of the table.
-   * @param {{ isMemoryDB?: boolean, isLedger?: boolean }} options the options.
+   * @param {{ isMemoryDB?: boolean, isLedger?: boolean, isTest?: boolean }} options the options.
    */
   constructor(tableName, fields, options) {
-    const dbName = (options && options.isMemoryDB) ? ":memory:" : "oshiot.db";
+    let dbName = "oshiot.db"; // TODO: put this in a more suiting place...
+    if (options) {
+      const { isMemoryDB, isTest } = options;
+      if (isTest) {
+        dbName = "oshiot.test.db";
+      } else if (isMemoryDB) {
+        dbName = ":memory:"
+      }
+    }
     this._db = new sqlite3.Database(dbName);
+    
     // TODO: verify there is a (and only one) primary key defined in fields
     // TODO: verify table name
     this._tableName = tableName;
@@ -142,6 +151,8 @@ class Database {
           if (err) reject(err);
           else resolve();
         })
+      } else {
+        resolve();
       }
     });
   }

@@ -5,20 +5,6 @@ const path = require("path");
 
 const DIR_BIN = path.join(__dirname, "bin/")
 
-const deleteFolderRecursive = (path) => {
-  if( fs.existsSync(path) ) {
-      fs.readdirSync(path).forEach(function(file) {
-        var curPath = path + "/" + file;
-          if(fs.lstatSync(curPath).isDirectory()) { // recurse
-              deleteFolderRecursive(curPath);
-          } else { // delete file
-              fs.unlinkSync(curPath);
-          }
-      });
-      fs.rmdirSync(path);
-    }
-};
-
 const build = (cb) => {
   exec("npm run build", (err, stdout, stderr) => {
     console.log(stdout);
@@ -36,6 +22,29 @@ const clean = (cb) => {
   cb();
 }
 
+const deleteFolderRecursive = (path) => {
+  if (fs.existsSync(path)) {
+      fs.readdirSync(path).forEach(function(file) {
+        var curPath = path + "/" + file;
+          if(fs.lstatSync(curPath).isDirectory()) { // recurse
+              deleteFolderRecursive(curPath);
+          } else { // delete file
+              fs.unlinkSync(curPath);
+          }
+      });
+      fs.rmdirSync(path);
+    }
+};
+
+const test = (cb) => {
+  exec("mocha --recursive --require esm", {cwd: __dirname }, (err, stdout, stderr) => {
+    console.log(stdout);
+    console.error(stderr);
+    cb(err);
+  });
+}
+
 exports.build = build;
 exports.clean = clean;
+exports.test = series(clean, build, test);
 exports.default = series(clean, build)

@@ -59,7 +59,6 @@ class SqlHelper {
   static generateInsertSql(tableName, tableFields) {
     let fields = tableFields.map(({ name }) => name);
     let values = tableFields.map(({ name }) => `$${name}`);
-   
     return `INSERT INTO ${tableName} (${fields.join(",")}) VALUES (${values.join(",")})`;
   }
 
@@ -71,8 +70,7 @@ class SqlHelper {
    * @returns {string} the sql.
    */
   static generateUpdateByPrimaryKeySql(tableName, tableFields, primaryKey) {
-    const fieldUpdates = tableFields.filter(({ includeInUpdate }) => includeInUpdate).map(({ name }) => `${name} = $${name}`);
-
+    const fieldUpdates = tableFields.filter(({ includeInUpdate = true, autoincrement = false }) => !autoincrement && includeInUpdate).map(({ name }) => `${name} = $${name}`);
     return `UPDATE ${tableName} SET ${fieldUpdates.join(",")} WHERE ${primaryKey} = $${primaryKey}`;
   }
 }

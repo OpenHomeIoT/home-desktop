@@ -4,9 +4,10 @@ import { Client as SSDPClient, Server as SSDPServer, SsdpHeaders } from "node-ss
 import request from "request";
 
 import DeviceManager from "./DeviceManager";
-import IoTDevice from "../IoTDevice";
-import WebsocketServer from "./WebsocketServer";
 import DeviceStatusManager from "./DeviceStatusManager";
+
+import IoTDevice from "../IoTDevice";
+import WebsocketServer from "../WebsocketServer";
 
 
 class SsdpManager {
@@ -19,15 +20,21 @@ class SsdpManager {
    */
   static getInstance() {
     if (SsdpManager._instance == null) {
-      SsdpManager._instance = new SsdpManager();
+      SsdpManager._instance = new SsdpManager(DeviceManager.getInstance(), DeviceStatusManager.getInstance(), WebsocketServer.getInstance());
     }
     return SsdpManager._instance;
   }
 
-  constructor() {
-    this._deviceManager = DeviceManager.getInstance();
-    this._deviceStatusManager = DeviceStatusManager.getInstance();
-    this._websocketServer = WebsocketServer.getInstance();
+  /**
+   * 
+   * @param {DeviceManager} deviceManager 
+   * @param {DeviceStatusManager} deviceStatusManager 
+   * @param {WebsocketServer} websocketServer 
+   */
+  constructor(deviceManager, deviceStatusManager, websocketServer) {
+    this._deviceManager = deviceManager;
+    this._deviceStatusManager = deviceStatusManager;
+    this._websocketServer = websocketServer;
 
     this._ssdpClient = new SSDPClient();
     this._ssdpServer = new SSDPServer();
@@ -152,7 +159,7 @@ class SsdpManager {
   _createNewDevice(usn, ssdpDescriptionLocation, ipAddress, serviceList) {
     console.log(`[SsdpManager] Discovered a new device (${ipAddress}) with services: ${JSON.stringify(serviceList)}`);
     const now = Date.now();  
-    const iotDevice = new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, serviceList, false, now, now, false);
+    const iotDevice = new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, serviceList, false, now, now, IoTDevice.Disconnected);
     return this._deviceManager.addDevice(iotDevice, this._host, this._port);
   }
 

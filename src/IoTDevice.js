@@ -1,6 +1,9 @@
 //@ts-check
-
 class IoTDevice {
+  
+  static Connected = "connected";
+  static Disconnected = "disconnected";
+  static Reconnecting = "reconnecting";
 
   /**
    * 
@@ -11,7 +14,7 @@ class IoTDevice {
    * @param {Boolean} configuredChild 
    * @param {number} lastSeen 
    * @param {number} discovered 
-   * @param {Boolean} isOnline 
+   * @param {string} connectionStatus 
    */
   constructor(usn, 
               descriptionLocation, 
@@ -20,7 +23,7 @@ class IoTDevice {
               configuredChild, 
               lastSeen, 
               discovered, 
-              isOnline) {
+              connectionStatus) {
     this._usn = usn;
     this._descriptionLocation = descriptionLocation;
     this._address = address;
@@ -28,7 +31,7 @@ class IoTDevice {
     this._configuredChild = configuredChild;
     this._lastSeen = lastSeen;
     this._discovered = discovered;
-    this._isOnline = isOnline;
+    this._connectionStatus = connectionStatus;
 
     // binding
     this.toJson = this.toJson.bind(this);
@@ -95,11 +98,10 @@ class IoTDevice {
   }
 
   /**
-   * Get the online status of the IoTDevice.
-   * @returns {Boolean} the online status of the IoTDevice.
+   * @returns {string} the connection status of the device to this Hub.
    */
-  isOnline() {
-    return this._isOnline;
+  getConnectionStatus() {
+    return this._connectionStatus;
   }
 
   /**
@@ -121,16 +123,16 @@ class IoTDevice {
   }
 
   /**
-   * Set whether or not this IoTDevice is online.
-   * @param {Boolean} online the online status of this IoTDevice.
+   * Set the conneciton status for the device.
+   * @param {string} status the connection status.
    */
-  setOnline(online) {
-    this._isOnline = online;
+  setConnectionStatus(status) {
+    this._connectionStatus = status;
   }
 
   /**
    * Create a new IoTDevice from its JSON representation.
-   * @param {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, isOnline: boolean }} json the JSON representation. 
+   * @param {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: number, timeLastSeen: number, timeDiscovered: number, connectionStatus: string }} json the JSON representation. 
    * @returns {IoTDevice|null} the IoTDevice or null if the json record was bad.
    */
   static fromJson(json) {
@@ -145,14 +147,14 @@ class IoTDevice {
       configuredAsChild,
       timeLastSeen, 
       timeDiscovered,
-      isOnline
+      connectionStatus
     } = json;
-    return new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, JSON.parse(services), configuredAsChild, timeLastSeen, timeDiscovered, isOnline);
+    return new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, JSON.parse(services), configuredAsChild === 1, timeLastSeen, timeDiscovered, connectionStatus);
   }
 
   /**
    * Convert the IoTDevice to its JSON representation.
-   * @returns {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, isOnline: boolean }} the JSON representation.
+   * @returns {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, connectionStatus: string }} the JSON representation.
    */
   toJson() {
     return {
@@ -163,7 +165,7 @@ class IoTDevice {
       configuredAsChild: this._configuredChild,
       timeLastSeen: this._lastSeen,
       timeDiscovered: this._discovered,
-      isOnline: this._isOnline
+      connectionStatus: this._connectionStatus
     };
   }
 
@@ -172,7 +174,7 @@ class IoTDevice {
    * @returns {String} the String representation of an IoTDevice.
    */
   toString() {
-    return `IoTDevice: { USN: ${this._usn}, Description: ${this._descriptionLocation}, Address: ${this._address}, Services: ${this._services}, ConfiguredAsChild: ${this._configuredChild}, LastSeen: ${this._lastSeen}, Discovered: ${this._discovered}, IsOnline: ${this._isOnline} }`;
+    return `IoTDevice: { USN: ${this._usn}, Description: ${this._descriptionLocation}, Address: ${this._address}, Services: ${this._services}, ConfiguredAsChild: ${this._configuredChild}, LastSeen: ${this._lastSeen}, Discovered: ${this._discovered}, Connection Status: ${this._connectionStatus} }`;
   }
 }
 

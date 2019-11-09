@@ -1,4 +1,13 @@
+import Database from "../Database";
+
 class DatabaseHelper {
+
+  static TEXT = "TEXT";
+  static BIGINT = "BIGINT";
+  static INT = "INTEGER";
+  static BOOLEAN = "BOOLEAN";
+  static REAL = "REAL";
+  static BLOB = "BLOB";
 
   /**
    * Check to see if the insert data is valid.
@@ -10,8 +19,8 @@ class DatabaseHelper {
     let hasPrimaryKey = false;
     for (const { name, type, isPrimaryKey, autoincrement } of tableFields) {
       if (isPrimaryKey) hasPrimaryKey = true;
-      if (!DatabaseHelper._dataHasKeyOfName(name, data)) return false;
-      if (!DatabaseHelper._dataKeyOfNameIsOfType(name, type, data)) return false;
+      if (!autoincrement && !DatabaseHelper._dataHasKeyOfName(data, name)) return false;
+      if (!autoincrement &&!DatabaseHelper._dataKeyOfNameIsOfType(name, type, data)) return false;
     }
     return hasPrimaryKey;
   }
@@ -23,12 +32,14 @@ class DatabaseHelper {
    * @returns {boolean}
    */
   static isValidUpdateData(tableFields, data) {
-    for (const { name, type, includeInUpdate } of tableFields) {
-      if (includeInUpdate) {
-        if (!DatabaseHelper._dataHasKeyOfName(data, name)) return false;
-        if (!DatabaseHelper._dataKeyOfNameIsOfType(name, type, data)) return false;
-      } 
+    for (const { name, type, includeInUpdate = true, isPrimaryKey } of tableFields) {
+      if (includeInUpdate || isPrimaryKey) {
+        if (DatabaseHelper._dataHasKeyOfName(data, name) && !DatabaseHelper._dataKeyOfNameIsOfType(name, type, data)) return false;
+      } else if (!includeInUpdate && DatabaseHelper._dataHasKeyOfName(data, name)) {
+        return false;
+      }
     }
+
     return true;
   }
 
@@ -52,7 +63,7 @@ class DatabaseHelper {
    */
   static prepareDataForUpdate(tableFields, data) {
     const prepared = {};
-    tableFields.forEach(({ name, includeInUpdate, isPrimaryKey }) => {
+    tableFields.forEach(({ name, includeInUpdate = true, isPrimaryKey }) => {
       if (includeInUpdate || isPrimaryKey) prepared[`$${name}`] = data[name];
     });
     return prepared;
@@ -60,11 +71,11 @@ class DatabaseHelper {
 
   /**
    * Check to see if the data has a key of a given name.
+   * @param {*} data the data
    * @param {string} name the name of the key.
-   * @param {*} data the data.
    * @returns {boolean}
    */
-  static _dataHasKeyOfName(name, data) {
+  static _dataHasKeyOfName(data, name) {
     return data[name] != null && data[name] != undefined;
   }
 
@@ -77,14 +88,16 @@ class DatabaseHelper {
    */
   static _dataKeyOfNameIsOfType(name, type, data) {
     switch(type.toUpperCase()) {
-      case "TEXT":
+      case DatabaseHelper.TEXT:
         return DatabaseHelper._dataKeyOfNameIsOfTypeText(name, data);
-      case "INT":
+      case DatabaseHelper.INT:
         return DatabaseHelper._dataKeyOfNameIsOfTypeInt(name, data);
-      case "BIGINT":
+      case DatabaseHelper.BIGINT:
         return DatabaseHelper._dataKeyOfNameIsOfTypeBigInt(name, data);
-      case "BOOLEAN":
+      case DatabaseHelper.BOOLEAN:
         return DatabaseHelper._dataKeyOfNameIsOfTypeBoolean(name, data);
+      case DatabaseHelper.REAL:
+        return DatabaseHelper._dataKeyOfNameIsOfTypeReal(name, data);
       default:
         return false;
     }
@@ -117,7 +130,17 @@ class DatabaseHelper {
    * @returns {boolean}
    */
   static _dataKeyOfNameIsOfTypeInt(name, data) {
-    return typeof data[name] === "number"; // TODO: int check
+    return typeof data[name] === "number" && Number.isInteger(data[name]);
+  }
+
+  /**
+   * Check to see if the data value of a key is a real number.
+   * @param {string} name the name of the key.
+   * @param {*} data the data.
+   * @returns {boolean}
+   */
+  static _dataKeyOfNameIsOfTypeReal(name, data) {
+    return typeof data[name] === "number" && !Number.isInteger(data[name]);
   }
 
   /**
