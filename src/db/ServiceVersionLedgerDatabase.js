@@ -7,22 +7,27 @@ class ServiceVersionLedgerDatabase extends Database {
 
   static getInstance() {
     if (ServiceVersionLedgerDatabase._instance === null) {
-      ServiceVersionLedgerDatabase._instance = new ServiceVersionLedgerDatabase({ isLedger: true });
+      ServiceVersionLedgerDatabase._instance = new ServiceVersionLedgerDatabase();
     }
     return ServiceVersionLedgerDatabase._instance;
   }
 
   /**
    * 
-   * @param {{ isMemoryDB?: boolean, isLedger?: boolean, isTest?: boolean }} options 
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options 
    */
   constructor(options) {
-    super("ServiceVersionLedger", [
-      { name: "serviceVersionName", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-      { name: "serviceName", type: DatabaseHelper.TEXT },
-      { name: "version", type: DatabaseHelper.TEXT },
-      { name: "timeInstalledOnHub", type: DatabaseHelper.BIGINT, includeInUpdate: false }
-    ], options);
+    super({
+      name: "ServiceVersionLedger",
+      isLedger: true,
+      primaryKey: "serviceVersionName",
+      fields: [
+        { name: "serviceVersionName", type: DatabaseHelper.TEXT },
+        { name: "serviceName", type: DatabaseHelper.TEXT },
+        { name: "version", type: DatabaseHelper.TEXT },
+        { name: "timeInstalledOnHub", type: DatabaseHelper.BIGINT, includeInUpdate: false }
+      ]
+    }, options);
   };
 }
 

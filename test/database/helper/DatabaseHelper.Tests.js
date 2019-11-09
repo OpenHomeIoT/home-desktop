@@ -1,32 +1,32 @@
 import assert from "assert";
 import DatabaseHelper from "../../../bin/db/helper/DatabaseHelper";
 
-const FIELDS = [
-  { name: "pk", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-  { name: "content", type: DatabaseHelper.TEXT }
-];
-
+const TABLE_DEFINITION = {
+  name: "TestTable",
+  isLedger: false,
+  primaryKey: "pk",
+  fields: [
+    { name: "usn", type: DatabaseHelper.TEXT, isPrimaryKey: true },
+    { name: "content", type: DatabaseHelper.TEXT },
+    { name: "timeDiscovered", type: DatabaseHelper.INT, includeInUpdate: false }, 
+    { name: "timeLastSeen", type: DatabaseHelper.INT },
+    { name: "b", type: DatabaseHelper.BOOLEAN }
+  ]
+};
 
 describe("DatabaseHelper Tests", () => {
 
   it("#isValidInsertData(): Should return true for valid data.", () => {
-    const actual = DatabaseHelper.isValidInsertData(FIELDS, { pk: "test0", content: "text" });
+    const actual = DatabaseHelper.isValidInsertData(TABLE_DEFINITION, { usn: "test", content: "test", timeDiscovered: 0, timeLastSeen: 0, b: true });
     assert.strictEqual(actual, true, "The insert data was not valid.");
   });
 
-  it("#isValidInsertData(): Should return false for invalid data that contains a number instead of text.", () => {
-    const actual = DatabaseHelper.isValidInsertData(FIELDS, { pk: "test0", content: 1 });
+  it("#isValidInsertData(): Should return false for invalid data.", () => {
+    const actual = DatabaseHelper.isValidInsertData(TABLE_DEFINITION, { usn: "test", content: 1, timeDiscovered: 0, timeLastSeen: 0, b: true });
     assert.strictEqual(actual, false, "The insert data was not valid.");
   });
 
   it("#isValidUpdateData(): Should return true for valid data.", () => {
-    const fields = [
-      { name: "usn", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-      { name: "content", type: DatabaseHelper.TEXT },
-      { name: "timeDiscovered", type: DatabaseHelper.INT, includeInUpdate: false }, 
-      { name: "timeLastSeen", type: DatabaseHelper.INT },
-      { name: "b", type: DatabaseHelper.BOOLEAN }
-    ];
     const data1 = {
       usn: "usn",
       content: "some content",
@@ -36,72 +36,46 @@ describe("DatabaseHelper Tests", () => {
     const data2 = {
       content: "updated content"
     };
-    assert.strictEqual(DatabaseHelper.isValidUpdateData(fields, data1), true, "data1 was not valid update data.");
-    assert.strictEqual(DatabaseHelper.isValidUpdateData(fields, data2), true, "data2 was not valid update data.");
+    assert.strictEqual(DatabaseHelper.isValidUpdateData(TABLE_DEFINITION, data1), true, "data1 was not valid update data.");
+    assert.strictEqual(DatabaseHelper.isValidUpdateData(TABLE_DEFINITION, data2), true, "data2 was not valid update data.");
   });
 
   it("#isValidUpdateData(): Should return false for data that contains a field that should not be included in update.", () => {
-    const fields = [
-      { name: "usn", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-      { name: "content", type: DatabaseHelper.TEXT },
-      { name: "timeDiscovered", type: DatabaseHelper.INT, includeInUpdate: false }, 
-      { name: "timeLastSeen", type: DatabaseHelper.INT },
-      { name: "b", type: DatabaseHelper.BOOLEAN },
-      { name: "nickName", type: DatabaseHelper.TEXT, includeInUpdate: false }
-    ];
     const data1 = {
       usn: "usn",
       content: "some content",
       timeLastSeen: 9123849,
       b: false,
-      nickName: "nick name"
+      timeDiscovered: 3
     };
     const data2 = {
       content: "updated content",
       timeDiscovered: 3
     };
-    assert.strictEqual(DatabaseHelper.isValidUpdateData(fields, data1), false, "data1 was valid update data.");
-    assert.strictEqual(DatabaseHelper.isValidUpdateData(fields, data2), false, "data2 was valid update data.");
+    assert.strictEqual(DatabaseHelper.isValidUpdateData(TABLE_DEFINITION, data1), false, "data1 was valid update data.");
+    assert.strictEqual(DatabaseHelper.isValidUpdateData(TABLE_DEFINITION, data2), false, "data2 was valid update data.");
   });
 
   it("#prepareDataForInsert(): Should return valid prepared data.", () => {
-    const fields = [
-      { name: "usn", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-      { name: "content", type: DatabaseHelper.TEXT },
-      { name: "timeDiscovered", type: DatabaseHelper.INT, includeInUpdate: false }, 
-      { name: "timeLastSeen", type: DatabaseHelper.INT },
-      { name: "b", type: DatabaseHelper.BOOLEAN },
-      { name: "nickName", type: DatabaseHelper.TEXT, includeInUpdate: false }
-    ];
     const now = Date.now();
     const data = {
       usn: "usn",
       content: "some content",
       timeDiscovered: now,
       timeLastSeen: now,
-      b: true,
-      nickName: "nick name"
+      b: true
     };
     const expected = {
       $usn: "usn",
       $content: "some content",
       $timeDiscovered: now,
       $timeLastSeen: now,
-      $b: true,
-      $nickName: "nick name"
+      $b: true
     };
-    assert.deepStrictEqual(DatabaseHelper.prepareDataForInsert(fields, data), expected, "The prepared data was incorrect.");
+    assert.deepStrictEqual(DatabaseHelper.prepareDataForInsert(TABLE_DEFINITION, data), expected, "The prepared data was incorrect.");
   });
 
   it("#prepareDataForUpdate(): Should return valid prepared data.", () => {
-    const fields = [
-      { name: "usn", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-      { name: "content", type: DatabaseHelper.TEXT },
-      { name: "timeDiscovered", type: DatabaseHelper.INT, includeInUpdate: false }, 
-      { name: "timeLastSeen", type: DatabaseHelper.INT },
-      { name: "b", type: DatabaseHelper.BOOLEAN },
-      { name: "nickName", type: DatabaseHelper.TEXT, includeInUpdate: false }
-    ];
     const now = Date.now();
     const data = {
       usn: "usn",
@@ -109,7 +83,6 @@ describe("DatabaseHelper Tests", () => {
       timeDiscovered: now,
       timeLastSeen: now,
       b: true,
-      nickName: "nick name"
     };
     const expected = {
       $usn: "usn",
@@ -117,7 +90,7 @@ describe("DatabaseHelper Tests", () => {
       $timeLastSeen: now,
       $b: true,
     };
-    assert.deepStrictEqual(DatabaseHelper.prepareDataForUpdate(fields, data), expected, "The prepared data was incorrect.");
+    assert.deepStrictEqual(DatabaseHelper.prepareDataForUpdate(TABLE_DEFINITION, data), expected, "The prepared data was incorrect.");
   });
 
   it("#_dataHasKeyOfName(): Should return true for data that contains a given key", () => {

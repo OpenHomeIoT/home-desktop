@@ -17,14 +17,19 @@ class ConnectionBufferDatabase extends Database {
 
   /**
    * 
-   * @param {{ isMemoryDB?: boolean, isLedger?: boolean, isTest?: boolean }} options the options
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options the options
    */
   constructor(options) {
-    super("DeviceConnectionBuffer", [
-      { name: "usn", type: DatabaseHelper.TEXT, isPrimaryKey: true },
-      { name: "timeAdded", type: DatabaseHelper.INT, includeInUpdate: false },
-      { name: "ipAddress", type: DatabaseHelper.TEXT }
-    ], options);
+    super({
+      name: "DeviceConnectionBuffer",
+      isLedger: false,
+      primaryKey: "usn",
+      fields: [
+        { name: "usn", type: DatabaseHelper.TEXT },
+        { name: "timeAdded", type: DatabaseHelper.INT, includeInUpdate: false },
+        { name: "ipAddress", type: DatabaseHelper.TEXT }
+      ]
+    }, options);
   }
 }
 
