@@ -1,1 +1,1 @@
-# Home Hub [![Build Status](https://travis-ci.org/OpenSourceHomeIoT/hub.svg?branch=master)](https://travis-ci.org/OpenSourceHomeIoT/hub)
+# Home Hub [![Build Status](https://travis-ci.com/OpenSourceHomeIoT/hub.svg?branch=master)](https://travis-ci.com/OpenSourceHomeIoT/hub)
