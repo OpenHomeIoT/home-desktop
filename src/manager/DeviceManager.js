@@ -1,6 +1,4 @@
 //@ts-check
-import request from "request";
-
 import DeviceDatabase from "../db/DeviceDatabase";
 import IoTDevice from "../IoTDevice";
 
@@ -24,11 +22,10 @@ class DeviceManager {
    * @param {DeviceDatabase} deviceDatabase 
    */
   constructor(deviceDatabase) {
-    this._deviceLedgerDatabase = deviceDatabase;
+    this._deviceDatabase = deviceDatabase;
 
     // binding
     this.addDevice = this.addDevice.bind(this);
-    this.configureDeviceAsChild = this.configureDeviceAsChild.bind(this);
     this.getAllDevices = this.getAllDevices.bind(this);
     this.getDeviceByUsn = this.getDeviceByUsn.bind(this);
   }
@@ -36,12 +33,9 @@ class DeviceManager {
   /**
    * Add an IoTDevice to the DeviceLedgerDatabase.
    * @param {IoTDevice} device the iot device.
-   * @param {string} host the ip address of this hub instance
-   * @param {number} port the port
    */
-  addDevice(device, host, port) {
-    return this._deviceLedgerDatabase.insert(device.toJson())
-      .then(() => this.configureDeviceAsChild(device.getUSN(), host, port))
+  addDevice(device) {
+    return this._deviceDatabase.insert(device.toJson())
       .then(() => console.log(`[DeviceManager] Added device: '${device.toString()}'`));
   }
 
@@ -50,7 +44,7 @@ class DeviceManager {
    * @returns {Promise<Array<IoTDevice>>} the IoTDevices.
    */
   getAllDevices() {
-    return this._deviceLedgerDatabase.getAll()
+    return this._deviceDatabase.getAll()
       .then(deviceRecords => {
         const devices = [];
         for (const record of deviceRecords) {
@@ -66,7 +60,7 @@ class DeviceManager {
    * @return {Promise<IoTDevice | null>} the IoTDevice.
    */
   getDeviceByUsn(usn) {
-    return this._deviceLedgerDatabase.get(usn)
+    return this._deviceDatabase.get(usn)
       .then(deviceRec => { return IoTDevice.fromJson(deviceRec); });
   }
 
@@ -75,7 +69,7 @@ class DeviceManager {
    * @param {IoTDevice} iotDevice this IoTDevice.
    */
   updateDevice(iotDevice) {
-    return this._deviceLedgerDatabase.update(iotDevice.toJson());
+    return this._deviceDatabase.update(iotDevice.toJson());
   }
 };
 

@@ -2,22 +2,14 @@ import WebsocketServer from "../../bin/WebsocketServer";
 
 class MockWebsocketServer extends WebsocketServer {
 
-  static _instance = null;
-
   /**
-   * @returns {MockWebsocketServer} the instance.
+   * 
+   * @param {MockDeviceManager} mockDeviceManager 
+   * @param {MockDeviceStatusManager} mockDeviceStatusManager 
    */
-  static getInstance() {
-    if (MockWebsocketServer._instance === null) {
-      MockWebsocketServer._instance = new MockWebsocketServer();
-    }
-    return MockWebsocketServer._instance;
+  constructor(mockDeviceManager, mockDeviceStatusManager) {
+    super(mockDeviceManager, mockDeviceStatusManager);
   }
-
-  constructor() {
-    super(MockDeviceManager.getInstance(), MockDeviceStatusManager.getInstance());
-  }
-
 }
 
 export default MockWebsocketServer;

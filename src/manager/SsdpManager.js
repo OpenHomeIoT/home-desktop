@@ -141,8 +141,8 @@ class SsdpManager {
         .then(deviceIsReconnecting => {
           if (!deviceIsReconnecting) {
             console.log("[SsdpManager] Found device that wasn't connected to Hub. Attempting to reconnect.")
-            return this._deviceStatusManager.setDeviceIsReconnecting(usn)
-            .then(() => this._deviceManager.configureDeviceAsChild(usn, this._host, this._port));
+            return this._deviceStatusManager.setDeviceIsReconnecting(usn);
+            // .then(() => this._deviceManager.configureDeviceAsChild(usn, this._host, this._port)); TODO: implement
           }
         });
       }
@@ -160,7 +160,7 @@ class SsdpManager {
     console.log(`[SsdpManager] Discovered a new device (${ipAddress}) with services: ${JSON.stringify(serviceList)}`);
     const now = Date.now();  
     const iotDevice = new IoTDevice(usn, ssdpDescriptionLocation, ipAddress, serviceList, false, now, now, IoTDevice.Disconnected);
-    return this._deviceManager.addDevice(iotDevice, this._host, this._port);
+    return this._deviceManager.addDevice(iotDevice);
   }
 
   /**
