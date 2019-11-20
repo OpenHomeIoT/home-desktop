@@ -4,20 +4,13 @@ import MockDeviceManager from "./MockDeviceManager";
 
 class MockConnectionManager extends ConnectionManager {
 
-  static _instance = null;
-
   /**
-   * @returns {MockConnectionManager} the instance.
+   * 
+   * @param {MockConnectionBufferDatabase} mockConnectionBufferDatabase 
+   * @param {MockDeviceManager} mockDeviceManager 
    */
-  static getInstance() {
-    if (MockConnectionManager._instance === null) {
-      MockConnectionManager._instance = new MockConnectionManager();
-    }
-    return MockConnectionManager._instance;
-  }
-
-  constructor() {
-    super(MockConnectionBufferDatabase.getInstance(), MockDeviceManager.getInstance());
+  constructor(mockConnectionBufferDatabase, mockDeviceManager) {
+    super(mockConnectionBufferDatabase, mockDeviceManager);
   }
 
 }

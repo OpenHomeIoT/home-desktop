@@ -5,11 +5,11 @@ import http from "http";
 
 import CosnsoleManager from "./manager/ConsoleManager";
 import SsdpManager from "./manager/SsdpManager";
-import WebsocketServer from "./manager/WebsocketServer";
+import WebsocketServer from "./WebsocketServer";
 
 import DeviceDatabase from "./db/DeviceDatabase";
 import DeviceOnlineHistoryDatabase from "./db/DeviceOnlineOfflineHistoryDatabase";
-import ReconnectionBufferDatabase from "./db/ReconnectionBufferDatabase";
+import ConnectionBufferDatabase from "./db/ConnectionBufferDatabase";
 import ServiceLedgerDatabase from "./db/ServiceLedgerDatabase";
 import ServiceVersionLedgerDatabase from "./db/ServiceVersionLedgerDatabase";
 
@@ -25,7 +25,7 @@ function initializeDatabases() {
   return Promise.resolve()
   .then(() => DeviceDatabase.getInstance().open())
   .then(() => DeviceOnlineHistoryDatabase.getInstance().open())
-  .then(() => ReconnectionBufferDatabase.getInstance().open())
+  .then(() => ConnectionBufferDatabase.getInstance().open())
   .then(() => ServiceLedgerDatabase.getInstance().open())
   .then(() => ServiceVersionLedgerDatabase.getInstance().open());
 }

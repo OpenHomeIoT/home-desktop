@@ -4,21 +4,15 @@ import MockDeviceStatusManager from "./MockDeviceStatusManager";
 import MockWebsocketServer from "../MockWebsocketServer";
 
 class MockSsdpManager extends SsdpManager {
-
-  static _instance = null;
-
+  
   /**
-   * @returns {MockSsdpManager} the instance.
+   * 
+   * @param {MockDeviceManager} mockDeviceManager 
+   * @param {MockDeviceStatusManager} mockDeviceStatusManager 
+   * @param {MockWebsocketServer} mockWebsocketServer 
    */
-  static getInstance() {
-    if (MockSsdpManager._instance === null) {
-      MockSsdpManager._instance = new MockSsdpManager();
-    }
-    return MockSsdpManager._instance;
-  }
-
-  constructor() {
-    super(MockDeviceManager.getInstance(), MockDeviceStatusManager.getInstance(), MockWebsocketServer.getInstance());
+  constructor(mockDeviceManager, mockDeviceStatusManager, mockWebsocketServer) {
+    super(mockDeviceManager, mockDeviceStatusManager, mockWebsocketServer);
   }
 
 }

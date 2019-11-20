@@ -5,20 +5,14 @@ import MockDeviceManager from "./MockDeviceManager";
 
 class MockDeviceStatusManager extends DeviceStatusManager {
 
-  static _instance = null;
-
   /**
-   * @returns {MockDeviceStatusManager} the instance.
+   * 
+   * @param {MockDeviceOnlineOfflineHistoryDatabase} mockDeviceOnlineOfflineHistoryDatabase 
+   * @param {MockConnectionBufferDatabase} mockConnectionBufferDatabase 
+   * @param {MockDeviceManager} mockDeviceManager 
    */
-  static getInstance() {
-    if (MockDeviceStatusManager._instance === null) {
-      MockDeviceStatusManager._instance = new MockDeviceStatusManager();
-    }
-    return MockDeviceStatusManager._instance;
-  }
-
-  constructor() {
-    super(MockDeviceOnlineOfflineHistoryDatabase.getInstance(), MockConnectionBufferDatabase.getInstance(), MockDeviceManager.getInstance())
+  constructor(mockDeviceOnlineOfflineHistoryDatabase, mockConnectionBufferDatabase, mockDeviceManager) {
+    super(mockDeviceOnlineOfflineHistoryDatabase, mockConnectionBufferDatabase, mockDeviceManager);
   }
 }
 

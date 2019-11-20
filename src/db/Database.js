@@ -15,6 +15,7 @@ class Database {
       const { isMemoryDB, isTest } = options;
       if (isTest) {
         dbName = "oshiot.test.db";
+        tableDefinition.name = `${tableDefinition.name}_Test`;
       } else if (isMemoryDB) {
         dbName = ":memory:"
       }
@@ -23,8 +24,6 @@ class Database {
     
     this._tableDefinition = tableDefinition;
     this._options = options || {};
-
-    const primaryKey = tableDefinition.primaryKey;
 
     this._insertSql = SqlHelper.generateInsertSql(tableDefinition);
     this._updateByPKSql = SqlHelper.generateUpdateByPrimaryKeySql(tableDefinition);

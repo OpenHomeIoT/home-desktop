@@ -3,20 +3,12 @@ import MockDeviceDatabase from "../db/MockDeviceDatabase";
 
 class MockDeviceManager extends DeviceManager {
 
-  static _instance = null;
-
   /**
-   * @returns {MockDeviceManager} the instance.
+   * 
+   * @param {MockDeviceDatabase} mockDeviceDatabase 
    */
-  static getInstance() {
-    if (MockDeviceManager._instance === null) {
-      MockDeviceManager._instance = new MockDeviceManager();
-    }
-    return MockDeviceManager._instance;
-  }
-
-  constructor() {
-    super(MockDeviceDatabase.getInstance());
+  constructor(mockDeviceDatabase) {
+    super(mockDeviceDatabase);
   }
 
 }
