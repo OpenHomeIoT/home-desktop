@@ -1,0 +1,63 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _electron = require("electron");
+
+//@ts-check
+let mainWindow = null;
+let deviceProcess = null;
+let ssdpProcess = null;
+/**
+ * Initialize the ssdp process ipc routes.
+ * @param {Electron.BroswerWindow} mainWindow the main widnow.
+ * @param {Electron.BrowserWindow} deviceProcess the device process.
+ * @param {Electron.BroswerWindow} ssdpProcess the ssdp process.
+ */
+
+const init = (mainWindow, deviceProcess, ssdpProcess) => {
+  mainWindow = mainWindow;
+  deviceProcess = deviceProcess;
+  ssdpProcess = ssdpProcess;
+};
+/**
+ * Called when the ssdp process is loaded.
+ * @param {Electron.IpcMainEvent} event the ipc event
+ * @param {{ sender: string, recipient: string }} param1 the ipc message.
+ */
+
+
+const onInitialized = (event, {
+  sender,
+  recipient
+}) => {
+  console.log("SSDP process initialized.");
+};
+/**
+ * Called when new devices are fouund by the ssdp process.
+ * @param {Electron.IpcMainEvent} event the ipc event.
+ * @param {{ sender: string, recipient: string, devices: { usn: string, ipAddress: string, ssdpDescriptionLocation: string }[] }} message the ipc message.
+ */
+
+
+const onDevicesDiscovered = (event, message) => {
+  if (ssdpProcess == null) {
+    return; // TODO: log error that ssdp routes were not initializd
+  }
+
+  if (message.recipient === "device") {
+    // forward the message to the device process
+    ssdpProcess.send("device.devices_discovered", message);
+  }
+};
+
+var _default = {
+  init,
+  onInitialized,
+  onDevicesDiscovered
+};
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1haW4vaXBjL3JvdXRlcy9zc2RwLmpzIl0sIm5hbWVzIjpbIm1haW5XaW5kb3ciLCJkZXZpY2VQcm9jZXNzIiwic3NkcFByb2Nlc3MiLCJpbml0Iiwib25Jbml0aWFsaXplZCIsImV2ZW50Iiwic2VuZGVyIiwicmVjaXBpZW50IiwiY29uc29sZSIsImxvZyIsIm9uRGV2aWNlc0Rpc2NvdmVyZWQiLCJtZXNzYWdlIiwic2VuZCJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUNBOztBQURBO0FBR0EsSUFBSUEsVUFBVSxHQUFHLElBQWpCO0FBQ0EsSUFBSUMsYUFBYSxHQUFHLElBQXBCO0FBQ0EsSUFBSUMsV0FBVyxHQUFHLElBQWxCO0FBRUE7Ozs7Ozs7QUFNQSxNQUFNQyxJQUFJLEdBQUcsQ0FBQ0gsVUFBRCxFQUFhQyxhQUFiLEVBQTRCQyxXQUE1QixLQUE0QztBQUN2REYsRUFBQUEsVUFBVSxHQUFHQSxVQUFiO0FBQ0FDLEVBQUFBLGFBQWEsR0FBR0EsYUFBaEI7QUFDQUMsRUFBQUEsV0FBVyxHQUFHQSxXQUFkO0FBQ0QsQ0FKRDtBQU1BOzs7Ozs7O0FBS0EsTUFBTUUsYUFBYSxHQUFHLENBQUNDLEtBQUQsRUFBUTtBQUFFQyxFQUFBQSxNQUFGO0FBQVVDLEVBQUFBO0FBQVYsQ0FBUixLQUFrQztBQUN0REMsRUFBQUEsT0FBTyxDQUFDQyxHQUFSLENBQVksMkJBQVo7QUFDRCxDQUZEO0FBSUE7Ozs7Ozs7QUFLQSxNQUFNQyxtQkFBbUIsR0FBRyxDQUFDTCxLQUFELEVBQVFNLE9BQVIsS0FBb0I7QUFDOUMsTUFBSVQsV0FBVyxJQUFJLElBQW5CLEVBQXlCO0FBQ3ZCLFdBRHVCLENBQ2Y7QUFDVDs7QUFDRCxNQUFJUyxPQUFPLENBQUNKLFNBQVIsS0FBc0IsUUFBMUIsRUFBb0M7QUFDbEM7QUFDQUwsSUFBQUEsV0FBVyxDQUFDVSxJQUFaLENBQWlCLDJCQUFqQixFQUE4Q0QsT0FBOUM7QUFDRDtBQUNGLENBUkQ7O2VBVWU7QUFDYlIsRUFBQUEsSUFEYTtBQUViQyxFQUFBQSxhQUZhO0FBR2JNLEVBQUFBO0FBSGEsQyIsInNvdXJjZXNDb250ZW50IjpbIi8vQHRzLWNoZWNrXG5pbXBvcnQgeyBpcGNSZW5kZXJlciB9IGZyb20gXCJlbGVjdHJvblwiO1xuXG5sZXQgbWFpbldpbmRvdyA9IG51bGw7XG5sZXQgZGV2aWNlUHJvY2VzcyA9IG51bGw7XG5sZXQgc3NkcFByb2Nlc3MgPSBudWxsO1xuXG4vKipcbiAqIEluaXRpYWxpemUgdGhlIHNzZHAgcHJvY2VzcyBpcGMgcm91dGVzLlxuICogQHBhcmFtIHtFbGVjdHJvbi5Ccm9zd2VyV2luZG93fSBtYWluV2luZG93IHRoZSBtYWluIHdpZG5vdy5cbiAqIEBwYXJhbSB7RWxlY3Ryb24uQnJvd3NlcldpbmRvd30gZGV2aWNlUHJvY2VzcyB0aGUgZGV2aWNlIHByb2Nlc3MuXG4gKiBAcGFyYW0ge0VsZWN0cm9uLkJyb3N3ZXJXaW5kb3d9IHNzZHBQcm9jZXNzIHRoZSBzc2RwIHByb2Nlc3MuXG4gKi9cbmNvbnN0IGluaXQgPSAobWFpbldpbmRvdywgZGV2aWNlUHJvY2Vzcywgc3NkcFByb2Nlc3MpID0+IHtcbiAgbWFpbldpbmRvdyA9IG1haW5XaW5kb3c7XG4gIGRldmljZVByb2Nlc3MgPSBkZXZpY2VQcm9jZXNzO1xuICBzc2RwUHJvY2VzcyA9IHNzZHBQcm9jZXNzO1xufTtcblxuLyoqXG4gKiBDYWxsZWQgd2hlbiB0aGUgc3NkcCBwcm9jZXNzIGlzIGxvYWRlZC5cbiAqIEBwYXJhbSB7RWxlY3Ryb24uSXBjTWFpbkV2ZW50fSBldmVudCB0aGUgaXBjIGV2ZW50XG4gKiBAcGFyYW0ge3sgc2VuZGVyOiBzdHJpbmcsIHJlY2lwaWVudDogc3RyaW5nIH19IHBhcmFtMSB0aGUgaXBjIG1lc3NhZ2UuXG4gKi9cbmNvbnN0IG9uSW5pdGlhbGl6ZWQgPSAoZXZlbnQsIHsgc2VuZGVyLCByZWNpcGllbnQgfSkgPT4ge1xuICBjb25zb2xlLmxvZyhcIlNTRFAgcHJvY2VzcyBpbml0aWFsaXplZC5cIik7XG59O1xuXG4vKipcbiAqIENhbGxlZCB3aGVuIG5ldyBkZXZpY2VzIGFyZSBmb3V1bmQgYnkgdGhlIHNzZHAgcHJvY2Vzcy5cbiAqIEBwYXJhbSB7RWxlY3Ryb24uSXBjTWFpbkV2ZW50fSBldmVudCB0aGUgaXBjIGV2ZW50LlxuICogQHBhcmFtIHt7IHNlbmRlcjogc3RyaW5nLCByZWNpcGllbnQ6IHN0cmluZywgZGV2aWNlczogeyB1c246IHN0cmluZywgaXBBZGRyZXNzOiBzdHJpbmcsIHNzZHBEZXNjcmlwdGlvbkxvY2F0aW9uOiBzdHJpbmcgfVtdIH19IG1lc3NhZ2UgdGhlIGlwYyBtZXNzYWdlLlxuICovXG5jb25zdCBvbkRldmljZXNEaXNjb3ZlcmVkID0gKGV2ZW50LCBtZXNzYWdlKSA9PiB7XG4gIGlmIChzc2RwUHJvY2VzcyA9PSBudWxsKSB7XG4gICAgcmV0dXJuOyAvLyBUT0RPOiBsb2cgZXJyb3IgdGhhdCBzc2RwIHJvdXRlcyB3ZXJlIG5vdCBpbml0aWFsaXpkXG4gIH1cbiAgaWYgKG1lc3NhZ2UucmVjaXBpZW50ID09PSBcImRldmljZVwiKSB7XG4gICAgLy8gZm9yd2FyZCB0aGUgbWVzc2FnZSB0byB0aGUgZGV2aWNlIHByb2Nlc3NcbiAgICBzc2RwUHJvY2Vzcy5zZW5kKFwiZGV2aWNlLmRldmljZXNfZGlzY292ZXJlZFwiLCBtZXNzYWdlKTtcbiAgfVxufTtcblxuZXhwb3J0IGRlZmF1bHQge1xuICBpbml0LFxuICBvbkluaXRpYWxpemVkLFxuICBvbkRldmljZXNEaXNjb3ZlcmVkXG59OyJdLCJmaWxlIjoibWFpbi9pcGMvcm91dGVzL3NzZHAuanMifQ==

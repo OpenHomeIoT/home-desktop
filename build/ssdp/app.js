@@ -1,0 +1,9 @@
+"use strict";
+
+var _electron = require("electron");
+
+_electron.ipcRenderer.send("ssdp.process_loaded", {
+  sender: "ssdp",
+  recipient: "main"
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNzZHAvYXBwLmpzIl0sIm5hbWVzIjpbImlwY1JlbmRlcmVyIiwic2VuZCIsInNlbmRlciIsInJlY2lwaWVudCJdLCJtYXBwaW5ncyI6Ijs7QUFBQTs7QUFFQUEsc0JBQVlDLElBQVosQ0FBaUIscUJBQWpCLEVBQXdDO0FBQUVDLEVBQUFBLE1BQU0sRUFBRSxNQUFWO0FBQWtCQyxFQUFBQSxTQUFTLEVBQUU7QUFBN0IsQ0FBeEMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBpcGNSZW5kZXJlciB9IGZyb20gXCJlbGVjdHJvblwiO1xuXG5pcGNSZW5kZXJlci5zZW5kKFwic3NkcC5wcm9jZXNzX2xvYWRlZFwiLCB7IHNlbmRlcjogXCJzc2RwXCIsIHJlY2lwaWVudDogXCJtYWluXCIgfSk7Il0sImZpbGUiOiJzc2RwL2FwcC5qcyJ9

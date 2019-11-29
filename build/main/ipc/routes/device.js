@@ -1,0 +1,35 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+let _mainWindow = null;
+let _deviceProcess = null;
+let _ssdpProcess = null;
+
+const init = (mainWindow, deviceProcess, ssdpProcess) => {
+  _mainWindow = mainWindow;
+  _deviceProcess = deviceProcess;
+  _ssdpProcess = ssdpProcess;
+};
+/**
+ * Called when the device process is loaded.
+ * @param {Electron.IpcEvent} event the ipc event
+ * @param {{ sender: string, recipeient: string }} param0 the ipc message.
+ */
+
+
+const onInitialized = (event, {
+  sender,
+  recipient
+}) => {
+  console.log("Device process initialized.");
+};
+
+var _default = {
+  init,
+  onInitialized
+};
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1haW4vaXBjL3JvdXRlcy9kZXZpY2UuanMiXSwibmFtZXMiOlsiX21haW5XaW5kb3ciLCJfZGV2aWNlUHJvY2VzcyIsIl9zc2RwUHJvY2VzcyIsImluaXQiLCJtYWluV2luZG93IiwiZGV2aWNlUHJvY2VzcyIsInNzZHBQcm9jZXNzIiwib25Jbml0aWFsaXplZCIsImV2ZW50Iiwic2VuZGVyIiwicmVjaXBpZW50IiwiY29uc29sZSIsImxvZyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQ0EsSUFBSUEsV0FBVyxHQUFHLElBQWxCO0FBQ0EsSUFBSUMsY0FBYyxHQUFHLElBQXJCO0FBQ0EsSUFBSUMsWUFBWSxHQUFHLElBQW5COztBQUVBLE1BQU1DLElBQUksR0FBRyxDQUFDQyxVQUFELEVBQWFDLGFBQWIsRUFBNEJDLFdBQTVCLEtBQTRDO0FBQ3ZETixFQUFBQSxXQUFXLEdBQUdJLFVBQWQ7QUFDQUgsRUFBQUEsY0FBYyxHQUFHSSxhQUFqQjtBQUNBSCxFQUFBQSxZQUFZLEdBQUdJLFdBQWY7QUFDRCxDQUpEO0FBTUE7Ozs7Ozs7QUFLQSxNQUFNQyxhQUFhLEdBQUcsQ0FBQ0MsS0FBRCxFQUFRO0FBQUVDLEVBQUFBLE1BQUY7QUFBVUMsRUFBQUE7QUFBVixDQUFSLEtBQWtDO0FBQ3REQyxFQUFBQSxPQUFPLENBQUNDLEdBQVIsQ0FBWSw2QkFBWjtBQUNELENBRkQ7O2VBSWU7QUFDYlQsRUFBQUEsSUFEYTtBQUViSSxFQUFBQTtBQUZhLEMiLCJzb3VyY2VzQ29udGVudCI6WyJcbmxldCBfbWFpbldpbmRvdyA9IG51bGw7XG5sZXQgX2RldmljZVByb2Nlc3MgPSBudWxsO1xubGV0IF9zc2RwUHJvY2VzcyA9IG51bGw7XG5cbmNvbnN0IGluaXQgPSAobWFpbldpbmRvdywgZGV2aWNlUHJvY2Vzcywgc3NkcFByb2Nlc3MpID0+IHtcbiAgX21haW5XaW5kb3cgPSBtYWluV2luZG93O1xuICBfZGV2aWNlUHJvY2VzcyA9IGRldmljZVByb2Nlc3M7XG4gIF9zc2RwUHJvY2VzcyA9IHNzZHBQcm9jZXNzO1xufVxuXG4vKipcbiAqIENhbGxlZCB3aGVuIHRoZSBkZXZpY2UgcHJvY2VzcyBpcyBsb2FkZWQuXG4gKiBAcGFyYW0ge0VsZWN0cm9uLklwY0V2ZW50fSBldmVudCB0aGUgaXBjIGV2ZW50XG4gKiBAcGFyYW0ge3sgc2VuZGVyOiBzdHJpbmcsIHJlY2lwZWllbnQ6IHN0cmluZyB9fSBwYXJhbTAgdGhlIGlwYyBtZXNzYWdlLlxuICovXG5jb25zdCBvbkluaXRpYWxpemVkID0gKGV2ZW50LCB7IHNlbmRlciwgcmVjaXBpZW50IH0pID0+IHtcbiAgY29uc29sZS5sb2coXCJEZXZpY2UgcHJvY2VzcyBpbml0aWFsaXplZC5cIik7XG59XG5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgaW5pdCxcbiAgb25Jbml0aWFsaXplZFxufTtcbiJdLCJmaWxlIjoibWFpbi9pcGMvcm91dGVzL2RldmljZS5qcyJ9
