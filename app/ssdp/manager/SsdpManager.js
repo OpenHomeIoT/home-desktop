@@ -94,7 +94,6 @@ class SsdpManager {
 
     const usn = headers.USN;
     const ipAddress = rInfo.address;
-    this._log(usn);
     
     await this._deviceCache.get(usn)
     .then(device => {
@@ -105,7 +104,8 @@ class SsdpManager {
         } else if (headers.ST.indexOf("roku") !== -1) {
           this._log(`Found Roku: ${headers.LOCATION}`);
         }
-        return this._deviceCache.insert({ 
+        return this._deviceCache.insert({
+          _id: headers.USN, 
           usn: headers.USN,
           ipAddress: ipAddress,
           timeDiscovered: now,

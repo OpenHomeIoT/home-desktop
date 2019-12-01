@@ -28,7 +28,6 @@
     "redux-thunk": "2.2.0",
     "request": "2.88.0",
     "socket.io": "2.3.0",
-    "sqlite3": "4.1.0",
     "xml2js": "0.4.22"
   },
   "devDependencies": {
