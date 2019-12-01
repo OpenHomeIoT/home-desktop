@@ -38,15 +38,6 @@ function injectBrowserSyncRenderer() {
     .pipe(dest('build/renderer'));
 }
 
-function injectBrowserSyncSsdp() {
-  return src('app/ssdp/index.html')
-    .pipe(inject.before('</body>', browserSync.getOption('snippet')))
-    .pipe(
-      inject.after('script-src', " 'unsafe-eval' " + browserSync.getOption('urls').get('local')),
-    )
-    .pipe(dest('build/ssdp'));
-}
-
 function reloadBrowser(done) {
   browserSync.reload();
   done();
@@ -56,8 +47,7 @@ startBrowserSync.displayName = 'start-hotreload';
 reloadBrowser.displayName = 'reload-hotreload';
 injectBrowserSyncDevice.displayName = 'inject-hotreload-device';
 injectBrowserSyncRenderer.displayName = 'inject-hotreload-renderer';
-injectBrowserSyncSsdp.displayName = 'inject-hotreload-ssdp';
 
-exports.start = series(startBrowserSync, parallel(injectBrowserSyncDevice, injectBrowserSyncRenderer, injectBrowserSyncSsdp));
-exports.inject = parallel(injectBrowserSyncDevice, injectBrowserSyncRenderer, injectBrowserSyncSsdp);
+exports.start = series(startBrowserSync, parallel(injectBrowserSyncDevice, injectBrowserSyncRenderer));
+exports.inject = parallel(injectBrowserSyncDevice, injectBrowserSyncRenderer);
 exports.reload = reloadBrowser;

@@ -20,10 +20,6 @@ function watchRendererScripts() {
   return watch(['app/renderer/**/*.js'], series(scripts.developBuild, hotreload.reload));
 }
 
-function watchSsdpScripts() {
-  return watch(["app/ssdp/**/*.js"], series(scripts.developBuild, hotreload.reload));
-}
-
 function watchDeviceHtml() {
   return watch(["app/device/index.html"], series(assets.copyHtml, hotreload.inject, hotreload.reload));
 }
@@ -32,22 +28,17 @@ function watchRendererHtml() {
   return watch(["app/renderer/index.html"], series(assets.copyHtml, hotreload.inject, hotreload.reload));
 }
 
-function watchSsdpHtml() {
-  return watch(["app/ssdp/index.html"], series(assets.copyHtml, hotreload.inject, hotreload.reload));
-}
-
 watchMainScripts.displayName = 'watch-main-scripts';
 watchRendererScripts.displayName = 'watch-renderer-scripts';
 watchDeviceHtml.displayName = 'watch-device-html';
 watchRendererHtml.displayName = 'watch-renderer-html';
-watchSsdpHtml.displayName = 'watch-ssdp-html';
 
 exports.start = series(
   assets.copyHtml,
   scripts.developBuild,
   hotreload.start,
   electron.start,
-  parallel(watchMainScripts, watchCommonScripts, watchDeviceScripts, watchRendererScripts, watchSsdpScripts, watchDeviceHtml, watchRendererHtml, watchSsdpHtml),
+  parallel(watchMainScripts, watchCommonScripts, watchDeviceScripts, watchRendererScripts, watchDeviceHtml, watchRendererHtml),
 );
 
 exports.startDebug = series(
