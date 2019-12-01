@@ -11,6 +11,7 @@ task('clean', function(done) {
 });
 task('build', series('clean', assets.copyHtml, scripts.build));
 task('develop', series('clean', watch.start));
+task('debug', series('clean', watch.startDebug));
 task('pack-win', series('build', dist.packWin));
 task('pack-linux', series('build', dist.packLinux));
 task('pack-mac', series('build', dist.packMac));

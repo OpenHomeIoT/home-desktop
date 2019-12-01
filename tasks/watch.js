@@ -49,3 +49,9 @@ exports.start = series(
   electron.start,
   parallel(watchMainScripts, watchCommonScripts, watchDeviceScripts, watchRendererScripts, watchSsdpScripts, watchDeviceHtml, watchRendererHtml, watchSsdpHtml),
 );
+
+exports.startDebug = series(
+  assets.copyHtml,
+  scripts.developBuild,
+  electron.startDebug
+)
