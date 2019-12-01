@@ -99,3 +99,11 @@ ReactDOM.render(
 // TODO: put this logic in the common module.
 ipcRenderer.send("renderer.process_loaded", { sender: 'renderer', recipient: 'main' });
 
+ipcRenderer.on("renderer.quit_process", (event, { sender, recipient }) => {
+  // TODO: implement
+});
+
+ipcRenderer.on("health", (event, { sender, recipient }) => {
+  ipcRenderer.send("health", { sender: "renderer", recipient: "main", status: "OK" });
+});
+

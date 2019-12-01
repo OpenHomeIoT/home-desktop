@@ -1,0 +1,202 @@
+import { BrowserWindow, Menu } from "electron";
+import path from "path";
+
+const CWD = process.cwd();
+const isDevelopment = process.env.NODE_ENV === "development";
+
+export default class ProcessManager {
+    
+    static _instance = null;
+
+    /**
+     * Get the instance of the process manager.
+     * @returns {ProcessManager}
+     */
+    static getInstance() {
+        if (ProcessManager._instance == null) {
+            ProcessManager._instance = new ProcessManager();
+        }
+        return ProcessManager._instance;
+    }
+
+    constructor() {
+        this._rendererProcess = null;
+        this._deviceProcess = null;
+        this._ssdpProcess = null;
+        this._deviceProcessStatus = {
+            lastUpdated: 0,
+            status: "unknown"
+        };
+        this._rendererProcessStatus = {
+            lastUpdated: 0,
+            status: "unknown"
+        };
+        this._ssdpProcessStatus = {
+            lastUpdated: 0,
+            status: "unknown"
+        };
+        this._timer = null;
+    }
+
+    /**
+     * Create the device process.
+     * @returns {Electron.BrowserWindow}
+     */
+    createDeviceProcess() {
+        this._deviceProcess = new BrowserWindow({
+            show: false,
+            webPreferences: {
+                nodeIntegration: true
+            }
+        });
+        this._deviceProcess.loadFile(path.resolve(path.join(CWD, "build/device/index.html")));
+        return this._deviceProcess;
+    }
+
+    /**
+     * Create the renderer process.
+     * @returns {Electron.BrowserWindow}
+     */
+    createRendererProcess() {
+        const rendererProcess = new BrowserWindow({
+            width: 1000,
+            height: 800,
+            minWidth: 640,
+            minHeight: 480,
+            show: false,
+            webPreferences: {
+                nodeIntegration: true
+            }
+        });
+        this._rendererProcess = rendererProcess;
+        this._rendererProcess.loadFile(path.resolve(path.join(CWD, "build/renderer/index.html")));
+
+        this._rendererProcess.once("ready-to-show", () => this._rendererProcess.show());
+        this._rendererProcess.on("ready-to-show", () => {
+            if (isDevelopment) {
+                this._rendererProcess.webContents.openDevTools();
+
+                // add inspect element on right click menu
+                this._rendererProcess.webContents.on('context-menu', (e, props) => {
+                    Menu.buildFromTemplate([
+                    {
+                        label: 'Inspect element',
+                        click() {
+                        rendererProcess.inspectElement(props.x, props.y);
+                        },
+                    },
+                    ]).popup(this._rendererProcess);
+                });
+            }
+        });
+        this._rendererProcess = rendererProcess;
+        return this._rendererProcess;
+    }
+
+    /**
+     * Create the Ssdp process.
+     * @returns {Electron.BrowserWindow}
+     */
+    createSsdpProcess() {
+        this._ssdpProcess = new BrowserWindow({
+            show: false,
+            webPreferences: {
+                nodeIntegration: true
+            }
+        });
+        this._ssdpProcess.loadFile(path.resolve(path.join(CWD, "build/ssdp/index.html")));
+        return this._ssdpProcess;
+    }
+
+    /**
+     * Get the device process.
+     * @returns {BrowserWindow | null}
+     */
+    getDeviceProcess() {
+        return this._deviceProcess;
+    }
+
+    /**
+     * Get the renderer process.
+     * @returns {BrowserWindow | null}
+     */
+    getRendererProcess() {
+        return this._rendererProcess;
+    }
+
+    /**
+     * Get the SSDP process.
+     * @returns {BrowserWindow | null}
+     */
+    getSsdpProcess() {
+        return this._ssdpProcess;
+    }
+
+    /**
+     * Start watching the processes for health checks.
+     */
+    startWatchingProcesses() {
+        console.log("[ProcessManager] Watching processes.");
+        this._timer = setInterval(() => this._checkProcesses(), 10000);
+    }
+
+    /**
+     * Stop watching the processes for health checks.
+     */
+    stopWatchingProcesses() {
+        console.log("[ProcessManager] No longer watching processes.");
+        if (this._timer) clearInterval(this._timer);
+    }
+
+    /**
+     * Update the status of the device process.
+     * @param {string} status the status of the process.
+     */
+    updateDeviceProcessStatus(status) {
+        this._deviceProcessStatus.lastUpdated = Date.now();
+        this._deviceProcessStatus.status = status;
+    }
+
+    /**
+     * Update the status of the renderer process.
+     * @param {string} status the status of the process.
+     */
+    updateRendererProcessStatus(status) {
+        this._rendererProcessStatus.lastUpdated = Date.now();
+        this._rendererProcessStatus.status = status;
+    }
+
+    /**
+     * Update the status of the ssdp process.
+     * @param {string} status the status of the process.
+     */
+    updateSsdpProcessStatus(status) {
+        this._ssdpProcessStatus.lastUpdated = Date.now();
+        this._ssdpProcessStatus.status = status;
+    }
+
+    /**
+     * Check each process's health.
+     */
+    _checkProcesses() {
+        const now = Date.now();
+        if (now - this._deviceProcessStatus.lastUpdated > 7000) {
+            // we have not had a health check from the device process in over 7 seconds.
+            console.log("[ProcessManager] Haven't heard from the device process in over 7 seconds");
+            if (this._deviceProcess) {
+                this._deviceProcess.close();
+                this._deviceProcess = null;
+            }
+            this.createDeviceProcess();
+        }
+        if (now - this._ssdpProcessStatus.lastUpdated > 7000) {
+            // we have not had a health check from the ssdp process in over 7 seconds.
+            console.log("[ProcessManager] Haven't heard from the ssdp process in over 7 seconds.");
+            if (this._ssdpProcess) {
+                this._ssdpProcess.close();
+                this._ssdpProcess = null;
+            }
+            this.createSsdpProcess();
+        }
+    }
+};

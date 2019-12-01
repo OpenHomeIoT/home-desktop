@@ -1,5 +1,5 @@
-import Database from "./Database";
-import DatabaseHelper from "./helper/DatabaseHelper";
+import Database from "../../common/database/Database";
+import DatabaseHelper from "../../common/database/helper/DatabaseHelper";
 
 class ConnectionBufferDatabase extends Database {
 

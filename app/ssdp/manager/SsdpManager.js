@@ -1,7 +1,10 @@
 //@ts-check
+import { ipcRenderer } from "electron";
 import { parseString } from "xml2js";
 import { Client as SSDPClient, Server as SSDPServer, SsdpHeaders } from "node-ssdp";
-import sqlite3 from "sqlite3";
+import request from "request";
+
+import SsdpDeviceCache from "../database/SsdpDeviceCache";
 
 
 class SsdpManager {
@@ -20,13 +23,14 @@ class SsdpManager {
   }
 
   constructor() {
-    this._ssdpClient = new SSDPClient();
-    this._ssdpServer = new SSDPServer();
-    this._timer = null;
-    this._host = null;
-    this._port = 80;
+    this._deviceCache = SsdpDeviceCache.getInstance();
 
+    this._timer = null;
+
+    this._ssdpClient = new SSDPClient();
     this._ssdpClient.on("response", (headers, statusCode, rInfo) => this._handleSSDPSearchResponse(headers, statusCode, rInfo));
+
+    this._ssdpServer = new SSDPServer();
     this._ssdpServer.addUSN("urn:oshiot:device:hub:1-0");
     this._ssdpServer.on("advertise-alive", (headers) => this._handleAdvertiseAlive(headers));
     this._ssdpServer.on("advertise-bye", (headers) => this._handleAdvertiseBye(headers));
@@ -39,29 +43,10 @@ class SsdpManager {
   }
 
   /**
-   * Set the host ip.
-   * @param {String} host the host IP of this device. 
-   */
-  setHost(host) {
-    this._host = host;
-  }
-
-  /**
-   * Set the port.
-   * @param {number} port the port.
-   */
-  setPort(port) {
-    this._port = port;
-  }
-
-  /**
    * Start listening for ESP8266 client SSDP signatures.
    * Also start broadcasting own SSDP signature.
    */
   startListening() {
-    if (!this._host) {
-      throw new Error("setHost() must be called.");
-    }
     this._timer = setInterval(() => this._ssdpSearch(), 10000);
     this._ssdpSearch();
     this._ssdpServer.start();
@@ -103,14 +88,39 @@ class SsdpManager {
    * @param {*} _ unused
    * @param {*} rInfo the remote information
    */
-  _handleSSDPSearchResponse(headers, _, rInfo) {
-    if (!headers.ST || headers.ST.indexOf("oshiot") === -1) {
-      return Promise.resolve();
-    }
+  async _handleSSDPSearchResponse(headers, _, rInfo) {
+    if (!headers.ST) return;
+    if (headers.ST === "urn:oshiot:device:hub:1-0") return;
+
     const usn = headers.USN;
     const ipAddress = rInfo.address;
-    const now = Date.now();
-
+    this._log(usn);
+    
+    await this._deviceCache.get(usn)
+    .then(device => {
+      const now = Date.now();
+      if (!device) {
+        if (headers.ST.indexOf("urn:oshiot:device") !== -1) {
+          this._log(JSON.stringify(headers));
+        } else if (headers.ST.indexOf("roku") !== -1) {
+          this._log(`Found Roku: ${headers.LOCATION}`);
+        }
+        return this._deviceCache.insert({ 
+          usn: headers.USN,
+          ipAddress: ipAddress,
+          timeDiscovered: now,
+          timeLastSeen: now,
+          headers: JSON.stringify(headers),
+          rendererIsAwareOfDevice: false
+        });
+      }
+      this._log(`Updating device: ${usn}: ${ipAddress}`);
+      device.timeLastSeen = now;
+      device.headers = headers;
+      device.ipAddress = ipAddress;
+      return this._deviceCache.update(device);
+    });
+    // TODO: implement
   }
 
   /**
@@ -144,12 +154,17 @@ class SsdpManager {
       });
     });
   }
+
+  _log(message) {
+    ipcRenderer.send("log", { sender: "ssdp", recipient: "main", message: `[SsdpManager] ${message}` });
+  }
   
   /**
    * search for esp8266 devices on the network.
    */
   _ssdpSearch() {
-    this._ssdpClient.search("urn:oshiot:device:wifi:1-0");
+    // this._ssdpClient.search("urn:oshiot:device:wifi:1-0");
+    this._ssdpClient.search("ssdp:all");
   }
 }
 

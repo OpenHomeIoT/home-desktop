@@ -1,20 +1,20 @@
 //@ts-check
 import { ipcRenderer } from "electron";
 
-let mainWindow = null;
-let deviceProcess = null;
-let ssdpProcess = null;
+let _mainWindow = null;
+let _deviceProcess = null;
+let _ssdpProcess = null;
 
 /**
  * Initialize the ssdp process ipc routes.
- * @param {Electron.BroswerWindow} mainWindow the main widnow.
+ * @param {Electron.BrowserWindow} mainWindow the main widnow.
  * @param {Electron.BrowserWindow} deviceProcess the device process.
- * @param {Electron.BroswerWindow} ssdpProcess the ssdp process.
+ * @param {Electron.BrowserWindow} ssdpProcess the ssdp process.
  */
 const init = (mainWindow, deviceProcess, ssdpProcess) => {
-  mainWindow = mainWindow;
-  deviceProcess = deviceProcess;
-  ssdpProcess = ssdpProcess;
+  _mainWindow = mainWindow;
+  _deviceProcess = deviceProcess;
+  _ssdpProcess = ssdpProcess;
 };
 
 /**
@@ -32,12 +32,12 @@ const onInitialized = (event, { sender, recipient }) => {
  * @param {{ sender: string, recipient: string, devices: { usn: string, ipAddress: string, ssdpDescriptionLocation: string }[] }} message the ipc message.
  */
 const onDevicesDiscovered = (event, message) => {
-  if (ssdpProcess == null) {
+  if (_ssdpProcess == null) {
     return; // TODO: log error that ssdp routes were not initializd
   }
   if (message.recipient === "device") {
     // forward the message to the device process
-    ssdpProcess.send("device.devices_discovered", message);
+    _ssdpProcess.send("device.devices_discovered", message);
   }
 };
 
