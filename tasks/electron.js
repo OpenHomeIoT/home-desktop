@@ -13,7 +13,7 @@ function startElectron(done) {
 }
 
 function startElectronDebug(done) {
-  subprocess = spawn(electron, ['--inspect=9923', '.'], {
+  subprocess = spawn(electron, ['--inspect=9223', '.'], {
     env: { ...process.env, NODE_ENV: 'development' },
     stdio: 'inherit',
   });

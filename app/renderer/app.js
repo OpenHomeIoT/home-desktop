@@ -100,7 +100,7 @@ ReactDOM.render(
 ipcRenderer.send("renderer.process_loaded", { sender: 'renderer', recipient: 'main' });
 
 ipcRenderer.on("renderer.quit_process", (event, { sender, recipient }) => {
-  // TODO: implement
+  window.close();
 });
 
 ipcRenderer.on("health", (event, { sender, recipient }) => {

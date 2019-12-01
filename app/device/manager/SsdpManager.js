@@ -4,7 +4,7 @@ import { parseString } from "xml2js";
 import { Client as SSDPClient, Server as SSDPServer, SsdpHeaders } from "node-ssdp";
 import request from "request";
 
-import SsdpDeviceCache from "../database/SsdpDeviceCache";
+import SsdpDeviceCache from "../db/SsdpDeviceCache";
 
 
 class SsdpManager {

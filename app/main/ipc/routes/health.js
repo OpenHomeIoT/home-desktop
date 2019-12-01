@@ -10,9 +10,6 @@ const onHealth = (event, { sender, recipient, status }) => {
         case "renderer":
             processManager.updateRendererProcessStatus(status);
             break;
-        case "ssdp":
-            processManager.updateSsdpProcessStatus(status);
-            break;
         default:
             break;
     }

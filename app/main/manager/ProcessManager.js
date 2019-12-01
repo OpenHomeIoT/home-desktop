@@ -22,16 +22,11 @@ export default class ProcessManager {
     constructor() {
         this._rendererProcess = null;
         this._deviceProcess = null;
-        this._ssdpProcess = null;
         this._deviceProcessStatus = {
             lastUpdated: 0,
             status: "unknown"
         };
         this._rendererProcessStatus = {
-            lastUpdated: 0,
-            status: "unknown"
-        };
-        this._ssdpProcessStatus = {
             lastUpdated: 0,
             status: "unknown"
         };
@@ -47,7 +42,8 @@ export default class ProcessManager {
             show: false,
             webPreferences: {
                 nodeIntegration: true
-            }
+            },
+            
         });
         this._deviceProcess.loadFile(path.resolve(path.join(CWD, "build/device/index.html")));
         return this._deviceProcess;
@@ -74,8 +70,6 @@ export default class ProcessManager {
         this._rendererProcess.once("ready-to-show", () => this._rendererProcess.show());
         this._rendererProcess.on("ready-to-show", () => {
             if (isDevelopment) {
-                this._rendererProcess.webContents.openDevTools();
-
                 // add inspect element on right click menu
                 this._rendererProcess.webContents.on('context-menu', (e, props) => {
                     Menu.buildFromTemplate([
@@ -94,21 +88,6 @@ export default class ProcessManager {
     }
 
     /**
-     * Create the Ssdp process.
-     * @returns {Electron.BrowserWindow}
-     */
-    createSsdpProcess() {
-        this._ssdpProcess = new BrowserWindow({
-            show: false,
-            webPreferences: {
-                nodeIntegration: true
-            }
-        });
-        this._ssdpProcess.loadFile(path.resolve(path.join(CWD, "build/ssdp/index.html")));
-        return this._ssdpProcess;
-    }
-
-    /**
      * Get the device process.
      * @returns {BrowserWindow | null}
      */
@@ -122,14 +101,6 @@ export default class ProcessManager {
      */
     getRendererProcess() {
         return this._rendererProcess;
-    }
-
-    /**
-     * Get the SSDP process.
-     * @returns {BrowserWindow | null}
-     */
-    getSsdpProcess() {
-        return this._ssdpProcess;
     }
 
     /**
@@ -167,15 +138,6 @@ export default class ProcessManager {
     }
 
     /**
-     * Update the status of the ssdp process.
-     * @param {string} status the status of the process.
-     */
-    updateSsdpProcessStatus(status) {
-        this._ssdpProcessStatus.lastUpdated = Date.now();
-        this._ssdpProcessStatus.status = status;
-    }
-
-    /**
      * Check each process's health.
      */
     _checkProcesses() {
@@ -186,17 +148,10 @@ export default class ProcessManager {
             if (this._deviceProcess) {
                 this._deviceProcess.close();
                 this._deviceProcess = null;
+                this._ssdpProcessStatus.lastUpdated = now;
+                this._ssdpProcessStatus.status = "down";
             }
             this.createDeviceProcess();
-        }
-        if (now - this._ssdpProcessStatus.lastUpdated > 7000) {
-            // we have not had a health check from the ssdp process in over 7 seconds.
-            console.log("[ProcessManager] Haven't heard from the ssdp process in over 7 seconds.");
-            if (this._ssdpProcess) {
-                this._ssdpProcess.close();
-                this._ssdpProcess = null;
-            }
-            this.createSsdpProcess();
         }
     }
 };

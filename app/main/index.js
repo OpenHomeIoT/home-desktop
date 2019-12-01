@@ -16,9 +16,8 @@ const processManager = ProcessManager.getInstance();
 const initializeApp = () => {
   const mainWindow = processManager.createRendererProcess();
   const deviceProcess = processManager.createDeviceProcess();
-  const ssdpProcess = processManager.createSsdpProcess();
 
-  configureIpcRoutes(ipcMain, mainWindow, deviceProcess, ssdpProcess);
+  configureIpcRoutes(ipcMain, mainWindow, deviceProcess);
   processManager.startWatchingProcesses();
 
   // create the tray
