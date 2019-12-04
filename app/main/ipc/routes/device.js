@@ -14,13 +14,13 @@ const processManager = ProcessManager.getInstance();
 const onGetAllDevices = (event, data) => {
   const { origin, destination } = data;
   switch (destination) {
-    case "device":
+    case Destination.device:
       const deviceProcess = processManager.getDeviceProcess();
       if (deviceProcess) {
         deviceProcess.webContents.send(Channel.DEVICE_GET_ALL_DEVICES, { origin, destination });
       }
       break;
-    case "renderer":
+    case Destination.renderer:
       const rendererProcess = processManager.getRendererProcess();
       if (rendererProcess) {
         rendererProcess.webContents.send(Channel.DEVICE_GET_ALL_DEVICES, { origin, destination, data });

@@ -7,10 +7,11 @@ const processManager = ProcessManager.getInstance();
 /**
  * Called when a process is initialized
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string }} param1
+ * @param {{ origin: string, destination: string }} message
  */
-const onProcessInitialized = (event, { origin, destination }) => {
-  if (destination === Destination.main) {
+const onProcessInitialized = (event, message) => {
+  const { origin } = message;
+  if (IpcHelper.messageIsFor(message, Destination.main)) {
     switch (origin) {
       case Destination.renderer:
         processManager.updateRendererProcessStatus("Initialized");
@@ -25,10 +26,11 @@ const onProcessInitialized = (event, { origin, destination }) => {
 /**
  * Called when a process quits.
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string }} param1
+ * @param {{ origin: string, destination: string }} message
  */
-const onProcessQuit = (event, { origin, destination }) => {
-  if (destination === Destination.main) {
+const onProcessQuit = (event, message) => {
+  const { origin } = message;
+  if (IpcHelper.messageIsFor(message, Destination.main)) {
     switch (origin) {
       case Destination.device:
         // TODO: processManager.handleDeviceProcessClose();

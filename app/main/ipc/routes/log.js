@@ -1,12 +1,18 @@
+import IpcHelper from "../../../common/ipc/IpcHelper";
+import Destination from "../../../common/ipc/Destination";
+
 //@ts-check
 
 /**
  *
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data: string }} param1
+ * @param {{ origin: string, destination: string, data: string }} message
  */
-const onLog = (event, { origin, destination, data }) => {
-    console.log(`[Log] ${origin}: ${data}`);
+const onLog = (event, message) => {
+    const { origin, data } = message;
+    if (IpcHelper.messageIsFor(message, Destination.main)) {
+        console.log(`[Log] ${origin}: ${data}`);
+    }
 };
 
 export default {
