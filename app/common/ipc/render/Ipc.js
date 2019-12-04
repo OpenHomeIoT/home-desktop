@@ -18,7 +18,7 @@ class Ipc {
      */
     on(channel, cb) {
         ipcRenderer.on(channel, (_, message) => {
-            if (message.destination === this._process) {
+            if (IpcHelper.messageIsFor(message, this._process)) {
                 cb(message);
             }
         });

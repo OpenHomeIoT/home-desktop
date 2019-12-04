@@ -1,5 +1,9 @@
 import { BrowserWindow, Menu, app } from "electron";
 import path from "path";
+import { timingSafeEqual } from "crypto";
+import Channel from "../../common/ipc/Channel";
+import IpcHelper from "../../common/ipc/IpcHelper";
+import Destination from "../../common/ipc/Destination";
 
 const CWD = process.cwd();
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -46,6 +50,7 @@ export default class ProcessManager {
 
         });
         this._deviceProcess.loadFile(path.resolve(path.join(CWD, "build/device/index.html")));
+        this._deviceProcess.on("close", () => this._deviceProcess = null);
         return this._deviceProcess;
     }
 
@@ -83,13 +88,33 @@ export default class ProcessManager {
                 });
             }
         });
-        this._rendererProcess.on("close", () => {
-            this._deviceProcess && this._deviceProcess.close();
-            this._deviceProcess = null;
-            app.exit();
-        })
+        this._rendererProcess.on("close", (event) => {
+            event.preventDefault();
+            this._rendererProcess.webContents.send(Channel.PROCESS_QUIT, IpcHelper.createMessage(Destination.main, Destination.renderer, null));
+            if (this._deviceProcess) {
+                this._deviceProcess.webContents.send(Channel.PROCESS_QUIT, IpcHelper.createMessage(Destination.main, Destination.device, null));
+            }
+        });
         this._rendererProcess = rendererProcess;
         return this._rendererProcess;
+    }
+
+    /**
+     * Destroy the device process.
+     */
+    destroyDeviceProcess() {
+        this.updateDeviceProcessStatus("Destroyed");
+        this._deviceProcess.close();
+    }
+
+    /**
+     * Destroy the renderer process and close the app.
+     */
+    destroyRendererProcess() {
+        // TODO: get rid of this dumbass solution
+        while (this._deviceProcess) {} // wait for the device process to be destroyed
+        this.updateRendererProcessStatus("Destroyed");
+        app.exit();
     }
 
     /**

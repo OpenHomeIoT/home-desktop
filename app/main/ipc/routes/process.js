@@ -33,10 +33,10 @@ const onProcessQuit = (event, message) => {
   if (IpcHelper.messageIsFor(message, Destination.main)) {
     switch (origin) {
       case Destination.device:
-        // TODO: processManager.handleDeviceProcessClose();
+        processManager.destroyDeviceProcess();
         break;
       case Destination.renderer:
-        // TODO: processManager.handleRendererProcessClose();
+        processManager.destroyRendererProcess();
         break;
     }
   }

@@ -1,6 +1,5 @@
 //@ts-check
-import path from 'path';
-import { app, crashReporter, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
+import { app, crashReporter } from 'electron';
 import configureIpcRoutes from "./ipc/routes.js";
 import ProcessManager from "./manager/ProcessManager";
 
@@ -17,7 +16,7 @@ const initializeApp = () => {
   processManager.createRendererProcess();
   processManager.createDeviceProcess();
 
-  configureIpcRoutes(ipcMain);
+  configureIpcRoutes();
   processManager.startWatchingProcesses();
 
   // create the tray

@@ -6,18 +6,18 @@ import Destination from "../../common/ipc/Destination";
 const ipc = new Ipc(Destination.renderer);
 
 const configureIpcRoutes = () => {
-  // handle close
-  ipc.on(Channel.PROCESS_CLOSE, message => {
+  ipc.on(Channel.HEALTH, message => {
     if (IpcHelper.messageIsFrom(message, Destination.main)) {
-        window.close();
+      ipc.send(Channel.HEALTH, Destination.main, { status: "OK" });
     }
   });
 
-  ipc.on(Channel.HEALTH, message => {
+  ipc.on(Channel.PROCESS_QUIT, message => {
     if (IpcHelper.messageIsFrom(message, Destination.main)) {
-        ipc.send(Channel.HEALTH, Destination.main, { status: "OK" });
+      // TODO: handle quit
+      ipc.send(Channel.PROCESS_QUIT, Destination.main, null);
     }
-  });
+  })
 
   // send process initialized
   ipc.send(Channel.PROCESS_INITIALIZED, Destination.main, null);
