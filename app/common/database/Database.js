@@ -1,6 +1,3 @@
-import sqlite3 from "sqlite3";
-import SqlHelper from "./helper/SqlHelper";
-import DatabaseHelper from "./helper/DatabaseHelper";
 import PouchDB from "pouchdb";
 
 class Database {
@@ -36,6 +33,16 @@ class Database {
   }
 
   /**
+   * Get the number of records in the database.
+   * @returns {Promise<number>}
+   */
+  count() {
+    return this.getAll()
+    .then(records => records.length)
+    .catch(err => 0);
+  }
+
+  /**
    * Delete a record from the database.
    * @param {string} pk the value of the primary key.
    * @param {string} rev the revision of the record.
@@ -43,6 +50,17 @@ class Database {
    */
   delete(pk, rev) {
     return this._db.remove(pk, rev);
+  }
+
+  /**
+   * Check to see if a record exists in the database.
+   * @param {string} pk the primary key.
+   * @returns {Promise<boolean>}
+   */
+  exists(pk) {
+    return this._db.get(pk)
+    .then(_ => true)
+    .catch(_ => false);
   }
 
   /**
@@ -87,7 +105,6 @@ class Database {
   _initialize() {
     return Promise.resolve();
   }
-
 }
 
 export default Database;

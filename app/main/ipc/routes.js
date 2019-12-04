@@ -1,39 +1,49 @@
 //@ts-check
+import { ipcMain } from "electron";
+
 import deviceRoutes from "./routes/device";
 import healthRoutes from "./routes/health";
 import logRoutes from "./routes/log";
-import rendererRoutes from "./routes/renderer";
+import processRoutes from "./routes/process";
+import ProcessManager from "../manager/ProcessManager";
+import Channel from "../../common/ipc/Channel";
+import Destination from "../../common/ipc/Destination";
+import IpcHelper from "../../common/ipc/IpcHelper";
+
+const processManager = ProcessManager.getInstance();
 
 /**
  * Configure routes for interprocess communication.
- * @param {Electron.IpcMain} ipcMain
- * @param {Electron.BrowserWindow} mainWindow
- * @param {Electron.BrowserWindow} deviceProcess
  */
-const configureIpcRoutes = (ipcMain, mainWindow, deviceProcess) => {
-  deviceRoutes.init(mainWindow, deviceProcess);
-  rendererRoutes.init(mainWindow, deviceProcess);
+const configureIpcRoutes = () => {
+  ipcMain.on(Channel.DEVICE_GET_ALL_DEVICES, deviceRoutes.onGetAllDevices);
+  ipcMain.on(Channel.DEVICE_GET_DEVICE, deviceRoutes.onGetDevice);
+  ipcMain.on(Channel.DEVICE_UPDATE_DEVICE, deviceRoutes.onUpdateDevice);
+  ipcMain.on(Channel.HEALTH, healthRoutes.onHealth);
+  ipcMain.on(Channel.LOG, logRoutes.onLog);
+  ipcMain.on(Channel.PROCESS_INITIALIZED, processRoutes.onProcessInitialized);
+  ipcMain.on(Channel.PROCESS_QUIT, processRoutes.onProcessQuit);
 
-  ipcMain.on("device.process_loaded", deviceRoutes.onInitialized);
-
-  ipcMain.on("renderer.process_loaded", rendererRoutes.onInitialized);
-
-  ipcMain.on("health", healthRoutes.onHealth);
-  ipcMain.on("log", logRoutes.onLog);
-
-  startHealthChecks(ipcMain, mainWindow, deviceProcess);
+  startHealthChecks();
 }
 
 /**
  * Start the process health checks.
- * @param {Electron.IpcMain} ipcMain
- * @param {Electron.BrowserWindow} mainWindow
- * @param {Electron.BrowserWindow} deviceProcess
  */
-const startHealthChecks = (ipcMain, mainWindow, deviceProcess) => {
+const startHealthChecks = () => {
   setInterval(() => {
-    mainWindow.webContents.send("health", { sender: "main", recipient: "renderer" });
-    deviceProcess.webContents.send("health", { sender: "main", recipient: "device" });
+    const mainWindow = processManager.getRendererProcess();
+    const deviceProcess = processManager.getDeviceProcess();
+    if (mainWindow) {
+      mainWindow.webContents.send(Channel.HEALTH, IpcHelper.createMessage(Destination.main, Destination.renderer, null));
+    } else {
+      console.log("[MainIpcRoutes] Renderer process is null.");
+    }
+    if (deviceProcess) {
+      deviceProcess.webContents.send(Channel.HEALTH, IpcHelper.createMessage(Destination.main, Destination.device, null));
+    } else {
+      console.log("[MainIpcRoutes] Device process is null.");
+    }
   }, 3000);
 };
 

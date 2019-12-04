@@ -4,8 +4,12 @@ import { parseString } from "xml2js";
 import { Client as SSDPClient, Server as SSDPServer, SsdpHeaders } from "node-ssdp";
 import request from "request";
 
-import SsdpDeviceCache from "../db/SsdpDeviceCache";
-
+import DeviceDatabase from "../db/DeviceDatabase";
+import ExternalDeviceDatabase from "../db/ExternalDeviceDatabase";
+import IoTDevice from "../../common/device/IoTDevice";
+import Ipc from "../../common/ipc/render/Ipc";
+import Destination from "../../common/ipc/Destination";
+import Channel from "../../common/ipc/Channel";
 
 class SsdpManager {
 
@@ -23,7 +27,9 @@ class SsdpManager {
   }
 
   constructor() {
-    this._deviceCache = SsdpDeviceCache.getInstance();
+    this._deviceDatabase = DeviceDatabase.getInstance();
+    this._externalDeviceDatabase = ExternalDeviceDatabase.getInstance();
+    this._ipc = new Ipc(Destination.device);
 
     this._timer = null;
 
@@ -47,7 +53,7 @@ class SsdpManager {
    * Also start broadcasting own SSDP signature.
    */
   startListening() {
-    this._timer = setInterval(() => this._ssdpSearch(), 10000);
+    this._timer = setInterval(() => this._ssdpSearch(), 25000);
     this._ssdpSearch();
     this._ssdpServer.start();
   }
@@ -63,8 +69,8 @@ class SsdpManager {
   }
 
   /**
-   * 
-   * @param {SsdpHeaders} header the ssdp headers. 
+   *
+   * @param {SsdpHeaders} header the ssdp headers.
    */
   _handleAdvertiseAlive(header) {
     if (header.ST && header.ST.indexOf("oshiot") !== -1) {
@@ -73,8 +79,8 @@ class SsdpManager {
   }
 
   /**
-   * 
-   * @param {SsdpHeaders} header the ssdp headers. 
+   *
+   * @param {SsdpHeaders} header the ssdp headers.
    */
   _handleAdvertiseBye(header) {
     if (header.ST && header.ST.indexOf("oshiot") !== -1) {
@@ -83,48 +89,60 @@ class SsdpManager {
   }
 
   /**
-   * 
-   * @param {SsdpHeaders} headers the SsdpHeaders. 
+   *
+   * @param {SsdpHeaders} headers the SsdpHeaders.
    * @param {*} _ unused
    * @param {*} rInfo the remote information
    */
-  async _handleSSDPSearchResponse(headers, _, rInfo) {
+  _handleSSDPSearchResponse(headers, _, rInfo) {
     if (!headers.ST) return;
     if (headers.ST === "urn:oshiot:device:hub:1-0") return;
 
     const usn = headers.USN;
-    const ipAddress = rInfo.address;
-    
-    await this._deviceCache.get(usn)
-    .then(device => {
-      const now = Date.now();
-      if (!device) {
-        if (headers.ST.indexOf("urn:oshiot:device") !== -1) {
-          this._log(JSON.stringify(headers));
-        } else if (headers.ST.indexOf("roku") !== -1) {
-          this._log(`Found Roku: ${headers.LOCATION}`);
+    const st = headers.ST;
+    const now = Date.now();
+
+    if (st.indexOf("urn:oshiot:device") !== -1) {
+      this._deviceDatabase.exists(usn)
+      .then(exists => {
+        if (!exists) {
+          this._log(`Storing OpenSourceHomeIoT device in the database: ${rInfo.address}`);
+          // load the services for the device
+          const serviceDescriptionLocation = headers.LOCATION;
+          this._loadServicesDescriptionForDevice(serviceDescriptionLocation)
+          .then(services => {
+            const iotDevice = new IoTDevice(headers.USN, serviceDescriptionLocation, rInfo.address, services, false, now, now, "disconnected");
+            return this._deviceDatabase.insert(iotDevice.toJson());
+          });
+        } else {
+          return this._updateDevice(headers, rInfo); // TODO: update services periodically
         }
-        return this._deviceCache.insert({
-          _id: headers.USN, 
-          usn: headers.USN,
-          ipAddress: ipAddress,
-          timeDiscovered: now,
-          timeLastSeen: now,
-          headers: JSON.stringify(headers),
-          rendererIsAwareOfDevice: false
-        });
-      }
-      this._log(`Updating device: ${usn}: ${ipAddress}`);
-      device.timeLastSeen = now;
-      device.headers = headers;
-      device.ipAddress = ipAddress;
-      return this._deviceCache.update(device);
-    });
-    // TODO: implement
+      });
+    } else if (st.indexOf("roku") !== -1) {
+      this._externalDeviceDatabase.exists(usn)
+      .then(exists => {
+        if (!exists) {
+          this._log(`Storing Roku device in the database: ${rInfo.address}`);
+          return this._externalDeviceDatabase.insert({
+            _id: usn,
+            usn: usn,
+            ssdpDescriptionLocation: headers.LOCATION,
+            ipAddress: rInfo.address,
+            timeDiscovered: now,
+            timeLastSeen: now,
+            company: "Roku",
+            deviceType: "Roku"
+          });
+        } else {
+          return this._updateExternalDevice(headers, rInfo);
+        }
+      })
+    }
+
   }
 
   /**
-   * 
+   *
    * @param {string} servicesLocation the http url to the description of services.
    * @returns {Promise<string[]>} a promise returning an array of services.
    */
@@ -142,13 +160,13 @@ class SsdpManager {
             return;
           }
           const services = [];
-  
+
           for (let i = 0; i < result.root.device[0].serviceList.length; i++) {
             const service = result.root.device[0].serviceList[i].service;
             const serviceType = service[0].serviceType[0];
             services.push(serviceType);
           }
-  
+
           resolve(services);
         });
       });
@@ -156,15 +174,46 @@ class SsdpManager {
   }
 
   _log(message) {
-    ipcRenderer.send("log", { sender: "ssdp", recipient: "main", message: `[SsdpManager] ${message}` });
+    this._ipc.send(Channel.LOG, Destination.main, `[SsdpManager] ${message}`);
   }
-  
+
   /**
    * search for esp8266 devices on the network.
    */
   _ssdpSearch() {
     // this._ssdpClient.search("urn:oshiot:device:wifi:1-0");
     this._ssdpClient.search("ssdp:all");
+  }
+
+  /**
+   * Update a device in the database.
+   * @param {SsdpHeaders} headers the ssdp headers.
+   * @param {*} rInfo the remote info
+   */
+  _updateDevice(headers, rInfo) {
+    const now = Date.now();
+
+    return this._deviceDatabase.get(headers.USN)
+    .then(device => {
+      device.timeLastSeen = now;
+      return this._deviceDatabase.update(device);
+    });
+  }
+
+  /**
+   * Update an external device in the database.
+   * @param {SsdpHeaders} headers the headers.
+   * @param {*} rInfo the remote info.
+   */
+  _updateExternalDevice(headers, rInfo) {
+    const now = Date.now();
+
+    return this._externalDeviceDatabase.get(headers.USN)
+    .then(externalDevice => {
+      externalDevice.ipAddress = rInfo.address;
+      externalDevice.ssdpDescriptionLocation = headers.LOCATION;
+      return this._externalDeviceDatabase.update(externalDevice);
+    });
   }
 }
 

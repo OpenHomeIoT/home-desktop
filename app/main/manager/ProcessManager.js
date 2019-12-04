@@ -1,11 +1,11 @@
-import { BrowserWindow, Menu } from "electron";
+import { BrowserWindow, Menu, app } from "electron";
 import path from "path";
 
 const CWD = process.cwd();
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export default class ProcessManager {
-    
+
     static _instance = null;
 
     /**
@@ -24,11 +24,11 @@ export default class ProcessManager {
         this._deviceProcess = null;
         this._deviceProcessStatus = {
             lastUpdated: 0,
-            status: "unknown"
+            status: "Unknown"
         };
         this._rendererProcessStatus = {
             lastUpdated: 0,
-            status: "unknown"
+            status: "Unknown"
         };
         this._timer = null;
     }
@@ -43,7 +43,7 @@ export default class ProcessManager {
             webPreferences: {
                 nodeIntegration: true
             },
-            
+
         });
         this._deviceProcess.loadFile(path.resolve(path.join(CWD, "build/device/index.html")));
         return this._deviceProcess;
@@ -83,6 +83,11 @@ export default class ProcessManager {
                 });
             }
         });
+        this._rendererProcess.on("close", () => {
+            this._deviceProcess && this._deviceProcess.close();
+            this._deviceProcess = null;
+            app.exit();
+        })
         this._rendererProcess = rendererProcess;
         return this._rendererProcess;
     }
@@ -124,6 +129,9 @@ export default class ProcessManager {
      * @param {string} status the status of the process.
      */
     updateDeviceProcessStatus(status) {
+        if (this._deviceProcessStatus.status !== status) {
+            console.log(`[ProcessManager] Device process status changed from "${this._deviceProcessStatus.status}" to "${status}"`);
+        }
         this._deviceProcessStatus.lastUpdated = Date.now();
         this._deviceProcessStatus.status = status;
     }
@@ -133,6 +141,9 @@ export default class ProcessManager {
      * @param {string} status the status of the process.
      */
     updateRendererProcessStatus(status) {
+        if (this._rendererProcessStatus.status !== status) {
+            console.log(`[ProcessManager] Renderer process status changed from "${this._rendererProcessStatus.status}" to "${status}"`);
+        }
         this._rendererProcessStatus.lastUpdated = Date.now();
         this._rendererProcessStatus.status = status;
     }
@@ -148,8 +159,8 @@ export default class ProcessManager {
             if (this._deviceProcess) {
                 this._deviceProcess.close();
                 this._deviceProcess = null;
-                this._ssdpProcessStatus.lastUpdated = now;
-                this._ssdpProcessStatus.status = "down";
+                this._deviceProcessStatus.lastUpdated = now;
+                this._deviceProcessStatus.status = "down";
             }
             this.createDeviceProcess();
         }

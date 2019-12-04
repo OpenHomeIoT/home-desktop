@@ -132,7 +132,7 @@ class IoTDevice {
 
   /**
    * Create a new IoTDevice from its JSON representation.
-   * @param {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: number, timeLastSeen: number, timeDiscovered: number, connectionStatus: string }} json the JSON representation. 
+   * @param {{_id: string, usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: number, timeLastSeen: number, timeDiscovered: number, connectionStatus: string }} json the JSON representation. 
    * @returns {IoTDevice|null} the IoTDevice or null if the json record was bad.
    */
   static fromJson(json) {
@@ -154,10 +154,11 @@ class IoTDevice {
 
   /**
    * Convert the IoTDevice to its JSON representation.
-   * @returns {{usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, connectionStatus: string }} the JSON representation.
+   * @returns {{ _id: string, usn: string, ssdpDescriptionLocation: string, ipAddress: string, services: string, configuredAsChild: boolean, timeLastSeen: number, timeDiscovered: number, connectionStatus: string }} the JSON representation.
    */
   toJson() {
     return {
+      _id: this._usn,
       usn: this._usn,
       ssdpDescriptionLocation: this._descriptionLocation,
       ipAddress: this._address,

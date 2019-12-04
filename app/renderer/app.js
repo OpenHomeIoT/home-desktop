@@ -1,8 +1,9 @@
-import { ipcRenderer } from "electron";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router"
+import { Router } from "react-router";
+
+import configureIpcRoutes from "./ipc/configureIpcRoutes";
 import routes from "./routes";
 
 import IconButton from "./components/IconButton/IconButton";
@@ -96,14 +97,4 @@ ReactDOM.render(
   rootElement
 );
 
-// TODO: put this logic in the common module.
-ipcRenderer.send("renderer.process_loaded", { sender: 'renderer', recipient: 'main' });
-
-ipcRenderer.on("renderer.quit_process", (event, { sender, recipient }) => {
-  window.close();
-});
-
-ipcRenderer.on("health", (event, { sender, recipient }) => {
-  ipcRenderer.send("health", { sender: "renderer", recipient: "main", status: "OK" });
-});
-
+configureIpcRoutes();
