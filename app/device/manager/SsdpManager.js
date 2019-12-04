@@ -1,5 +1,4 @@
 //@ts-check
-import { ipcRenderer } from "electron";
 import { parseString } from "xml2js";
 import { Client as SSDPClient, Server as SSDPServer, SsdpHeaders } from "node-ssdp";
 import request from "request";
@@ -53,7 +52,7 @@ class SsdpManager {
    * Also start broadcasting own SSDP signature.
    */
   startListening() {
-    this._timer = setInterval(() => this._ssdpSearch(), 25000);
+    this._timer = setInterval(() => this._ssdpSearch(), 90000);
     this._ssdpSearch();
     this._ssdpServer.start();
   }
@@ -106,12 +105,12 @@ class SsdpManager {
       this._deviceDatabase.exists(usn)
       .then(exists => {
         if (!exists) {
-          this._log(`Storing OpenSourceHomeIoT device in the database: ${rInfo.address}`);
           // load the services for the device
           const serviceDescriptionLocation = headers.LOCATION;
           this._loadServicesDescriptionForDevice(serviceDescriptionLocation)
           .then(services => {
             const iotDevice = new IoTDevice(headers.USN, serviceDescriptionLocation, rInfo.address, services, false, now, now, "disconnected");
+            this._log(`Storing OpenSourceHomeIoT device in the database: ${JSON.stringify(iotDevice)}`);
             return this._deviceDatabase.insert(iotDevice.toJson());
           });
         } else {
@@ -182,6 +181,7 @@ class SsdpManager {
    */
   _ssdpSearch() {
     // this._ssdpClient.search("urn:oshiot:device:wifi:1-0");
+    this._log("Searching for all SSDP devices.");
     this._ssdpClient.search("ssdp:all");
   }
 
