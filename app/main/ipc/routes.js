@@ -2,6 +2,7 @@
 import { ipcMain } from "electron";
 
 import deviceRoutes from "./routes/device";
+import errorRoutes from "./routes/error";
 import healthRoutes from "./routes/health";
 import logRoutes from "./routes/log";
 import processRoutes from "./routes/process";
@@ -19,6 +20,7 @@ const configureIpcRoutes = () => {
   ipcMain.on(Channel.DEVICE_GET_ALL_DEVICES, deviceRoutes.onGetAllDevices);
   ipcMain.on(Channel.DEVICE_GET_DEVICE, deviceRoutes.onGetDevice);
   ipcMain.on(Channel.DEVICE_UPDATE_DEVICE, deviceRoutes.onUpdateDevice);
+  ipcMain.on(Channel.ERROR, errorRoutes.onError);
   ipcMain.on(Channel.HEALTH, healthRoutes.onHealth);
   ipcMain.on(Channel.LOG, logRoutes.onLog);
   ipcMain.on(Channel.PROCESS_INITIALIZED, processRoutes.onProcessInitialized);
