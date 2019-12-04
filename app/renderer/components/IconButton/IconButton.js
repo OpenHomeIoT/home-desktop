@@ -12,7 +12,7 @@ const IconButton = ({ children: icon, onClick, style: compStyle }) => {
   };
   Object.assign(style.iconButton, compStyle);
   return (
-    <div style={style.iconButton} onClick={onClick}>
+    <div style={style.iconButton} onClick={() => onClick && onClick()}>
       <Icon>{ icon }</Icon>
     </div>
   );
@@ -22,5 +22,5 @@ IconButton.propTypes = {
   children: PropTypes.string,
   onClick: PropTypes.func
 };
- 
+
 export default IconButton;
