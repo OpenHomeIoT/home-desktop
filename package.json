@@ -11,6 +11,7 @@
   "license": "LICENSE",
   "dependencies": {
     "@babel/register": "7.7.0",
+    "@reach/router": "1.2.1",
     "connected-react-router": "6.6.0",
     "history": "4.10.1",
     "node-ssdp": "4.0.0",
