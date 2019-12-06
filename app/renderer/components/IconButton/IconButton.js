@@ -6,8 +6,10 @@ import Icon from "../Icon/Icon";
 const IconButton = ({ children: icon, onClick, style: compStyle }) => {
   const style = {
     iconButton: {
-      userSelect: "none",
-      cursor: "pointer"
+      cursor: "pointer",
+    },
+    icon: {
+      userSelect: "none"
     }
   };
   Object.assign(style.iconButton, compStyle);

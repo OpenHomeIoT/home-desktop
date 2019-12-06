@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route } from "@reach/router";
 
 import AutomationsView from "./views/AutomationsView";
 import DevicesView from "./views/DevicesView";
@@ -8,7 +8,7 @@ import RoutinesView from "./views/RoutinesView";
 import SettingsView from "./views/SettingsView";
 
 export default (
-  <Switch>
+  <Switch default>
     <Route path="/" component={HomeView} />
     <Route path="/automations" component={AutomationsView} />
     <Route path="/devices" component={DevicesView} />
