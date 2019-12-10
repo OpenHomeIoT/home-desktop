@@ -5,8 +5,8 @@ import Destination from "../common/ipc/Destination";
 import Channel from "../common/ipc/Channel";
 const ipc = new Ipc(Destination.device);
 
-const ssdpManager = SsdpManager.getInstance();
-ssdpManager.startListening();
+// const ssdpManager = SsdpManager.getInstance();
+// ssdpManager.startListening();
 
 window.onerror = (event, source, lineno, error) => {
   ipc.send(Channel.ERROR, Destination.main, JSON.stringify({ event, source, lineno, error }));

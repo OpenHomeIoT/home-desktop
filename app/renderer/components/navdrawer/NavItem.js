@@ -10,7 +10,7 @@ const NavItem = (props) => {
             width: props.width || 240,
             display: "flex",
             alignContent: "center",
-            padding: ".5rem .75rem",
+            padding: ".75em 1em",
             userSelect: "none",
             WebkitUserSelect: "none",
             pointerEvents: "all",

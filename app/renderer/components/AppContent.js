@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 
-import { 
-    getAppbarDefined, 
-    getBottomNavDefined, 
+import {
+    getAppbarDefined,
+    getBottomNavDefined,
     getAppbarHeight,
     getBottomNavHeight,
     clearConfigListener,
@@ -24,7 +24,7 @@ class AppContent extends Component {
         this.updateBottomNavHeight = this.updateBottomNavHeight.bind(this);
         this.calcHeight = this.calcHeight.bind(this);
     }
-    
+
     componentDidMount() {
         getAppbarDefined(this.updateAppbarDefined);
         getAppbarHeight(this.updateAppbarHeight);
@@ -59,8 +59,8 @@ class AppContent extends Component {
 
         return height;
     }
-    
-    render() { 
+
+    render() {
         const height = this.calcHeight();
 
         let style = {
@@ -82,7 +82,7 @@ class AppContent extends Component {
                 width: "100vw",
             },
             content: {
-                padding: "1rem",
+                padding: "1em",
                 height,
                 zIndex: 0,
                 overflowY: "scroll",
@@ -90,7 +90,7 @@ class AppContent extends Component {
             }
         };
         Object.apply(style.appContent, this.props.style);
-        return ( 
+        return (
             <div style={style.appContent}>
                 <div style={style.relative}>
                     <div style={style.content}>
@@ -108,5 +108,5 @@ AppContent.propTypes = {
         PropTypes.arrayOf(PropTypes.node)
     ]),
 };
- 
+
 export default AppContent;

@@ -10,7 +10,7 @@ class IconButton extends Component {
             pressed: false,
         };
     }
-    render() { 
+    render() {
         let style = {
             iconButton: {
                 position: "relative",
@@ -19,7 +19,7 @@ class IconButton extends Component {
                 borderRadius: 4,
                 verticalAlign: "middle",
                 textAlign: "center",
-                padding: ".5rem .5rem .35rem .5rem",
+                padding: ".5em .5em .35em .5em",
                 fontSize: ".8rem",
                 overflow: "hidden",
                 outline: "none",
@@ -50,5 +50,5 @@ IconButton.propTypes = {
     color: PropTypes.string,
     onClick: PropTypes.func
 };
- 
+
 export default IconButton;

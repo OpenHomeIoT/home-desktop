@@ -1,5 +1,4 @@
 import Database from "../../common/database/Database";
-import DatabaseHelper from "../../common/database/helper/DatabaseHelper";
 
 class ServiceLedgerDatabase extends Database {
 
@@ -16,8 +15,8 @@ class ServiceLedgerDatabase extends Database {
   }
 
   /**
-   * 
-   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options 
+   *
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options
    */
   constructor(options) {
     super({
@@ -25,12 +24,12 @@ class ServiceLedgerDatabase extends Database {
       isLedger: true,
       primaryKey: "id",
       fields: [
-        { name: "id", type: DatabaseHelper.TEXT },
-        { name: "name", type: DatabaseHelper.TEXT },
-        { name: "friendlyName", type: DatabaseHelper.TEXT },
-        { name: "description", type: DatabaseHelper.TEXT },
-        { name: "ssdpName", type: DatabaseHelper.TEXT },
-        { name: "currentSsdpVersionName", type: DatabaseHelper.TEXT }
+        { name: "id", type: "string" },
+        { name: "name", type: "string" },
+        { name: "friendlyName", type: "string" },
+        { name: "description", type: "string" },
+        { name: "ssdpName", type: "string" },
+        { name: "currentSsdpVersionName", type: "string" }
       ]
     }, options);
   }

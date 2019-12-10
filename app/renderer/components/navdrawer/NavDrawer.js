@@ -53,10 +53,10 @@ class NavDrawer extends Component {
     updateBottomNavHeight(value) { this.setState({ bottomNavHeight: value }); }
 
     handleClickOutside(event) {
-        if (this.ref && this.props.open && event && !this.ref.current.contains(event.target)) {
+        const { open, onClose } = this.props;
+        if (event && this.ref && open && !this.ref.current.contains(event.target)) {
             // clicked outside. Close the nav drawer.
-            const { onClose } = this.props;
-            if (onClose) { onClose(); }
+            if (onClose) onClose();
         }
     }
 
@@ -65,8 +65,6 @@ class NavDrawer extends Component {
     }
 
     render() {
-
-
         let style = {
             navDrawer: {
                 position: "fixed",

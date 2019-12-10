@@ -1,18 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const AppTitle = ({ children, fontSize }) => {
+const AppTitle = ({ children, fontSize, style: compStyle }) => {
     const style = {
-        title: {
-            marginLeft: "1rem",
-            paddingTop: 6
-        },
+        title: {},
         span: {
-            fontSize: fontSize || "1.25rem"
+            fontSize: fontSize || "1.25em"
         }
     };
-
-    return ( 
+    Object.assign(style.title, compStyle);
+    return (
         <div style={style.title}>
             <span style={style.span}>{children}</span>
         </div>

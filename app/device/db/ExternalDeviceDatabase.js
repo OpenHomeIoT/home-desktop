@@ -6,7 +6,7 @@ class ExternalDeviceDatabase extends Database {
     static _instance = null;
 
     /**
-     * 
+     *
      * @returns {ExternalDeviceDatabase}
      */
     static getInstance() {
@@ -18,7 +18,7 @@ class ExternalDeviceDatabase extends Database {
 
     constructor() {
         super({
-            name: "ExternalDevices", 
+            name: "ExternalDevices",
             isLedger: false,
             primaryKey: "",
             fields: [
@@ -28,7 +28,8 @@ class ExternalDeviceDatabase extends Database {
                 { name: "timeDiscovered", type: "number" },
                 { name: "timeLastSeen", type: "number" },
                 { name: "company", type: "string" },
-                { name: "deviceType", type: "string" }
+                { name: "deviceType", type: "string" },
+                { name: "name", type: "string" }
             ]
         }, {});
     }

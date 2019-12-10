@@ -1,5 +1,4 @@
 import Database from "../../common/database/Database";
-import DatabaseHelper from "../../common/database/helper/DatabaseHelper";
 
 class DeviceOnlineOfflineHistoryDatabase extends Database {
 
@@ -16,8 +15,8 @@ class DeviceOnlineOfflineHistoryDatabase extends Database {
   }
 
   /**
-   * 
-   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options 
+   *
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options
    */
   constructor(options) {
     super({
@@ -25,10 +24,10 @@ class DeviceOnlineOfflineHistoryDatabase extends Database {
       isLedger: true,
       primaryKey: "id",
       fields: [
-        { name: "id", type: DatabaseHelper.INT, autoincrement: true },
-        { name: "usn", type: DatabaseHelper.TEXT },
-        { name: "time", type: DatabaseHelper.BIGINT },
-        { name: "isOnline", type: DatabaseHelper.INT }
+        { name: "id", type: "bigint", autoincrement: true },
+        { name: "usn", type: "string" },
+        { name: "time", type: "bigint" },
+        { name: "isOnline", type: "bigint" }
       ]
     }, options);
   }

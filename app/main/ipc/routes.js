@@ -46,7 +46,7 @@ const startHealthChecks = () => {
     } else {
       console.log("[MainIpcRoutes] Device process is null.");
     }
-  }, 3000);
+  }, 1000);
 };
 
 export default configureIpcRoutes;

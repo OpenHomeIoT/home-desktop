@@ -8,7 +8,7 @@ const AppTitleContainer = (props) => {
             display: "flex",
             userSelect: "none",
             WebkitUserSelect: "none",
-            paddingLeft: "1rem"
+            paddingLeft: "1em"
         }
     };
     return (
@@ -24,5 +24,5 @@ AppTitleContainer.propTypes = {
         PropTypes.arrayOf(PropTypes.node)
     ])
 };
- 
+
 export default AppTitleContainer;

@@ -7,10 +7,10 @@ const NavSubheader = (props) => {
     const style = {
         navSubheader: {
             width: "100%",
-            padding: ".25rem 1rem"
+            padding: ".25em 1em"
         },
         span: {
-            
+
         }
     };
     return (
@@ -19,5 +19,5 @@ const NavSubheader = (props) => {
         </div>
     );
 }
- 
+
 export default NavSubheader;

@@ -26,7 +26,7 @@ class MessageBoxBody extends Component {
 
     updateMessageBox(messageBox) { this.setState({ messageBox }); }
 
-    render() { 
+    render() {
         const { children, style: compStyle } = this.props;
 
         const style = {
@@ -38,7 +38,7 @@ class MessageBoxBody extends Component {
                 WebkitOverflowScrolling: "touch",
                 zIndex: -2,
                 userSelect: "text",
-                padding: "1rem 0",
+                padding: "1em 0",
                 maxHeight: "45vh",
                 boxShadow: "inset 4px 2px -2px #000000"
             }
@@ -49,5 +49,5 @@ class MessageBoxBody extends Component {
         );
     }
 }
- 
+
 export default MessageBoxBody;

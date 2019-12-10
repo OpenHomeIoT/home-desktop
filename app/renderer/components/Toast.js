@@ -14,7 +14,7 @@ const Toast = ({ children, visible }) => {
             transform: "translate(-50%, -50%)",
             backgroundColor: "rgba(0, 0, 0, 0.8)",
             transition: "opacity 0.2s",
-            padding: ".5rem .75rem",
+            padding: ".5em .75em",
             borderRadius: 3,
             boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
         },
@@ -23,7 +23,7 @@ const Toast = ({ children, visible }) => {
         }
     };
 
-    if (visible) { 
+    if (visible) {
         style.toast.display = "block";
         style.toast.opacity = 1;
     }
@@ -38,5 +38,5 @@ const Toast = ({ children, visible }) => {
 Toast.propTypes = {
     visible: PropTypes.bool
 };
- 
+
 export default Toast;

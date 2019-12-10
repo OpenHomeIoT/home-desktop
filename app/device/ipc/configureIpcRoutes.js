@@ -14,13 +14,12 @@ const configureIpcRoutes = () => {
 
   ipc.on(Channel.PROCESS_QUIT, message => {
     if (IpcHelper.messageIsFrom(message, Destination.main)) {
-      // TODO: handle quit
       ipc.send(Channel.PROCESS_QUIT, Destination.main, null);
+      process.exit();
     }
   });
 
   process.on("uncaughtException", err => {
-    // TODO: implement
     ipc.send(Channel.LOG, Destination.main, JSON.stringify(err))
   });
 

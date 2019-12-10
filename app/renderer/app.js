@@ -18,7 +18,6 @@ import NavItemIcon from "./components/navdrawer/NavItemIcon";
 import NavItemText from "./components/navdrawer/NavItemText";
 
 import HomeView from "./views/HomeView";
-import DevicesView from "./views/DevicesView";
 import AutomationsView from "./views/AutomationsView";
 import RoutinesView from "./views/RoutinesView";
 import SettingsView from "./views/SettingsView";
@@ -36,7 +35,7 @@ class Hub extends Component {
     super(props);
     this.state = {
       isNavDrawerOpen: true,
-      pageTitle: "Home"
+      pageTitle: "Home",
     };
   }
 
@@ -63,21 +62,11 @@ class Hub extends Component {
               <Link
                     to="/"
                     style={{textDecoration: "none"}}
-                    onClick={ () => this._setPageTitle("home") }
+                    onClick={ () => this._setPageTitle("Home") }
                   >
                     <NavItem>
                       <NavItemIcon>home</NavItemIcon>
                       <NavItemText>Home</NavItemText>
-                    </NavItem>
-                  </Link>
-                  <Link
-                    to="/devices"
-                    style={{textDecoration: "none"}}
-                    onClick={ () => this._setPageTitle("Devices") }
-                  >
-                    <NavItem>
-                      <NavItemIcon>home</NavItemIcon>
-                      <NavItemText>Devices</NavItemText>
                     </NavItem>
                   </Link>
                   <Link
@@ -115,7 +104,6 @@ class Hub extends Component {
             <AppContent>
               <Router>
                 <HomeView path="/" />
-                <DevicesView path="/devices" />
                 <AutomationsView path="/automations" />
                 <RoutinesView path="/routines" />
                 <SettingsView path="/settings" />

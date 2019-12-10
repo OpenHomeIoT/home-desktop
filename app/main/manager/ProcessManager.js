@@ -1,6 +1,5 @@
 import { BrowserWindow, Menu, app } from "electron";
 import path from "path";
-import { timingSafeEqual } from "crypto";
 import Channel from "../../common/ipc/Channel";
 import IpcHelper from "../../common/ipc/IpcHelper";
 import Destination from "../../common/ipc/Destination";
@@ -46,10 +45,10 @@ export default class ProcessManager {
             show: false,
             webPreferences: {
                 nodeIntegration: true
-            },
-
+            }
         });
         this._deviceProcess.loadFile(path.resolve(path.join(CWD, "build/device/index.html")));
+        this._deviceProcess.on("ready-to-show", () =>{ console.log("[ProcessManager] Initializing the Device process."); this._deviceProcess.show(); this._deviceProcess.webContents.openDevTools(); });
         this._deviceProcess.on("close", () => this._deviceProcess = null);
         return this._deviceProcess;
     }
@@ -178,9 +177,9 @@ export default class ProcessManager {
      */
     _checkProcesses() {
         const now = Date.now();
-        if (now - this._deviceProcessStatus.lastUpdated > 7000) {
-            // we have not had a health check from the device process in over 7 seconds.
-            console.log("[ProcessManager] Haven't heard from the device process in over 7 seconds");
+        if (now - this._deviceProcessStatus.lastUpdated > 2000) {
+            // we have not had a health check from the device process in over 2 seconds.
+            console.log("[ProcessManager] Haven't heard from the device process in over 2 seconds");
             if (this._deviceProcess) {
                 this._deviceProcess.close();
                 this._deviceProcess = null;

@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 
 import Database from "../../bin/db/Database";
-import DatabaseHelper from "../../bin/db/helper/DatabaseHelper";
 
 const TABLE_NAME = "DatabaseTestsTable";
 
@@ -16,8 +15,8 @@ const createDatabase = () => {
     isLedger: false,
     primaryKey: "pk",
     fields: [
-      { name: "pk", type: DatabaseHelper.INT, autoincrement: true },
-    { name: "content", type: DatabaseHelper.TEXT }
+      { name: "pk", type: "bigint", autoincrement: true },
+    { name: "content", type: "string" }
     ]
   }, { isTest: true });
 }
@@ -31,8 +30,8 @@ const createMemoryDatabase = () => {
     isLedger: false,
     primaryKey: "pk",
     fields: [
-      { name: "pk", type: DatabaseHelper.INT, autoincrement: true },
-      { name: "content", type: DatabaseHelper.TEXT }
+      { name: "pk", type: "bigint", autoincrement: true },
+      { name: "content", type: "string" }
     ]
   }, { isMemoryDB: true });
 }

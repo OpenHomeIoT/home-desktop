@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const NavGroup = ({ children, style: compStyle}) => {
     const style = {
         navGroup: {
-            margin: "0.5rem 0 1rem 0"
+            margin: "0.5em 0 1em 0"
         }
     };
     Object.assign(style.navGroup, compStyle);
@@ -17,5 +17,5 @@ NavGroup.propTypes = {
         PropTypes.arrayOf(PropTypes.node)
     ])
 };
- 
+
 export default NavGroup;

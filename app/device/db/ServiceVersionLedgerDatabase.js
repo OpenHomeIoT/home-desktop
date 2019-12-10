@@ -1,5 +1,4 @@
 import Database from "../../common/database/Database";
-import DatabaseHelper from "../../common/database/helper/DatabaseHelper";
 
 class ServiceVersionLedgerDatabase extends Database {
 
@@ -13,8 +12,8 @@ class ServiceVersionLedgerDatabase extends Database {
   }
 
   /**
-   * 
-   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options 
+   *
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options
    */
   constructor(options) {
     super({
@@ -22,10 +21,10 @@ class ServiceVersionLedgerDatabase extends Database {
       isLedger: true,
       primaryKey: "serviceVersionName",
       fields: [
-        { name: "serviceVersionName", type: DatabaseHelper.TEXT },
-        { name: "serviceName", type: DatabaseHelper.TEXT },
-        { name: "version", type: DatabaseHelper.TEXT },
-        { name: "timeInstalledOnHub", type: DatabaseHelper.BIGINT, includeInUpdate: false }
+        { name: "serviceVersionName", type: "string" },
+        { name: "serviceName", type: "string" },
+        { name: "version", type: "string" },
+        { name: "timeInstalledOnHub", type: "bigint", includeInUpdate: false }
       ]
     }, options);
   };

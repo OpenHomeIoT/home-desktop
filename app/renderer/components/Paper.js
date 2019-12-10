@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Paper = (props) => {
     const style = {
         paper: {
-            padding: "1rem",
+            padding: "1em",
             backgroundColor: "#fff",
             borderRadius: 3
         }
@@ -22,5 +22,5 @@ Paper.propTypes = {
     ]),
     style: PropTypes.object
 };
- 
+
 export default Paper;

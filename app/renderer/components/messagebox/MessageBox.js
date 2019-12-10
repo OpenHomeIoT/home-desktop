@@ -52,7 +52,7 @@ class MessageBox extends Component {
     updateForegroundColor(value) { this.setState({ foregroundColor: value }); }
     updatePrimaryColor(value) { this.setState({ primaryColor: value }); }
 
-    render() { 
+    render() {
         const { children, style: compStyle, visible } = this.props;
         const style = {
             blackout: {
@@ -87,7 +87,7 @@ class MessageBox extends Component {
             },
             content: {
                 position: "relative",
-                padding: "1rem",
+                padding: "1em",
             }
         };
         if (visible) {
@@ -96,7 +96,7 @@ class MessageBox extends Component {
             style.blackout.display = "block";
             style.blackout.opacity = 1;
         }
-        
+
         Object.assign(style.messageBox, compStyle);
         return (
             <div style={style.blackout}>
@@ -113,5 +113,5 @@ class MessageBox extends Component {
 MessageBox.propTypes = {
 
 };
- 
+
 export default MessageBox;

@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 const AppbarToolbar = (props) => {
     const style = {
         toolbar: {
-            marginRight: "1rem",
+            marginRight: "1em",
             display: "flex",
             userSelect: "none",
             WebkitUserSelect: "none",
         }
     };
 
-    return ( 
+    return (
         <div style={style.toolbar}>
             {props.children}
         </div>
@@ -21,5 +21,5 @@ const AppbarToolbar = (props) => {
 AppbarToolbar.propTypes = {
     children: PropTypes.object
 };
- 
+
 export default AppbarToolbar;

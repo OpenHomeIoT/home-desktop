@@ -1,12 +1,11 @@
 import Database from "../../common/database/Database";
-import DatabaseHelper from "../../common/database/helper/DatabaseHelper";
 
 class DeviceDatabase extends Database {
 
   static _instance = null;
 
   /**
-   * 
+   *
    * @returns {DeviceDatabase}
    */
   static getInstance() {
@@ -17,27 +16,28 @@ class DeviceDatabase extends Database {
   }
 
   /**
-   * 
-   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options 
+   *
+   * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options
    */
   constructor(options) {
+    if (typeof options === "")
     super({
       name: "Devices",
       isLedger: false,
       primaryKey: "usn",
       fields: [
-        { name: "usn", type: DatabaseHelper.TEXT },
-        { name: "ssdpDescriptionLocation", type: DatabaseHelper.TEXT },
-        { name: "ipAddress", type: DatabaseHelper.TEXT, },
-        { name: "services", type: DatabaseHelper.TEXT, },
-        { name: "configuredAsChild", type: DatabaseHelper.BOOLEAN },
-        { name: "timeLastSeen", type: DatabaseHelper.BIGINT },
-        { name: "timeDiscovered", type: DatabaseHelper.BIGINT, includeInUpdate: false },
-        { name: "connectionStatus", type: DatabaseHelper.TEXT }
+        { name: "usn", type: "string" },
+        { name: "ssdpDescriptionLocation", type: "string" },
+        { name: "ipAddress", type: "string", },
+        { name: "services", type: "string", },
+        { name: "configuredAsChild", type: "boolean" },
+        { name: "timeLastSeen", type: "number" },
+        { name: "timeDiscovered", type: "number", includeInUpdate: false },
+        { name: "connectionStatus", type: "string" },
+        { name: "name", type: "string" }
       ]
     }, options);
   }
 }
 
 export default DeviceDatabase;
-

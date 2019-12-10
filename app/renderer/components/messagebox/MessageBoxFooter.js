@@ -5,7 +5,7 @@ import { addMessageBoxFooter, getMessageBox } from '../config';
 class MessageBoxFooter extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             messageBox: {
                 width: 0,
                 height: 0,
@@ -24,7 +24,7 @@ class MessageBoxFooter extends Component {
 
     updateMessageBox(value) { this.setState({messageBox: value }); }
 
-    render() { 
+    render() {
         const { children, style: compStyle } = this.props;
         const style = {
             footer: {
@@ -32,7 +32,7 @@ class MessageBoxFooter extends Component {
                 justifyContent: "flex-end",
                 width: "100%",
                 zIndex: 2,
-                padding: "1rem 0 0 0",
+                padding: "1em 0 0 0",
             }
         };
         Object.assign(style.footer, compStyle);

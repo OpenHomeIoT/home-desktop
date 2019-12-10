@@ -5,9 +5,10 @@ import Paper from "../Paper";
 import Row from "../Row";
 
 const Card = (props) => {
-    let style = {
+    const style = {
         card: {
             boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+            padding: "1em"
         }
     };
 
@@ -26,9 +27,9 @@ const Card = (props) => {
         <Row>
             <Paper style={style.card}>
                 {props.children}
-            </Paper>  
-        </Row> 
-           
+            </Paper>
+        </Row>
+
     );
 };
 
@@ -40,5 +41,5 @@ Card.propTypes = {
     style: PropTypes.object,
     z: PropTypes.number
 };
- 
+
 export default Card;
