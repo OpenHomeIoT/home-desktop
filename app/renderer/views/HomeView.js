@@ -26,11 +26,12 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Kitchen",
-          name: "Kitchen TV"
+          name: "Kitchen TV",
+          type: "external"
         }
       ],
       home: {
-        name: "Seth's Home",
+        name: "Leon-Lessard Home",
         timeCreated: Date.now(),
         timeLastUpdated: Date.now(),
       },
@@ -59,15 +60,13 @@ class HomeView extends Component {
     return (
       <div style={style.homeView}>
         <Row>
-          <Heading style={style.homeName} h={5}>{ home.name }</Heading>
+          <Heading style={style.homeName} h={4}>{ home.name }</Heading>
         </Row>
         <Row>
           {/* TODO: home action bar */}
         </Row>
         <br/>
-        <Row>
-          { this._renderDevicesWithNoRoom() }
-        </Row>
+        { this._renderDevicesWithNoRoom() }
         {
           rooms.map((room, index, rooms) => {
             const devices  = internalDevices.filter(device => device.room === room).concat(externalDevices.filter(device => device.room === room));

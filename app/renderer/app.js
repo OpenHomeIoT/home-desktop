@@ -34,7 +34,7 @@ class Hub extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isNavDrawerOpen: true,
+      isNavDrawerOpen: false,
       pageTitle: "Home",
     };
   }
@@ -48,10 +48,10 @@ class Hub extends Component {
           <div>
             <Appbar>
               <AppbarToggleButton onClick={ () => this._toggleNavDrawer() }>
-                <IconButton>menu</IconButton>
+                <IconButton color="#fff">menu</IconButton>
               </AppbarToggleButton>
               <AppTitleContainer>
-                <AppTitle>{ pageTitle }</AppTitle>
+                <AppTitle style={{ color: "#fff" }}>{ pageTitle }</AppTitle>
               </AppTitleContainer>
             </Appbar>
             <NavDrawer open={isNavDrawerOpen}>
