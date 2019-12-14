@@ -43,7 +43,7 @@ class Hub extends Component {
     const { isNavDrawerOpen, pageTitle } = this.state;
     const { } = this.props;
     return (
-      <App primaryColor="#6c5ce7">
+      <App primaryColor="#00b894">
         <LocationProvider history={history}>
           <div>
             <Appbar>
