@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Icon from "../Icon/Icon";
 
-const IconButton = ({ children: icon, onClick, style: compStyle }) => {
+const IconButton = ({ children: icon, onClick, size, style: compStyle }) => {
   const style = {
     iconButton: {
       cursor: "pointer",
@@ -15,14 +15,15 @@ const IconButton = ({ children: icon, onClick, style: compStyle }) => {
   Object.assign(style.iconButton, compStyle);
   return (
     <div style={style.iconButton} onClick={() => onClick && onClick()}>
-      <Icon>{ icon }</Icon>
+      <Icon size={size}>{ icon }</Icon>
     </div>
   );
 }
 
 IconButton.propTypes = {
   children: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  size: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
 };
 
 export default IconButton;

@@ -20,21 +20,20 @@ class DeviceDatabase extends Database {
    * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options
    */
   constructor(options) {
-    if (typeof options === "")
     super({
       name: "Devices",
       isLedger: false,
       primaryKey: "usn",
       fields: [
-        { name: "usn", type: "string" },
-        { name: "ssdpDescriptionLocation", type: "string" },
-        { name: "ipAddress", type: "string", },
-        { name: "services", type: "string", },
-        { name: "configuredAsChild", type: "boolean" },
-        { name: "timeLastSeen", type: "number" },
-        { name: "timeDiscovered", type: "number", includeInUpdate: false },
-        { name: "connectionStatus", type: "string" },
-        { name: "name", type: "string" }
+        { name: "usn", type: "string", required: true },
+        { name: "ssdpDescriptionLocation", type: "string", required: true },
+        { name: "ipAddress", type: "string", required: true },
+        { name: "services", type: "string", required: true },
+        { name: "configuredAsChild", type: "boolean", required: true },
+        { name: "timeLastSeen", type: "number", required: true },
+        { name: "timeDiscovered", type: "number", required: true },
+        { name: "connectionStatus", type: "string", required: true },
+        { name: "name", type: "string", required: true }
       ]
     }, options);
   }

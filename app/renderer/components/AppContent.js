@@ -69,7 +69,7 @@ class AppContent extends Component {
                 position: "fixed",
                 top: (this.state.appbarDefined) ? this.state.appbarHeight : 0,
                 zIndex: 0,
-                backgroundColor: "#f1f2f6",
+                backgroundColor: "#ecf0f1",
                 height,
                 minWidth: 320,
                 top: 62,

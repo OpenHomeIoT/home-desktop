@@ -22,9 +22,8 @@ class DeviceOnlineOfflineHistoryDatabase extends Database {
     super({
       name: "DeviceOnlineOfflineHistory",
       isLedger: true,
-      primaryKey: "id",
       fields: [
-        { name: "id", type: "bigint", autoincrement: true },
+        { name: "id", type: "bigint" }, // TODO: figure out id
         { name: "usn", type: "string" },
         { name: "time", type: "bigint" },
         { name: "isOnline", type: "bigint" }

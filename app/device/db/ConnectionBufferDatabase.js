@@ -24,9 +24,9 @@ class ConnectionBufferDatabase extends Database {
       isLedger: false,
       primaryKey: "usn",
       fields: [
-        { name: "usn", type: "string" },
-        { name: "timeAdded", type: "number", includeInUpdate: false },
-        { name: "ipAddress", type: "string" }
+        { name: "usn", type: "string", required: true },
+        { name: "timeAdded", type: "number", required: true },
+        { name: "ipAddress", type: "string", required: true }
       ]
     }, options);
   }

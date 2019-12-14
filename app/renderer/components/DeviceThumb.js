@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 
 import Card from "./card/Card";
+import CardBody from "./card/CardBody";
 import CardFooter from "./card/CardFooter";
 import CardHeader from "./card/CardHeader";
 import Text from "./Text";
 import Drawable from "./Drawable";
+import Icon from "./Icon";
+import DropdownButton from "./dropdownbutton/DropdownButton";
+import DropdownButtonIcon from "./dropdownbutton/DropdownButtonIcon";
+import DropdownButtonItem from "./dropdownbutton/DropdownButtonItem";
+import DropdownButtonText from "./dropdownbutton/DropdownButtonText";
 
 // import LightOn from "../drawable/light-on.png";
 
@@ -34,8 +40,14 @@ class DeviceThumb extends Component {
         minHeight: 180
       },
       header: {
-        minHeight: 150,
-        padding: "1em"
+        padding: "1em",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      },
+      deviceName: {
+        whiteSpace: "nowrap",
+        fontSize: ".74rem"
       },
       image: {
         width: "100%",
@@ -46,7 +58,11 @@ class DeviceThumb extends Component {
       },
       footer: {
         borderTop: "1px solid #bdc3c7",
-        padding: "1em"
+        padding: "1em",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        cursor: "pointer"
       }
     };
     Object.assign(style.deviceThumb, compStyle);
@@ -54,14 +70,21 @@ class DeviceThumb extends Component {
       <div style={style.deviceThumb}>
         <Card style={style.card}>
           <CardHeader style={style.header}>
-            {/* TODO: circle device image */}
-            <Text>{ device.name }</Text>
-            <div style={style.image}>
-              <Drawable height={128} width={128} src="light-on.png" />
-            </div>
+            <Text style={style.deviceName}>{ device.name }</Text>
+            <DropdownButton icon="more_vert">
+              <DropdownButtonItem>
+                <DropdownButtonText>Settings</DropdownButtonText>
+              </DropdownButtonItem>
+            </DropdownButton>
           </CardHeader>
+          <CardBody>
+            <div style={style.image}>
+              <Drawable height={128} width={128} src="internal/light-on.png" />
+            </div>
+          </CardBody>
           <CardFooter style={style.footer}>
-            <Text style={{ fontSize: ".75rem" }}>Device Status</Text>
+            <Text style={{ fontSize: ".75rem" }}>{ device.status }</Text>
+            <Icon size="1.5rem">arrow_right</Icon>
           </CardFooter>
         </Card>
       </div>

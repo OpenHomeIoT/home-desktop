@@ -9,7 +9,7 @@ function copyRendererHtml(cb) {
 }
 
 function copyRendererDrawables(cb) {
-  return src('app/renderer/drawable/*').pipe(dest('build/renderer/drawable')).on("end", cb);
+  return src('app/renderer/drawable/**/*').pipe(dest('build/renderer/drawable')).on("end", cb);
 }
 
 copyDeviceHtml.displayName = 'dopy-device-html';

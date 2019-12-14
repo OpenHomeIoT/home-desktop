@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import config from "./config";
-
 const Icon = (props) => {
     const style = {
         icon: {
@@ -16,7 +14,7 @@ const Icon = (props) => {
 
     Object.assign(style.icon, props.style);
 
-    return ( 
+    return (
         <div style={style.icon}>
             <i style={style.i} className="material-icons">{props.children}</i>
         </div>
@@ -24,9 +22,9 @@ const Icon = (props) => {
 };
 
 Icon.propTypes = {
-    size: PropTypes.number,
+    size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     children: PropTypes.string,
     style: PropTypes.object
 };
- 
+
 export default Icon;

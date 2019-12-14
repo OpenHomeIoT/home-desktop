@@ -4,15 +4,15 @@ class Database {
 
   /**
    * Database constructor.
-   * @param {{ name: string, isLedger?: boolean, primaryKey: string, fields: { name: string, type: string, autoincrement?: boolean, includeInUpdate?: boolean }[] }} tableDefinition the definition for the database table.
+   * @param {{ name: string, isLedger?: boolean, fields: { name: string, type: string, required?: boolean }[] }} tableDefinition the definition for the database table.
    * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options the options.
    */
   constructor(tableDefinition, options) {
     const { isMemoryDB } = options;
-    
+
     const pouchdbOptions = (isMemoryDB) ? { adapter: "memory" } : {};
     this._db = new PouchDB(`oshiot_${tableDefinition.name}`, pouchdbOptions);
-    
+
     this._tableDefinition = tableDefinition;
     this._options = options || {};
 
@@ -82,7 +82,7 @@ class Database {
 
   /**
    * Insert a record into the database.
-   * @param {*} data the data. 
+   * @param {*} data the data.
    * @returns {Promise<PouchDB.Core.Response>}
    */
   insert(data) {
@@ -91,7 +91,7 @@ class Database {
 
   /**
    * Update a record in the database.
-   * @param {*} data the data. 
+   * @param {*} data the data.
    * @returns {Promise<void>}
    */
   update(data) {
@@ -104,6 +104,14 @@ class Database {
    */
   _initialize() {
     return Promise.resolve();
+  }
+
+  /**
+   * Check to see if the data is valid.
+   * @param {object} data the data.
+   */
+  _isValidData(data) {
+
   }
 }
 

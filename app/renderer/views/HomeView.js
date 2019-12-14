@@ -3,14 +3,9 @@ import PropTypes from 'prop-types';
 
 import HomeController from "../controller/HomeController";
 
-import Card from '../components/card/Card';
-import CardBody from "../components/card/CardBody";
-import CardFooter from "../components/card/CardFooter";
-import CardHeader from "../components/card/CardHeader";
 import Heading from "../components/Heading";
 import Room from "../components/Room";
 import Row from '../components/Row';
-
 
 class HomeView extends Component {
   constructor(props) {
@@ -27,7 +22,9 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Kitchen",
           name: "Kitchen TV",
-          type: "external"
+          status: "On",
+          internal: false,
+          type: "tv_roku"
         },
         {
           usn: "usn2",
@@ -39,7 +36,9 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Kitchen",
           name: "The other Kitchen TV",
-          type: "external"
+          status: "Off",
+          internal: false,
+          type: "tv_roku"
         },
         {
           usn: "usn2",
@@ -51,7 +50,9 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Kitchen",
           name: "The other Kitchen TV",
-          type: "external"
+          status: "Off",
+          internal: false,
+          type: "tv_roku"
         },
         {
           usn: "usn2",
@@ -63,7 +64,9 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Kitchen",
           name: "The other Kitchen TV",
-          type: "external"
+          status: "Off",
+          internal: false,
+          type: "tv_roku"
         },
         {
           usn: "usn2",
@@ -75,7 +78,9 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Kitchen",
           name: "The other Kitchen TV",
-          type: "external"
+          status: "Off",
+          internal: false,
+          type: "tv_roku"
         },
         {
           usn: "usn2",
@@ -87,7 +92,9 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Kitchen",
           name: "The other Kitchen TV",
-          type: "external"
+          status: "Off",
+          internal: false,
+          type: "tv_roku"
         },
         {
           usn: "usn3",
@@ -99,7 +106,23 @@ class HomeView extends Component {
           deviceType: "Roku TV",
           room: "Bedroom",
           name: "Bedroom TV",
-          type: "external"
+          status: "On",
+          internal: false,
+          type: "tv_roku"
+        },
+        {
+          usn: "usn3",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.13",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "none",
+          name: "Floater TV",
+          status: "On",
+          internal: false,
+          type: "tv_roku"
         },
       ],
       home: {

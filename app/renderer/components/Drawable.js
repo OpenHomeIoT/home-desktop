@@ -15,7 +15,6 @@ class Drawable extends Component {
   componentDidMount() {
     const { src } = this.props;
     const drawablesBase = path.join(process.cwd(), "build/renderer/drawable");
-    console.log(drawablesBase);
     const image = nativeImage.createFromPath(path.join(drawablesBase, src));
     this.setState({ drawableSrc: image.toDataURL() });
   }

@@ -7,6 +7,9 @@ import Row from "./Row";
 import Toolbar from "../components/toolbar/Toolbar";
 import ToolbarTitle from "../components/toolbar/ToolbarTitle";
 import ToolbarOptionContainer from "./toolbar/ToolbarOptionContainer";
+import DropdownButtonText from "./dropdownbutton/DropdownButtonText";
+import DropdownButton from "./dropdownbutton/DropdownButton";
+import DropdownButtonItem from "./dropdownbutton/DropdownButtonItem";
 
 /**
  * Get the style for a device based on its index
@@ -53,7 +56,7 @@ const renderDevices = devices => {
   return rows;
 }
 
-const Room = ({ children, devices, name, style: compStyle }) => {
+const Room = ({ devices, name, style: compStyle }) => {
   const style = {
     room: {
       display: "block",
@@ -74,7 +77,14 @@ const Room = ({ children, devices, name, style: compStyle }) => {
           <Toolbar style={{ backgroundColor: "#fff" }}>
             <ToolbarTitle>{ name }</ToolbarTitle>
             <ToolbarOptionContainer>
-              <IconButton size={"1.5rem"}>more_vert</IconButton>
+              <DropdownButton icon="more_vert" iconSize="1.5rem">
+                <DropdownButtonItem>
+                  <DropdownButtonText>Settings</DropdownButtonText>
+                </DropdownButtonItem>
+                <DropdownButtonItem>
+                  <DropdownButtonText>Help</DropdownButtonText>
+                </DropdownButtonItem>
+              </DropdownButton>
             </ToolbarOptionContainer>
           </Toolbar>
         </Row>

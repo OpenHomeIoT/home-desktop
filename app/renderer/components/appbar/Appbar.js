@@ -2,40 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 
 import {
-    getPrimaryColor,
-    getForegroundColor,
     setAppbarDefined,
     setAppbarHeight,
-    clearConfigListener
 } from "../config";
+import Themeable from '../Themeable';
 
-class Appbar extends Component {
+class Appbar extends Themeable {
     constructor(props) {
         super(props);
         this.state = {
             foregroundColor: "",
             primaryColor: "",
         };
-        this.updateForegroundColor = this.updateForegroundColor.bind(this);
-        this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
-    }
-
-    componentDidMount() {
-        getForegroundColor(this.updateForegroundColor);
-        getPrimaryColor(this.updatePrimaryColor);
-    }
-
-    componentWillUnmount() {
-        clearConfigListener(this.updateForegroundColor);
-        clearConfigListener(this.updatePrimaryColor);
-    }
-
-    updateForegroundColor(color) {
-        this.setState({ foregroundColor: color })
-    }
-
-    updatePrimaryColor(color) {
-        this.setState({ primaryColor: color });
     }
 
     render() {

@@ -20,7 +20,6 @@ class ExternalDeviceDatabase extends Database {
         super({
             name: "ExternalDevices",
             isLedger: false,
-            primaryKey: "",
             fields: [
                 { name: "usn", type: "string" },
                 { name: "ssdpDescriptionLocation", type: "string" },
