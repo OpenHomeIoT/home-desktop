@@ -44,7 +44,8 @@ const startHealthChecks = () => {
     if (deviceProcess) {
       deviceProcess.webContents.send(Channel.HEALTH, IpcHelper.createMessage(Destination.main, Destination.device, null));
     } else {
-      console.log("[MainIpcRoutes] Device process is null.");
+      processManager.updateDeviceProcessStatus("Dead");
+      processManager.createDeviceProcess();
     }
   }, 1000);
 };

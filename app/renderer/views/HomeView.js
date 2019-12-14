@@ -18,7 +18,7 @@ class HomeView extends Component {
     this.state = {
       externalDevices: [
         {
-          usn: "usn",
+          usn: "usn1",
           ssdpDescriptionLocation: "",
           ipAddress: "10.1.1.12",
           timeDiscovered: Date.now(),
@@ -28,7 +28,79 @@ class HomeView extends Component {
           room: "Kitchen",
           name: "Kitchen TV",
           type: "external"
-        }
+        },
+        {
+          usn: "usn2",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.12",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "Kitchen",
+          name: "The other Kitchen TV",
+          type: "external"
+        },
+        {
+          usn: "usn2",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.12",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "Kitchen",
+          name: "The other Kitchen TV",
+          type: "external"
+        },
+        {
+          usn: "usn2",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.12",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "Kitchen",
+          name: "The other Kitchen TV",
+          type: "external"
+        },
+        {
+          usn: "usn2",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.12",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "Kitchen",
+          name: "The other Kitchen TV",
+          type: "external"
+        },
+        {
+          usn: "usn2",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.12",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "Kitchen",
+          name: "The other Kitchen TV",
+          type: "external"
+        },
+        {
+          usn: "usn3",
+          ssdpDescriptionLocation: "",
+          ipAddress: "10.1.1.13",
+          timeDiscovered: Date.now(),
+          timeLastSeen: Date.now(),
+          company: "Roku",
+          deviceType: "Roku TV",
+          room: "Bedroom",
+          name: "Bedroom TV",
+          type: "external"
+        },
       ],
       home: {
         name: "Leon-Lessard Home",
@@ -37,7 +109,7 @@ class HomeView extends Component {
       },
       homeController: new HomeController(this),
       internalDevices: [],
-      rooms: ["Kitchen"]
+      rooms: ["Bedroom", "Kitchen"]
     };
   }
 
@@ -91,7 +163,7 @@ class HomeView extends Component {
   _renderDevicesWithNoRoom() {
     const { externalDevices, internalDevices } = this.state;
     const devices = internalDevices.filter(device => device.room === "none").concat(externalDevices.filter(device => device.room === "none"));
-    return <Room name="none" devices={devices} />;
+    return <Room name="none" devices={devices} key={'room-none'} />;
   }
 }
 

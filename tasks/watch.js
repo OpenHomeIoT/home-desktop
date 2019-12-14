@@ -21,11 +21,11 @@ function watchRendererScripts() {
 }
 
 function watchDeviceHtml() {
-  return watch(["app/device/index.html"], series(assets.copyHtml, hotreload.inject, hotreload.reload));
+  return watch(["app/device/index.html"], series(assets.copyAssets, hotreload.inject, hotreload.reload));
 }
 
 function watchRendererHtml() {
-  return watch(["app/renderer/index.html"], series(assets.copyHtml, hotreload.inject, hotreload.reload));
+  return watch(["app/renderer/index.html"], series(assets.copyAssets, hotreload.inject, hotreload.reload));
 }
 
 watchMainScripts.displayName = 'watch-main-scripts';
@@ -34,7 +34,7 @@ watchDeviceHtml.displayName = 'watch-device-html';
 watchRendererHtml.displayName = 'watch-renderer-html';
 
 exports.start = series(
-  assets.copyHtml,
+  assets.copyAssets,
   scripts.developBuild,
   hotreload.start,
   electron.start,
@@ -42,7 +42,7 @@ exports.start = series(
 );
 
 exports.startDebug = series(
-  assets.copyHtml,
+  assets.copyAssets,
   scripts.developBuild,
   electron.startDebug
 )

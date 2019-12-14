@@ -10,7 +10,7 @@ task('clean', function(done) {
   rimraf('./build', done);
 });
 task("clean-databases", done => rimraf("./oshiot_*", done));
-task('build', series('clean', assets.copyHtml, scripts.build));
+task('build', series('clean', assets.copyAssets, scripts.build));
 task('develop', series('clean', watch.start));
 task('debug', series('clean', watch.startDebug));
 task('pack-win', series('build', dist.packWin));

@@ -11,7 +11,9 @@ class IconButton extends Component {
         };
     }
     render() {
-        let style = {
+        const { children, color, size, style: compStyle, onClick } = this.props;
+        const { pressed } = this.state;
+        const style = {
             iconButton: {
                 position: "relative",
                 boxSizing: "border-box",
@@ -20,7 +22,7 @@ class IconButton extends Component {
                 verticalAlign: "middle",
                 textAlign: "center",
                 padding: ".5em .5em .35em .5em",
-                fontSize: ".8rem",
+                fontSize: size || ".8rem",
                 overflow: "hidden",
                 outline: "none",
                 cursor: "pointer",
@@ -29,13 +31,15 @@ class IconButton extends Component {
                 display: "inline-block"
             }
         };
+        Object.assign(style.iconButton, compStyle);
 
-        if (this.state.pressed) {
+        if (pressed) {
             style.iconButton.backgroundColor = "#eeeeee";
         }
+
         return (
-            <div style={style.iconButton} onClick={this.props.onClick} onMouseDown={() => this.togglePress()} onMouseUp={() => this.togglePress()}>
-                <Icon color={this.props.color}>{this.props.children}</Icon>
+            <div style={style.iconButton} onClick={onClick} onMouseDown={() => this.togglePress()} onMouseUp={() => this.togglePress()}>
+                <Icon color={color} size={size}>{children}</Icon>
             </div>
         );
     }
@@ -48,6 +52,7 @@ class IconButton extends Component {
 IconButton.propTypes = {
     children: PropTypes.string,
     color: PropTypes.string,
+    size: PropTypes.any,
     onClick: PropTypes.func
 };
 

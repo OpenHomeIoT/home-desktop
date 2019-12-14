@@ -1,5 +1,6 @@
 //@ts-check
-import { app, crashReporter } from 'electron';
+import { app, crashReporter, Menu, Tray, nativeImage } from 'electron';
+import path from "path";
 import configureIpcRoutes from "./ipc/routes.js";
 import ProcessManager from "./manager/ProcessManager";
 
@@ -20,16 +21,16 @@ const initializeApp = () => {
   processManager.startWatchingProcesses();
 
   // create the tray
-  // TODO: supply icon
-  // tray = new Tray("");
-  // const contextMenu = Menu.buildFromTemplate([
-  //   { label: "Open Hub", type: "normal" },
-  //   { label: "Settings", type: "normal" },
-  //   { type: "separator" },
-  //   { label: "Exit", type: "normal" }
-  // ]);
-  // // TODO: set tooltip for tray
-  // tray.setContextMenu(contextMenu);
+  const icon = nativeImage.createFromPath(path.join(process.cwd(), "icon.png"));
+  tray = new Tray(icon);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Open Hub", type: "normal" },
+    { label: "Settings", type: "normal" },
+    { type: "separator" },
+    { label: "Exit", type: "normal" }
+  ]);
+  tray.setContextMenu(contextMenu);
+  tray.setToolTip("Home Hub");
 }
 
 const installExtensions = async () => {

@@ -6,8 +6,10 @@ const Row = (props) => {
         row: {
             display: "block",
             margin: "0 auto",
-            maxWidth: 1280,
-            minWidth: 960
+            maxWidth: 1080,
+            minWidth: 770,
+            overflow: "hidden",
+            clear: "both"
         }
     };
     Object.assign(style.row, props.style);
@@ -15,7 +17,6 @@ const Row = (props) => {
 }
 
 Row.propTypes = {
-    children: PropTypes.object,
     style: PropTypes.object
 };
 

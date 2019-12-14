@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 const Paper = (props) => {
     const style = {
         paper: {
-            padding: "1em",
             backgroundColor: "#fff",
             borderRadius: 3
         }
