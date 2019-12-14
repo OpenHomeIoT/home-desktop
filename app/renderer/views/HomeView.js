@@ -11,6 +11,9 @@ class HomeView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      devicesToBeSetup: [
+        { _id: "oshiot-Switchead3", ssid: "oshiot-Switchead3", timeDiscovered: Date.now() }
+      ],
       externalDevices: [
         {
           usn: "usn1",
@@ -21,7 +24,7 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Kitchen",
-          name: "Kitchen TV",
+          name: "Kitchen Light",
           status: "On",
           internal: false,
           type: "tv_roku"
@@ -35,7 +38,7 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Kitchen",
-          name: "The other Kitchen TV",
+          name: "Kitchen Light 2",
           status: "Off",
           internal: false,
           type: "tv_roku"
@@ -49,7 +52,7 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Kitchen",
-          name: "The other Kitchen TV",
+          name: "Kitchen Light 3",
           status: "Off",
           internal: false,
           type: "tv_roku"
@@ -63,7 +66,7 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Kitchen",
-          name: "The other Kitchen TV",
+          name: "Kitchen Light 4",
           status: "Off",
           internal: false,
           type: "tv_roku"
@@ -77,21 +80,7 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Kitchen",
-          name: "The other Kitchen TV",
-          status: "Off",
-          internal: false,
-          type: "tv_roku"
-        },
-        {
-          usn: "usn2",
-          ssdpDescriptionLocation: "",
-          ipAddress: "10.1.1.12",
-          timeDiscovered: Date.now(),
-          timeLastSeen: Date.now(),
-          company: "Roku",
-          deviceType: "Roku TV",
-          room: "Kitchen",
-          name: "The other Kitchen TV",
+          name: "Kitchen Light 5",
           status: "Off",
           internal: false,
           type: "tv_roku"
@@ -105,25 +94,25 @@ class HomeView extends Component {
           company: "Roku",
           deviceType: "Roku TV",
           room: "Bedroom",
-          name: "Bedroom TV",
+          name: "Bedroom Light",
           status: "On",
           internal: false,
           type: "tv_roku"
         },
-        {
-          usn: "usn3",
-          ssdpDescriptionLocation: "",
-          ipAddress: "10.1.1.13",
-          timeDiscovered: Date.now(),
-          timeLastSeen: Date.now(),
-          company: "Roku",
-          deviceType: "Roku TV",
-          room: "none",
-          name: "Floater TV",
-          status: "On",
-          internal: false,
-          type: "tv_roku"
-        },
+        // {
+        //   usn: "usn3",
+        //   ssdpDescriptionLocation: "",
+        //   ipAddress: "10.1.1.13",
+        //   timeDiscovered: Date.now(),
+        //   timeLastSeen: Date.now(),
+        //   company: "Roku",
+        //   deviceType: "Roku TV",
+        //   room: "none",
+        //   name: "Light",
+        //   status: "On",
+        //   internal: false,
+        //   type: "tv_roku"
+        // },
       ],
       home: {
         name: "Leon-Lessard Home",
@@ -141,7 +130,7 @@ class HomeView extends Component {
   }
 
   render() {
-    const { externalDevices, home, internalDevices, rooms } = this.state;
+    const { devicesToBeSetup, externalDevices, home, internalDevices, rooms } = this.state;
     const style = {
       homeView: {
         padding: "2rem 1em 1em 1em",
@@ -160,9 +149,23 @@ class HomeView extends Component {
         <Row>
           {/* TODO: home action bar */}
         </Row>
-        <br/>
-        { this._renderDevicesWithNoRoom() }
         {
+          // render the devices to be setup, if any
+          devicesToBeSetup.length > 0 &&
+          <Row>
+            {
+              devicesToBeSetup.map((device, index, devices) => {
+
+              })
+            }
+          </Row>
+        }
+        {
+          // render the devices that have not been assigned to a room in the house.
+          this._renderDevicesWithNoRoom()
+        }
+        {
+          // render the rooms in the home
           rooms.map((room, index, rooms) => {
             const devices  = internalDevices.filter(device => device.room === room).concat(externalDevices.filter(device => device.room === room));
             return <Room name={room} devices={devices} key={`${index}-room-${room}`} />;

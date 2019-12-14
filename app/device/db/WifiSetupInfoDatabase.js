@@ -20,7 +20,7 @@ class WifiSetupInfoDatabase extends Database {
       fields: [
         { name: "_id", type: "string" },
         { name: "ssid", type: "string" },
-        { name: "timeDiscovered", type: "string" }
+        { name: "timeDiscovered", type: "number" }
       ]
     }, {});
   }

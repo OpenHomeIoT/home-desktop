@@ -37,13 +37,18 @@ class DeviceThumb extends Component {
         minHeight: 180
       },
       card: {
-        minHeight: 180
+        // minHeight: 180
       },
       header: {
-        padding: "1em",
+        padding: "1em 1em 0 1em",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between"
+      },
+      body: {
+        display: "flex",
+        alignItems: "cetner",
+        justifyContent: "center"
       },
       deviceName: {
         whiteSpace: "nowrap",
@@ -77,10 +82,17 @@ class DeviceThumb extends Component {
               </DropdownButtonItem>
             </DropdownButton>
           </CardHeader>
-          <CardBody>
-            <div style={style.image}>
-              <Drawable height={128} width={128} src="internal/light-on.png" />
-            </div>
+          <CardBody style={style.body}>
+            { device.status.toLowerCase() === "on" &&
+              <div style={style.image}>
+                <Drawable height={150} width={150} src="internal/light-on.png" />
+              </div>
+            }
+            { device.status.toLowerCase() === "off" &&
+              <div style={style.image}>
+                <Drawable height={150} width={150} src="internal/light-off.png" />
+              </div>
+            }
           </CardBody>
           <CardFooter style={style.footer}>
             <Text style={{ fontSize: ".75rem" }}>{ device.status }</Text>
