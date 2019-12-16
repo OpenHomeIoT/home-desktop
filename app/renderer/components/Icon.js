@@ -4,11 +4,14 @@ import PropTypes from "prop-types";
 const Icon = (props) => {
     const style = {
         icon: {
-
+            fontSize: props.size || "1rem",
+            width: props.size || "1em",
+            height: props.size || "1em"
         },
         i: {
             color: props.color || "#000000",
-            fontSize: props.size || 20
+            width: props.size || "1em",
+            height: props.size || "1em"
         }
     };
 

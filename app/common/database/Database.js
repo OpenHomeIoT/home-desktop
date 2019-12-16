@@ -10,8 +10,8 @@ class Database {
   constructor(tableDefinition, options) {
     const { isMemoryDB } = options;
 
-    const pouchdbOptions = (isMemoryDB) ? { adapter: "memory" } : {};
-    this._db = new PouchDB(`oshiot_${tableDefinition.name}`, pouchdbOptions);
+    const pouchdbOptions = /* (isMemoryDB) ? { adapter: "memory" } : */{};
+    this._db = new PouchDB(`oshiot.db`, pouchdbOptions);
 
     this._tableDefinition = tableDefinition;
     this._options = options || {};
@@ -49,7 +49,7 @@ class Database {
    * @returns {Promise<PouchDB.Core.Response>}
    */
   delete(pk, rev) {
-    return this._db.remove(pk, rev);
+    return this._db.remove(`${this._tableDefinition.name + pk}`, rev);
   }
 
   /**
@@ -58,7 +58,7 @@ class Database {
    * @returns {Promise<boolean>}
    */
   exists(pk) {
-    return this._db.get(pk)
+    return this._db.get(`${this._tableDefinition.name + pk}`)
     .then(_ => true)
     .catch(_ => false);
   }
@@ -69,7 +69,7 @@ class Database {
    * @returns {Promise<any>} the data.
    */
   get(pk) {
-    return this._db.get(pk);
+    return this._db.get(`${this._tableDefinition.name + pk}`);
   }
 
   /**
@@ -77,7 +77,8 @@ class Database {
    * @returns {Promise<PouchDB.Core.AllDocsResponse<any>>}
    */
   getAll() {
-    return this._db.allDocs();
+    return this._db.allDocs()
+    .then(records => records.filter(record => record._id.startsWith(this._tableDefinition.name)));
   }
 
   /**

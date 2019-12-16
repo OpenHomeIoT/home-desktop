@@ -6,6 +6,9 @@ import HomeController from "../controller/HomeController";
 import Heading from "../components/Heading";
 import Room from "../components/Room";
 import Row from '../components/Row';
+import Card from '../components/card/Card';
+import Icon from '../components/Icon';
+import Text from "../components/Text";
 
 class HomeView extends Component {
   constructor(props) {
@@ -138,6 +141,21 @@ class HomeView extends Component {
       },
       homeName: {
         textAlign: "center",
+      },
+      devicesToBeSetup: {
+        padding: "0.5em 0",
+        display: "flex",
+        justifyContent: "center"
+      },
+      devicesToBeSetupCard: {
+        display: "inline",
+        padding: "1em",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      },
+      setupInfoIcon: {
+        margin: "0 1em 0 0"
       }
     };
 
@@ -152,12 +170,20 @@ class HomeView extends Component {
         {
           // render the devices to be setup, if any
           devicesToBeSetup.length > 0 &&
-          <Row>
-            {
-              devicesToBeSetup.map((device, index, devices) => {
-
-              })
-            }
+          <Row style={style.devicesToBeSetup}>
+            <Card z={2} style={style.devicesToBeSetupCard}>
+              <Icon size="1.5rem" style={style.setupInfoIcon}>info_outlined</Icon>
+              <Text>
+                {
+                  devicesToBeSetup.length === 1 &&
+                  `There is a device that needs to be configured.`
+                }
+                {
+                  devicesToBeSetup.length > 1 &&
+                  `There are ${devicesToBeSetup.length} devices that need to be configured.`
+                }
+              </Text>
+            </Card>
           </Row>
         }
         {
