@@ -1,4 +1,7 @@
-import PouchDB from "pouchdb";
+import lowdb from "lowdb";
+import FileSync from "lowdb/adapters/FileSync";
+import Memory from "lowdb/adapters/Memory";
+import uuid from "uuid/v4";
 
 class Database {
 
@@ -8,10 +11,20 @@ class Database {
    * @param {{ isMemoryDB?: boolean, isTest?: boolean }} options the options.
    */
   constructor(tableDefinition, options) {
-    const { isMemoryDB } = options;
+    const { isMemoryDB = false } = options;
 
-    const pouchdbOptions = /* (isMemoryDB) ? { adapter: "memory" } : */{};
-    this._db = new PouchDB(`oshiot.db`, pouchdbOptions);
+    if (isMemoryDB) this._adapter = new Memory();
+    else this._adapter = new FileSync(`db/${tableDefinition.name}.oshiot.db`);
+
+    this._db = new lowdb(this._adapter);
+    const tableName = tableDefinition.name;
+    const tableCount = `${tableName}Count`;
+    let defs = {};
+    defs[tableName] = [];
+    defs[tableCount] = 0;
+
+    this._db.defaults(defs)
+    .write();
 
     this._tableDefinition = tableDefinition;
     this._options = options || {};
@@ -37,19 +50,30 @@ class Database {
    * @returns {Promise<number>}
    */
   count() {
-    return this.getAll()
-    .then(records => records.length)
-    .catch(err => 0);
+    return new Promise((resolve, reject) => {
+      const count = `${this._tableDefinition.name}Count`;
+      resolve(
+        this._db.get(count)
+        .value()
+      );
+    });
   }
 
   /**
    * Delete a record from the database.
    * @param {string} pk the value of the primary key.
-   * @param {string} rev the revision of the record.
-   * @returns {Promise<PouchDB.Core.Response>}
+   * @returns {Promise<void>}
    */
-  delete(pk, rev) {
-    return this._db.remove(`${this._tableDefinition.name + pk}`, rev);
+  delete(pk) {
+    return new Promise((resolve, reject) => {
+      this._getTable()
+      .remove({ _id: pk })
+      .write();
+
+      this._decreaseRecordCount();
+
+      resolve();
+    });
   }
 
   /**
@@ -58,9 +82,9 @@ class Database {
    * @returns {Promise<boolean>}
    */
   exists(pk) {
-    return this._db.get(`${this._tableDefinition.name + pk}`)
-    .then(_ => true)
-    .catch(_ => false);
+    return this.get(pk)
+    .then(record => record != null && record != undefined && record !== {})
+    .catch(err => false);
   }
 
   /**
@@ -69,25 +93,45 @@ class Database {
    * @returns {Promise<any>} the data.
    */
   get(pk) {
-    return this._db.get(`${this._tableDefinition.name + pk}`);
+    return new Promise((resolve, reject) => {
+      resolve(
+        this._getTable()
+        .find({ _id: pk })
+        .value()
+      );
+    });
   }
 
   /**
    * Get all records from the database.
-   * @returns {Promise<PouchDB.Core.AllDocsResponse<any>>}
+   * @returns {Promise<any[]>}
    */
   getAll() {
-    return this._db.allDocs()
-    .then(records => records.filter(record => record._id.startsWith(this._tableDefinition.name)));
+    return new Promise((resolve, reject) => {
+      resolve(
+        this._getTable()
+        .value()
+      );
+    });
   }
 
   /**
    * Insert a record into the database.
    * @param {*} data the data.
-   * @returns {Promise<PouchDB.Core.Response>}
+   * @returns {Promise<void>}
    */
   insert(data) {
-    return this._db.put(data);
+    if (!data._id) data._id = uuid();
+
+    return this.exists(data._id)
+    .then(exists => {
+      if (!exists) {
+        this._getTable()
+        .push(data)
+        .write();
+        this._increaseRecordCount();
+      }
+    });
   }
 
   /**
@@ -96,7 +140,29 @@ class Database {
    * @returns {Promise<void>}
    */
   update(data) {
-    return this._db.put(data, { force: true });
+    return new Promise((resolve, reject) => {
+      this._getTable()
+      .find({ _id: data._id })
+      .assign(data)
+      .write();
+      resolve();
+    });
+  }
+
+  _decreaseRecordCount() {
+    const count = `${this._tableDefinition.name}Count`;
+    const currentCount = this._db.get(count).value();
+    return this._db.set(count, currentCount - 1).write();
+  }
+
+  _getTable() {
+    return this._db.get(this._tableDefinition.name);
+  }
+
+  _increaseRecordCount() {
+    const count = `${this._tableDefinition.name}Count`;
+    const currentCount = this._db.get(count).value();
+    return this._db.set(count, currentCount + 1).write();
   }
 
   /**

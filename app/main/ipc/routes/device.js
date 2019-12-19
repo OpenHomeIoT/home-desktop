@@ -3,29 +3,22 @@ import IoTDevice from "../../../common/device/IoTDevice";
 import ProcessManager from "../../manager/ProcessManager";
 import Destination from "../../../common/ipc/Destination";
 import Channel from "../../../common/ipc/Channel";
-import IpcHelper from "../../../common/ipc/IpcHelper";
 
 const processManager = ProcessManager.getInstance();
 
 /**
  * Get All Devices.
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data?: { devices: IoTDevice[] } }} message
+ * @param {{ origin: string, destination: string, requestID: string, data?: { devices: IoTDevice[] } }} message
  */
 const onGetAllDevices = (event, message) => {
   const { origin, destination } = message;
   switch (destination) {
     case Destination.device:
-      const deviceProcess = processManager.getDeviceProcess();
-      if (deviceProcess) {
-        deviceProcess.webContents.send(Channel.DEVICE_GET_ALL_DEVICES, message);
-      }
+      _sendToDeviceProcess(Channel.DEVICE_GET_ALL_DEVICES, message);
       break;
     case Destination.renderer:
-      const rendererProcess = processManager.getRendererProcess();
-      if (rendererProcess) {
-        rendererProcess.webContents.send(Channel.DEVICE_GET_ALL_DEVICES, message);
-      }
+      _sendToRendererProcess(Channel.DEVICE_GET_ALL_DEVICES, message);
       break;
   }
 }
@@ -33,18 +26,16 @@ const onGetAllDevices = (event, message) => {
 /**
  * Get a device.
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data: { usn?: string, device?: IoTDevice} }} message
+ * @param {{ origin: string, destination: string, requestID: string, data: { usn?: string, device?: IoTDevice} }} message
  */
 const onGetDevice = (event, message) => {
   const { destination } = message;
   switch (destination) {
     case Destination.device:
-      const deviceProcess = processManager.getDeviceProcess();
-      if (deviceProcess) deviceProcess.webContents.send(Channel.DEVICE_GET_DEVICE, message);
+      _sendToDeviceProcess(Channel.DEVICE_GET_DEVICE, message);
       break;
     case Destination.renderer:
-      const rendererProcess = processManager.getRendererProcess();
-      if (rendererProcess) rendererProcess.webContents.send(Channel.DEVICE_GET_DEVICE, message);
+      _sendToRendererProcess(Channel.DEVICE_GET_DEVICE, message);
       break;
     default:
       // TODO: handle
@@ -55,18 +46,16 @@ const onGetDevice = (event, message) => {
 /**
  *
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data: { device: IoTDevice} }} message
+ * @param {{ origin: string, destination: string, requestID: string, data?: { devicesToBeConfigured: { _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }[] } }} message
  */
-const onUpdateDevice = (event, message) => {
+const onGetDevicesToBeConfigured = (event, message) => {
   const { destination } = message;
   switch (destination) {
     case Destination.device:
-      const deviceProcess = processManager.getDeviceProcess();
-      if (deviceProcess) deviceProcess.webContents.send(Channel.DEVICE_UPDATE_DEVICE, message);
+      _sendToDeviceProcess(Channel.DEVICE_GET_DEVICES_TO_CONFIGURE, message);
       break;
     case Destination.renderer:
-      const rendererProcess = processManager.getRendererProcess();
-      if (rendererProcess) rendererProcess.webContents.send(Channel.DEVICE_UPDATE_DEVICE, message);
+      _sendToRendererProcess(Channel.DEVICE_GET_DEVICES_TO_CONFIGURE, message);
       break;
     default:
       // TODO: handle
@@ -74,8 +63,71 @@ const onUpdateDevice = (event, message) => {
   }
 }
 
+const onDeviceToBeConfiguredWentOffline = (event, message) => {
+  const { destination } = message;
+  switch (destination) {
+    case Destination.device:
+      _sendToDeviceProcess(Channel.DEVICE_DEVICE_TO_CONFIGURE_OFFLINE, message);
+      break;
+    case Destination.renderer:
+      _sendToRendererProcess(Channel.DEVICE_DEVICE_TO_CONFIGURE_OFFLINE, message);
+      break;
+    default:
+      // TODO: handle
+      break;
+  }
+}
+
+const onNewDeviceToBeConfigured = (event, message) => {
+  const { destination } = message;
+  switch (destination) {
+    case Destination.device:
+      _sendToDeviceProcess(Channel.DEVICE_NEW_DEVICE_TO_CONFIGURE, message);
+      break;
+    case Destination.renderer:
+      _sendToRendererProcess(Channel.DEVICE_NEW_DEVICE_TO_CONFIGURE, message);
+      break;
+    default:
+      // TODO: handle
+      break;
+  }
+}
+
+/**
+ *
+ * @param {Electron.IpcMainEvent} event
+ * @param {{ origin: string, destination: string, requestID: string, data: { device: IoTDevice} }} message
+ */
+const onUpdateDevice = (event, message) => {
+  const { destination } = message;
+  switch (destination) {
+    case Destination.device:
+      _sendToDeviceProcess(Channel.DEVICE_UPDATE_DEVICE, message);
+      break;
+    case Destination.renderer:
+      _sendToRendererProcess(Channel.DEVICE_UPDATE_DEVICE, message);
+      break;
+    default:
+      // TODO: handle
+      break;
+  }
+}
+
+const _sendToDeviceProcess = (channel, message) => {
+  const deviceProcess = processManager.getDeviceProcess();
+  if (deviceProcess) deviceProcess.webContents.send(channel, message);
+}
+
+const _sendToRendererProcess = (channel, message) => {
+  const rendererProcess = processManager.getRendererProcess();
+  if (rendererProcess) rendererProcess.webContents.send(channel, message);
+}
+
 export default {
   onGetAllDevices,
   onGetDevice,
+  onGetDevicesToBeConfigured,
+  onDeviceToBeConfiguredWentOffline,
+  onNewDeviceToBeConfigured,
   onUpdateDevice
 };

@@ -15,20 +15,23 @@ class IconButton extends Component {
         const { pressed } = this.state;
         const style = {
             iconButton: {
+                // minHeight: size || "1em",
+                // minWidth: size || "1em",
                 position: "relative",
-                boxSizing: "border-box",
                 border: "none",
                 borderRadius: 4,
                 verticalAlign: "middle",
                 textAlign: "center",
-                padding: ".5em .5em .35em .5em",
+                padding: ".5em",
                 fontSize: size || ".8rem",
                 overflow: "hidden",
                 outline: "none",
                 cursor: "pointer",
                 userSelect: "none",
                 WebkitUserSelect: "none",
-                display: "inline-block"
+                // display: "flex",
+                // alignItems: "center",
+                // justifyContent: "center"
             }
         };
         Object.assign(style.iconButton, compStyle);

@@ -10,6 +10,7 @@ import Appbar from "./components/appbar/Appbar";
 import AppbarToggleButton from "./components/appbar/AppbarToggleButton";
 import AppTitle from "./components/appbar/AppTitle";
 import AppTitleContainer from "./components/appbar/AppTitleContainer";
+import IconButton from "./components/IconButton";
 import NavContent from "./components/navdrawer/NavContent";
 import NavDrawer from "./components/navdrawer/NavDrawer";
 import NavHeader from "./components/navdrawer/NavHeader";
@@ -21,7 +22,7 @@ import HomeView from "./views/HomeView";
 import AutomationsView from "./views/AutomationsView";
 import RoutinesView from "./views/RoutinesView";
 import SettingsView from "./views/SettingsView";
-import IconButton from "./components/IconButton";
+import DevicesSetupView from "./views/DevicesSetupView";
 
 const rootElement = document.querySelector(document.currentScript.getAttribute("data-container"));
 
@@ -107,6 +108,8 @@ class Hub extends Component {
                 <AutomationsView path="/automations" />
                 <RoutinesView path="/routines" />
                 <SettingsView path="/settings" />
+
+                <DevicesSetupView path="/devices/setup" />
               </Router>
             </AppContent>
           </div>

@@ -6,7 +6,7 @@ import Destination from "../../../common/ipc/Destination";
 /**
  *
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data: string }} message
+ * @param {{ origin: string, destination: string, requestID: string, data: string }} message
  */
 const onLog = (event, message) => {
     const { origin, data } = message;

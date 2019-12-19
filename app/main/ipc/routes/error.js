@@ -4,7 +4,7 @@ import IpcHelper from "../../../common/ipc/IpcHelper";
 /**
  * Log an error.
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data: string}} message
+ * @param {{ origin: string, destination: string, requestID: string, data: string}} message
  */
 const onError = (event, message) => {
   const { origin, data: error } = message;

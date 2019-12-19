@@ -173,7 +173,7 @@ class SsdpManager {
   }
 
   _log(message) {
-    this._ipc.send(Channel.LOG, Destination.main, `[SsdpManager] ${message}`);
+    this._ipc.send(Channel.LOG, Destination.main, null, `[SsdpManager] ${message}`);
   }
 
   /**

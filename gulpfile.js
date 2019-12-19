@@ -9,7 +9,7 @@ const dist = require('./tasks/distribution');
 task('clean', function(done) {
   rimraf('./build', done);
 });
-task("clean-databases", done => rimraf("./oshiot_*", done));
+task("clean-databases", done => rimraf("./db", done));
 task('build', series('clean', assets.copyAssets, scripts.build));
 task('develop', series('clean', watch.start));
 task('debug', series('clean', watch.startDebug));

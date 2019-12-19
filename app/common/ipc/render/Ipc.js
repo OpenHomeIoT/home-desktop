@@ -14,7 +14,7 @@ class Ipc {
     /**
      * Register a callback for a message from another process. // TODO: add support for multiple callbacks per channel.
      * @param {string} channel the channel to recieve the message in.
-     * @param {({ origin: string, destination: string, data: any }) => {}} cb the callback function.
+     * @param {({ origin: string, destination: string, requestID, data: any }) => {}} cb the callback function.
      */
     on(channel, cb) {
         ipcRenderer.on(channel, (_, message) => {
@@ -28,10 +28,11 @@ class Ipc {
      * Send a message to another process.
      * @param {string} channel the channel to send the message in.
      * @param {string} destination the name of the destination process.
+     * @param {string} requestID the request ID.
      * @param {any} data the data to send.
      */
-    send(channel, destination, data) {
-        const message = IpcHelper.createMessage(this._process, destination, data);
+    send(channel, destination, requestID, data) {
+        const message = IpcHelper.createMessage(this._process, destination, requestID, data);
         ipcRenderer.send(channel, message);
     }
 }

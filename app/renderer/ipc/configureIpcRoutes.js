@@ -8,14 +8,14 @@ const ipc = new Ipc(Destination.renderer);
 const configureIpcRoutes = () => {
   ipc.on(Channel.HEALTH, message => {
     if (IpcHelper.messageIsFrom(message, Destination.main)) {
-      ipc.send(Channel.HEALTH, Destination.main, { status: "OK" });
+      ipc.send(Channel.HEALTH, Destination.main, message.requestID, { status: "OK" });
     }
   });
 
   ipc.on(Channel.PROCESS_QUIT, message => {
     if (IpcHelper.messageIsFrom(message, Destination.main)) {
       // TODO: handle quit
-      ipc.send(Channel.PROCESS_QUIT, Destination.main, null);
+      ipc.send(Channel.PROCESS_QUIT, Destination.main, message.requestID);
     }
   })
 
@@ -24,7 +24,7 @@ const configureIpcRoutes = () => {
 
   process.on("uncaughtException", err => {
     // TODO: implement
-    ipc.send(Channel.LOG, Destination.main, JSON.stringify(err))
+    ipc.send(Channel.LOG, Destination.main, null, JSON.stringify(err))
   });
 };
 

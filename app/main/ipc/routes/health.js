@@ -7,7 +7,7 @@ const processManager = ProcessManager.getInstance();
 /**
  * Called when a health status update from a process arrives.
  * @param {Electron.IpcMainEvent} event
- * @param {{ origin: string, destination: string, data: { status: string } }} message
+ * @param {{ origin: string, destination: string, requestID: string, data: { status: string } }} message
  */
 const onHealth = (event, message) => {
     const { origin, data } = message;

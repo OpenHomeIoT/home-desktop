@@ -48,7 +48,7 @@ export default class ProcessManager {
             }
         });
         this._deviceProcess.loadFile(path.resolve(path.join(CWD, "build/device/index.html")));
-        this._deviceProcess.on("ready-to-show", () =>{ console.log("[ProcessManager] Initializing the Device process."); this._deviceProcess.show(); });
+        this._deviceProcess.on("ready-to-show", () =>{ console.log("[ProcessManager] Initializing the Device process."); this._deviceProcess.show(); this._deviceProcess.webContents.openDevTools(); });
         this._deviceProcess.on("close", () => this._deviceProcess = null);
         return this._deviceProcess;
     }
@@ -137,7 +137,7 @@ export default class ProcessManager {
      */
     startWatchingProcesses() {
         console.log("[ProcessManager] Watching processes.");
-        this._timer = setInterval(() => this._checkProcesses(), 10000);
+        this._timer = setInterval(() => this._checkProcesses(), 2000);
     }
 
     /**

@@ -1,6 +1,8 @@
 import wifi from "node-wifi";
 import WifiSetupInfoDatabase from "../db/WifiSetupInfoDatabase";
-import { reverse } from "dns";
+import Ipc from "../../common/ipc/render/Ipc";
+import Destination from "../../common/ipc/Destination";
+import Channel from "../../common/ipc/Channel";
 
 class WifiManager {
 
@@ -18,6 +20,7 @@ class WifiManager {
 
   constructor() {
     this._wifiSetupInfoDB = WifiSetupInfoDatabase.getInstance();
+    this._ipc = new Ipc(Destination.device);
 
     // binding
     this.initialize = this.initialize.bind(this);
@@ -37,8 +40,8 @@ class WifiManager {
    * Start listening for Open Source Home IoT devices that need to be configured.
    */
   startListening() {
-    this._searchTimer = setInterval(() => this._searchForDevices(), 60000);
-    this._cleanTimer = setInterval(() => this._cleanupOldWifiInfo(), 60000);
+    this._searchTimer = setInterval(() => this._searchForDevices(), 15000);
+    this._cleanTimer = setInterval(() => this._cleanupOldWifiInfo(), 15000);
     this._searchForDevices();
   }
 
@@ -75,19 +78,21 @@ class WifiManager {
     const wifiDB = this._wifiSetupInfoDB;
     const internalDevices = networks.filter(network => network.ssid.toLowerCase().startsWith("oshiot-"));
     if (internalDevices.length > 0) {
+      const now = Date.now();
       internalDevices.forEach(network => {
-        wifiDB.exists(network)
+        wifiDB.exists(network.ssid)
         .then(exists => {
           if (!exists) {
-            // insert the wifi info into the database
-            return wifiDB.insert({ id: network, ssid: network, timeDiscovered: Date.now() });
+            const wifiInfo = { _id: network.ssid, ssid: network.ssid, timeDiscovered: now, timeLastSeen: now };
+            this._ipc.send(Channel.DEVICE_NEW_DEVICE_TO_CONFIGURE, Destination.renderer, null, wifiInfo);
+            return wifiDB.insert(wifiInfo);
           } else {
             // update the timeLastSeen of the wifi info
-            return wifiDB.get(network)
+            return wifiDB.get(network.ssid)
             .then(wifiInfo => {
-              wifiInfo.timeLastSeen = Date.now();
-
-            })
+              wifiInfo.timeLastSeen = now;
+              return wifiDB.update(wifiInfo);
+            });
           }
         })
       });
@@ -104,12 +109,13 @@ class WifiManager {
 
   /**
    * Verify a Wifi info record.
-   * @param {{ _id: string, _rev, ssid: string, timeDiscovered: number, timeLastSeen: number }} param0 the wifi info.
+   * @param {{ _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }} wifiInfo the wifi info.
    */
-  _verifyWifiInfo({ _id, _rev, ssid, timeDiscovered, timeLastSeen }) {
+  _verifyWifiInfo(wifiInfo) {
     const currentTime = Date.now();
-    if (currentTime - timeLastSeen > (2 * 60000)) {
-      return this._wifiSetupInfoDB.delete(_id, _rev);
+    if (currentTime - wifiInfo.timeLastSeen > 30000) {
+      this._ipc.send(Channel.DEVICE_DEVICE_TO_CONFIGURE_OFFLINE, Destination.renderer, null, wifiInfo);
+      return this._wifiSetupInfoDB.delete(wifiInfo._id);
     }
     return Promise.resolve();
   }
