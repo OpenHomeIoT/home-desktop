@@ -43,9 +43,9 @@ class DevicesSetupController {
   _loadDevicesToBeSetup() {
     const hostname = "127.0.0.1";
     const port = 30027;
-    request(`${hostname}:${port}/device/internal/configurable`, (err, response, body) => {
+    request(`http://${hostname}:${port}/device/configurable`, (err, response, body) => {
       if (err) {
-        // TODO: this._view.showError(err) or something like that
+        alert(err);
         return;
       }
       const devices = JSON.parse(body);

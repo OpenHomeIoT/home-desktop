@@ -56,13 +56,12 @@ class HomeController {
   _loadDevicesToBeSetup() {
     const hostname = "127.0.0.1";
     const port = 30027;
-    request(`http://${hostname}:${port}/device/internal/configurable`, (err, request, body) => {
+    request(`http://${hostname}:${port}/device/configurable`, (err, request, body) => {
       if (err) {
         // TODO: this._view.showError(err);
         alert(err);
         return;
       }
-      alert(body);
       const devices = JSON.parse(body);
       this._homeView.showDevicesToBeConfigured(devices);
     });
