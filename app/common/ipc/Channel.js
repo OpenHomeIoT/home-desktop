@@ -1,9 +1,10 @@
 
 const DEVICE_GET_ALL_DEVICES = "device.getAllDevices";
 const DEVICE_GET_DEVICE = "device.getDevice";
-const DEVICE_GET_DEVICES_TO_CONFIGURE = "devices.getDevicesToConfigure";
-const DEVICE_NEW_DEVICE_TO_CONFIGURE = "devices.onNewDeviceToConfigure";
-const DEVICE_DEVICE_TO_CONFIGURE_OFFLINE = "devices.onDeviceToConfigureWentOffline";
+const DEVICE_GET_DEVICE_TO_CONFIGURE = "device.getdeviceToConfigure";
+const DEVICE_GET_DEVICES_TO_CONFIGURE = "device.getDevicesToConfigure";
+const DEVICE_NEW_DEVICE_TO_CONFIGURE = "device.onNewDeviceToConfigure";
+const DEVICE_DEVICE_TO_CONFIGURE_OFFLINE = "device.onDeviceToConfigureWentOffline";
 const DEVICE_UPDATE_DEVICE = "device.updateDevice";
 
 const ERROR = "error";
@@ -19,6 +20,7 @@ const PROCESS_QUIT = "process.quit";
 export default {
   DEVICE_GET_ALL_DEVICES,
   DEVICE_GET_DEVICE,
+  DEVICE_GET_DEVICE_TO_CONFIGURE,
   DEVICE_GET_DEVICES_TO_CONFIGURE,
   DEVICE_NEW_DEVICE_TO_CONFIGURE,
   DEVICE_DEVICE_TO_CONFIGURE_OFFLINE,

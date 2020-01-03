@@ -1,4 +1,4 @@
-import DeviceMediator from "../ipc/DeviceMediator";
+import request from "request";
 
 class HomeController {
 
@@ -8,7 +8,6 @@ class HomeController {
    */
   constructor(homeView) {
     this._homeView = homeView;
-    this._deviceMediator = DeviceMediator.getInstance();
 
     this._handleNewDeviceToBeConfigured = this._handleNewDeviceToBeConfigured.bind(this);
     this._handleDeviceToBeConfiguredWentOffline = this._handleDeviceToBeConfiguredWentOffline.bind(this);
@@ -23,12 +22,8 @@ class HomeController {
     this._loadExternalDevices();
     this._loadInternalDevices();
 
-    // binding
-    this._handleDeviceToBeConfiguredWentOffline = this._handleDeviceToBeConfiguredWentOffline.bind(this);
-    this._handleNewDeviceToBeConfigured = this._handleNewDeviceToBeConfigured.bind(this);
-
-    this._deviceMediator.listenForNewDeviceToBeConfigured(this._handleNewDeviceToBeConfigured);
-    this._deviceMediator.listenForDeviceToBeConfiguredWentOffline(this._handleDeviceToBeConfiguredWentOffline);
+    // this._deviceMediator.listenForNewDeviceToBeConfigured(this._handleNewDeviceToBeConfigured);
+    // this._deviceMediator.listenForDeviceToBeConfiguredWentOffline(this._handleDeviceToBeConfiguredWentOffline);
   }
 
 
@@ -59,9 +54,18 @@ class HomeController {
    * Load the devices that need to be configured to connect to the Hub.
    */
   _loadDevicesToBeSetup() {
-    this._deviceMediator.getAllDevicesToBeConfigured()
-    .then(devices => this._homeView.showDevicesToBeConfigured(devices))
-    .catch(err => alert(err));
+    const hostname = "127.0.0.1";
+    const port = 30027;
+    request(`http://${hostname}:${port}/device/internal/configurable`, (err, request, body) => {
+      if (err) {
+        // TODO: this._view.showError(err);
+        alert(err);
+        return;
+      }
+      alert(body);
+      const devices = JSON.parse(body);
+      this._homeView.showDevicesToBeConfigured(devices);
+    });
   }
 
   /**
