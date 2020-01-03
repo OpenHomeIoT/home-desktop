@@ -20,15 +20,6 @@ function startBrowserSync(done) {
   );
 }
 
-function injectBrowserSyncDevice() {
-  return src('app/device/index.html')
-    .pipe(inject.before('</body>', browserSync.getOption('snippet')))
-    .pipe(
-      inject.after('script-src', " 'unsafe-eval' " + browserSync.getOption('urls').get('local')),
-    )
-    .pipe(dest('build/device'));
-}
-
 function injectBrowserSyncRenderer() {
   return src('app/renderer/index.html')
     .pipe(inject.before('</body>', browserSync.getOption('snippet')))
@@ -45,9 +36,8 @@ function reloadBrowser(done) {
 
 startBrowserSync.displayName = 'start-hotreload';
 reloadBrowser.displayName = 'reload-hotreload';
-injectBrowserSyncDevice.displayName = 'inject-hotreload-device';
 injectBrowserSyncRenderer.displayName = 'inject-hotreload-renderer';
 
-exports.start = series(startBrowserSync, parallel(injectBrowserSyncDevice, injectBrowserSyncRenderer));
-exports.inject = parallel(injectBrowserSyncDevice, injectBrowserSyncRenderer);
+exports.start = series(startBrowserSync, injectBrowserSyncRenderer);
+exports.inject = injectBrowserSyncRenderer;
 exports.reload = reloadBrowser;
