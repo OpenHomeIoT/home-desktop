@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from "@reach/router";
 
-import DevicesSetupController from "../controller/DevicesSetupController";
-import Card from "../components/card/Card";
-import Heading from "../components/Heading";
-import Row from "../components/Row";
-import CardHeader from '../components/card/CardHeader';
-import CardBody from '../components/card/CardBody';
-import Text from "../components/Text";
-import CardFooter from '../components/card/CardFooter';
-import Icon from '../components/Icon';
+import DevicesSetupController from "../../controller/DevicesSetupController";
+import Card from "../../components/card/Card";
+import Heading from "../../components/Heading";
+import Row from "../../components/Row";
+import CardHeader from '../../components/card/CardHeader';
+import CardBody from '../../components/card/CardBody';
+import Text from "../../components/Text";
+import CardFooter from '../../components/card/CardFooter';
+import Icon from '../../components/Icon';
 
 class DevicesSetupView extends Component {
 
@@ -116,7 +116,7 @@ class DevicesSetupView extends Component {
                   <CardBody style={style.body}>
                     <Text style={style.discovered}>{`Discovered: ${dateDiscovered} at ${timeDiscovered}`}</Text>
                   </CardBody>
-                  <Link to={`/device/setup/${device._id}`} style={style.link}>
+                  <Link to={`/device/setup/${device.ssid}`} style={style.link}>
                     <CardFooter style={style.footer}>
                         <Text>Setup</Text>
                         <Icon size="1.5rem">arrow_right</Icon>

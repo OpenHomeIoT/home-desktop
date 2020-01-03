@@ -181,7 +181,7 @@ class HomeView extends Component {
           // render the devices to be setup, if any
           devicesToBeConfigured.length > 0 &&
           <Row style={style.devicesToBeConfigured}>
-            <Link to="/devices/setup" style={style.setupLink}>
+            <Link to="/device/setup" style={style.setupLink}>
               <Card z={2} style={style.devicesToBeConfiguredCard}>
                 <Icon size="1.5rem" style={style.setupInfoIcon}>info_outlined</Icon>
                 <Text>

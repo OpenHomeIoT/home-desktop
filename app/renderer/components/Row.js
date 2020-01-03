@@ -5,7 +5,8 @@ const Row = (props) => {
     const style = {
         row: {
             display: "block",
-            margin: "0 auto",
+            marginLeft: "auto",
+            marginRight: "auto",
             maxWidth: 1080,
             minWidth: 770,
             overflow: "hidden",

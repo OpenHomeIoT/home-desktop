@@ -1,4 +1,5 @@
 import request from "request";
+import DeviceMangager from "../manager/DeviceManager";
 
 class HomeController {
 
@@ -8,6 +9,7 @@ class HomeController {
    */
   constructor(homeView) {
     this._homeView = homeView;
+    this._deviceManager = DeviceMangager.getInstance();
 
     this._handleNewDeviceToBeConfigured = this._handleNewDeviceToBeConfigured.bind(this);
     this._handleDeviceToBeConfiguredWentOffline = this._handleDeviceToBeConfiguredWentOffline.bind(this);
@@ -54,17 +56,9 @@ class HomeController {
    * Load the devices that need to be configured to connect to the Hub.
    */
   _loadDevicesToBeSetup() {
-    const hostname = "127.0.0.1";
-    const port = 30027;
-    request(`http://${hostname}:${port}/device/configurable`, (err, request, body) => {
-      if (err) {
-        // TODO: this._view.showError(err);
-        alert(err);
-        return;
-      }
-      const devices = JSON.parse(body);
-      this._homeView.showDevicesToBeConfigured(devices);
-    });
+    this._deviceManager.getAllToBeConfigured()
+    .then(toBeConfigured => this._homeView.showDevicesToBeConfigured(toBeConfigured))
+    .catch(err => alert(err));
   }
 
   /**

@@ -1,4 +1,5 @@
 import request from "request";
+import DeviceMangager from "../manager/DeviceManager";
 
 class DevicesSetupController {
 
@@ -8,6 +9,7 @@ class DevicesSetupController {
    */
   constructor(devicesSetupView) {
     this._view = devicesSetupView;
+    this._deviceManager = DeviceMangager.getInstance();
 
     // binding
     this._handleDeviceWentOffline = this._handleDeviceOnline.bind(this);
@@ -41,16 +43,9 @@ class DevicesSetupController {
   }
 
   _loadDevicesToBeSetup() {
-    const hostname = "127.0.0.1";
-    const port = 30027;
-    request(`http://${hostname}:${port}/device/configurable`, (err, response, body) => {
-      if (err) {
-        alert(err);
-        return;
-      }
-      const devices = JSON.parse(body);
-      this._view.showDevicesToBeConfigured(devices);
-    });
+    this._deviceManager.getAllToBeConfigured()
+    .then(toBeConfigured => this._view.showDevicesToBeConfigured(toBeConfigured))
+    .catch(err => alert(err));
   }
 }
 

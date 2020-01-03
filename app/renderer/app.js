@@ -22,7 +22,8 @@ import HomeView from "./views/HomeView";
 import AutomationsView from "./views/AutomationsView";
 import RoutinesView from "./views/RoutinesView";
 import SettingsView from "./views/SettingsView";
-import DevicesSetupView from "./views/DevicesSetupView";
+import DevicesSetupView from "./views/device/DevicesSetupView";
+import SetupDeviceView from "./views/device/SetupDeviceView";
 
 const rootElement = document.querySelector(document.currentScript.getAttribute("data-container"));
 
@@ -109,7 +110,8 @@ class Hub extends Component {
                 <RoutinesView path="/routines" />
                 <SettingsView path="/settings" />
 
-                <DevicesSetupView path="/devices/setup" />
+                <DevicesSetupView path="/device/setup" />
+                <SetupDeviceView path="/device/setup/:ssid" />
               </Router>
             </AppContent>
           </div>
