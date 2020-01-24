@@ -1,0 +1,21 @@
+.AppContent {
+  width: 100vw;
+  position: fixed;
+  z-index: 0;
+  background-color: #ecf0f1;
+  min-width: 320;
+  left: 0;
+}
+
+.Relative {
+  position: relative;
+  z-index: 0;
+  width: 100vw;
+}
+
+.Content {
+  padding: 1em;
+  z-index: 0;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}

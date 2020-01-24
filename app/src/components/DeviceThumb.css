@@ -1,0 +1,26 @@
+.DeviceThumb {
+  width: 25%;
+  float: "left";
+  min-height: 180px;
+}
+
+.ImageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em 0;
+}
+
+.Image {
+  width: 150px;
+  max-width: 150px;
+  height: 150px;
+  max-height: 150px;
+}
+
+@media(max-width: 600px) {
+  .DeviceThumb {
+    width: 100%;
+    float: unset;
+  }
+}
