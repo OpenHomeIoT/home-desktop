@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { createMemorySource, createHistory, Link, LocationProvider, Router } from "@reach/router";
+import {
+  BrowserRouter as Router,
+  Link
+} from "react-router-dom";
 
 import App from "./components/App";
 import AppContent from "./components/AppContent";
@@ -13,17 +16,10 @@ import NavHeader from "./components/navdrawer/NavHeader";
 import NavItem from "./components/navdrawer/NavItem";
 import NavItemIcon from "./components/navdrawer/NavItemIcon";
 import NavItemText from "./components/navdrawer/NavItemText";
-
-import HomeView from "./views/HomeView";
-import AutomationsView from "./views/AutomationsView";
-import RoutinesView from "./views/RoutinesView";
-import SettingsView from "./views/SettingsView";
 import IconButton from "./components/IconButton";
+import routes from "./routes";
 
 // TODO: implement redux
-
-const memorySource = createMemorySource("/");
-const history = createHistory(memorySource);
 
 class Hub extends Component {
   constructor(props) {
@@ -39,7 +35,7 @@ class Hub extends Component {
     // const { } = this.props;
     return (
       <App primaryColor="#6c5ce7">
-        <LocationProvider history={history}>
+        <Router>
           <div>
             <Appbar>
               <AppbarToggleButton onClick={ () => this._toggleNavDrawer() }>
@@ -97,15 +93,10 @@ class Hub extends Component {
               </NavContent>
             </NavDrawer>
             <AppContent>
-              <Router>
-                <HomeView path="/" />
-                <AutomationsView path="/automations" />
-                <RoutinesView path="/routines" />
-                <SettingsView path="/settings" />
-              </Router>
+              { routes }
             </AppContent>
           </div>
-        </LocationProvider>
+        </Router>
       </App>
     );
   }

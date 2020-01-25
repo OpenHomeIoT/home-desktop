@@ -12,12 +12,17 @@ const mapStateToProps = (state) => {
     };
 }
 
+const mapDispatchToProps = (dispatch) => ({
+    updateAppbarDefined: (appbarDefined) => dispatch(updateAppbarDefined(appbarDefined)),
+    updateAppbarHeight: (height) => dispatch(updateAppbarHeight(height))
+});
+
 class Appbar extends Component {
 
     componentDidMount() {
         if (!this.props.demo) {
-            this.props.dispatch(updateAppbarDefined(true));
-            this.props.dispatch(updateAppbarHeight(this.props.height || 62));
+            this.props.updateAppbarDefined(true);
+            this.props.updateAppbarHeight(this.props.height || 62);
         }
     }
 
@@ -55,4 +60,4 @@ Appbar.propTypes = {
     foregroundColor: PropTypes.string,
 };
 
-export default connect(mapStateToProps)(Appbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Appbar);

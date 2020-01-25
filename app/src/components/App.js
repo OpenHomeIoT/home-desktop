@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import uiReducer from "../redux/reducers/ui";
+import { ConnectedRouter } from "connected-react-router";
+import configureUIStore, { history } from "../redux/configureUIStore";
 import "./App.css";
 import { updatePrimaryColor, updateSecondaryColor, updateForegroundColor } from '../redux/actions/ui';
 
-const uiStore = createStore(uiReducer);
+const uiStore = configureUIStore();
 // import PropTypes from 'prop-types';
 
 
@@ -19,7 +19,7 @@ class App extends Component {
 
     render() {
         const { children } = this.props;
-        return <Provider store={uiStore}><div className="App">{ children }</div></Provider>;
+        return <Provider store={uiStore}><div className="App"><ConnectedRouter history={history}>{ children }</ConnectedRouter></div></Provider>;
     }
 }
 
