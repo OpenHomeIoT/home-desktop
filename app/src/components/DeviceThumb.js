@@ -30,7 +30,7 @@ class DeviceThumb extends Component {
   }
 
   render() {
-    const { device, style: compStyle } = this.props;
+    const { device, displayIndex, style: compStyle } = this.props;
     // const { } = this.state;
     const style = {
       deviceName: {
@@ -55,8 +55,12 @@ class DeviceThumb extends Component {
       }
     };
     Object.assign(style.deviceThumb, compStyle);
+    let className = "DeviceThumb";
+    if (displayIndex % 4 === 0) className += " Left";
+    else if ((displayIndex + 1) % 4 === 0) className += " Right";
+    else className += " Center";
     return (
-      <div className="DeviceThumb" style={style.deviceThumb}>
+      <div className={className} style={style.deviceThumb}>
         <Card>
           <CardHeader className="Header">
             <Text style={style.deviceName}>{ device.name }</Text>

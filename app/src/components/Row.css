@@ -6,3 +6,7 @@
   overflow: hidden;
   clear: both;
 }
+
+@media(max-width: 720px) {
+
+}

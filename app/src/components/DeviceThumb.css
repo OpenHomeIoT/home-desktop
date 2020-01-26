@@ -1,7 +1,19 @@
 .DeviceThumb {
   width: 25%;
-  float: "left";
+  float: left;
   min-height: 180px;
+}
+
+.DeviceThumb.Center {
+  padding: 0 .45em;
+}
+
+.DeviceThumb.Left {
+  padding: 0 .45em 0 0;
+}
+
+.DeviceThumb.Right {
+  padding: 0 0 0 .45em;
 }
 
 .ImageContainer {
@@ -12,15 +24,20 @@
 }
 
 .Image {
-  width: 150px;
-  max-width: 150px;
-  height: 150px;
-  max-height: 150px;
+  width: 125px;
+  max-width: 125px;
+  height: 125px;
+  max-height: 125px;
 }
 
-@media(max-width: 600px) {
+@media(max-width: 720px) {
   .DeviceThumb {
     width: 100%;
     float: unset;
+    margin: 1em 0 0 0;
   }
+
+  .DeviceThumb.Right { padding: 0; }
+  .DeviceThumb.Center { padding: 0; }
+  .DeviceThumb.Left { padding: 0; }
 }

@@ -7,8 +7,8 @@ import { updateAppbarDefined, updateAppbarHeight } from '../../redux/actions/ui'
 
 const mapStateToProps = (state) => {
     return {
-        primaryColor: state.primaryColor,
-        foregroundColor: state.foregroundColor
+        primaryColor: state.ui.primaryColor,
+        foregroundColor: state.ui.foregroundColor
     };
 }
 

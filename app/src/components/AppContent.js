@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 
 import "./AppContent.css";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        appbarDefined: state.appbarDefined,
-        appbarHeight: state.appbarHeight,
-        bottomNavDefined: state.bottomNavDefined,
-        bottomNavHeight: state.bottomNavHeight
+        appbarDefined: state.ui.appbarDefined,
+        appbarHeight: state.ui.appbarHeight,
+        bottomNavDefined: state.ui.bottomNavDefined,
+        bottomNavHeight: state.ui.bottomNavHeight
     };
 }
 

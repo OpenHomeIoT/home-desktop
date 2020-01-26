@@ -12,19 +12,6 @@ import DropdownButton from "./dropdownbutton/DropdownButton";
 import DropdownButtonItem from "./dropdownbutton/DropdownButtonItem";
 
 import "./Room.css";
-// /** // TODO: remove
-//  * Get the style for a device based on its index
-//  * @param {number} index the index of the device.
-//  */
-// const getDeviceStyle = (index) => {
-//   if (index % 4 === 0) {
-//     return { padding: ".7em .7em .7em 0" };
-//   }
-//   if ((index + 1) % 4 === 0) {
-//     return { padding: ".7em 0 .7em .7em" };
-//   }
-//   return { padding: ".7em" };
-// };
 
 /**
  * Render the devices.
@@ -52,7 +39,7 @@ const renderDevices = devices => {
       // there is only one device in the row
       devicesForRow = [deviceThumbs[0]];
     }
-    rows.push(<Row style={{ padding: "0 .2em" }} key={`dr-${i}`}>{ devicesForRow }</Row>);
+    rows.push(<Row key={`dr-${i}`} style={{ padding: "0 .2em 1em .2em"}} >{ devicesForRow }</Row>);
   }
   return rows;
 }
@@ -60,9 +47,7 @@ const renderDevices = devices => {
 const Room = ({ devices, name, style: compStyle }) => {
   const style = {
     room: {},
-    devices: {
-
-    }
+    devices: {}
   };
   Object.assign(style.room, compStyle);
   return (
