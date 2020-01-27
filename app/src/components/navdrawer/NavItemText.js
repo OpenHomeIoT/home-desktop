@@ -1,16 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import "./NavItemText.css";
 const NavItemText = (props) => {
     const style = {
-        navItemText: {
-            margin: "0 1em 0 1em",
-            fontSize: "1.2rem",
-            fontWeight: 300
-        }
+        navItemText: {}
     };
+    Object.assign(style.navItemText, props.style);
     return (
-        <div style={style.navItemText}>
+        <div className="NavItemText" style={style.navItemText}>
             <span>{props.children}</span>
         </div>
     );

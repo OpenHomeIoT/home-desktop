@@ -8,10 +8,10 @@ import SettingsView from "./views/SettingsView";
 
 export default (
   <Switch>
-    <Route path="/">
+    <Route exact path="/">
       <HomeView />
     </Route>
-    <Route path="/automations">
+    <Route path="/automate">
       <AutomationsView />
     </Route>
     <Route path="/devices">

@@ -1,15 +1,13 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
+import "./CardFooter.css";
 const CardFooter = ({ children, style: compStyle }) => {
     const style = {
-        cardFooter: {
-
-        }
+        cardFooter: {}
     };
     Object.assign(style.cardFooter, compStyle);
-    // TODO: implement
-    return <div style={style.cardFooter}>{children}</div>;
+    return <div style={style.cardFooter} className="Footer">{children}</div>;
 }
 
 CardFooter.propTypes = {

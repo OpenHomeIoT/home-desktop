@@ -23,13 +23,15 @@ class DropdownButton extends Component {
     }
 
     handleClickOutside(event) {
-        if (this.dialogRef && event && !this.dialogRef.current.contains(event.target)) {
+        if (this.dialogRef &&
+            event &&
+            this.dialogRef.current &&
+            this.dialogRef.current.contains(event.target))
             this.setInvisible();
-        }
     }
 
     render() {
-        const { icon, children, style } = this.props;
+        const { icon, color, children, style } = this.props;
         let compStyle = {
             dropdownButton: {
                 cursor: "pointer",
@@ -75,7 +77,7 @@ class DropdownButton extends Component {
         }
         return (
             <div style={compStyle.dropdownButton} onClick={() => this.toggleVisibility()}>
-                <IconButton size={this.props.iconSize}>{icon}</IconButton>
+                <IconButton color={color} size={this.props.iconSize}>{icon}</IconButton>
                 <div style={compStyle.content} ref={this.dialogRef} onMouseLeave={() => this.setInvisible()}>
                     {children}
                 </div>

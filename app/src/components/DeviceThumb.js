@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Card from "./card/Card";
 import CardBody from "./card/CardBody";
@@ -16,6 +17,11 @@ import LightOff from "../drawable/internal/light-off.png";
 
 import "./DeviceThumb.css";
 
+const mapStateToProps = (state) => ({
+  primaryColor: state.ui.primaryColor,
+  foregroundColor: state.ui.foregroundColor
+});
+
 class DeviceThumb extends Component {
 
   /**
@@ -30,28 +36,28 @@ class DeviceThumb extends Component {
   }
 
   render() {
-    const { device, displayIndex, style: compStyle } = this.props;
+    const { device, displayIndex, foregroundColor, primaryColor, style: compStyle } = this.props;
     // const { } = this.state;
     const style = {
       deviceName: {
         whitespace: "nowrap",
         fontSize: ".75rem"
       },
-      deviceThumb: {
-
-      },
+      deviceThumb: {},
       body: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
       },
       footer: {
-        borderTop: "1px solid #bdc3c7",
+        // borderTop: "1px solid #bdc3c7",
         padding: "1em",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        cursor: "pointer"
+        cursor: "pointer",
+        backgroundColor: primaryColor,
+        color: foregroundColor
       }
     };
     Object.assign(style.deviceThumb, compStyle);
@@ -64,7 +70,7 @@ class DeviceThumb extends Component {
         <Card>
           <CardHeader className="Header">
             <Text style={style.deviceName}>{ device.name }</Text>
-            <DropdownButton icon="more_vert">
+            <DropdownButton icon="more_vert" color="#000000">
               <DropdownButtonItem>
                 <DropdownButtonText>Settings</DropdownButtonText>
               </DropdownButtonItem>
@@ -94,4 +100,4 @@ class DeviceThumb extends Component {
   }
 }
 
-export default DeviceThumb;
+export default connect(mapStateToProps)(DeviceThumb);

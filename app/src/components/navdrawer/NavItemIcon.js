@@ -3,15 +3,15 @@ import React from "react";
 import Icon from "../Icon";
 import PropTypes from "prop-types";
 
-const NavItemIcon = (props) => {
+import "./NavItemIcon.css";
+const NavItemIcon = ({ children, size, color, style: compStyle}) => {
     const style = {
-        navItemIcon: {
-
-        }
+        navItemIcon: {}
     };
+    Object.assign(style.navItemIcon, compStyle);
     return (
-        <div style={style.navItemIcon}>
-            <Icon size={props.size}>{props.children}</Icon>
+        <div className="NavItemIcon" style={style.navItemIcon}>
+            <Icon size={size || "1.5rem"} color={color || "#000000"}>{children}</Icon>
         </div>
     );
 };

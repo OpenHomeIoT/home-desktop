@@ -25,13 +25,12 @@ class Hub extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isNavDrawerOpen: false,
       pageTitle: "Home",
     };
   }
 
   render() {
-    const { isNavDrawerOpen, pageTitle } = this.state;
+    const { pageTitle } = this.state;
     // const { } = this.props;
     return (
       <App primaryColor="#0984e3">
@@ -45,7 +44,7 @@ class Hub extends Component {
                 <AppTitle style={{ color: "#fff" }}>{ pageTitle }</AppTitle>
               </AppTitleContainer>
             </Appbar>
-            <NavDrawer open={isNavDrawerOpen}>
+            <NavDrawer>
               <NavHeader>
 
               </NavHeader>
@@ -61,13 +60,13 @@ class Hub extends Component {
                     </NavItem>
                   </Link>
                   <Link
-                    to="/automations"
+                    to="/automate"
                     style={{textDecoration: "none"}}
-                    onClick={ () => this._setPageTitle("Automations") }
+                    onClick={ () => this._setPageTitle("Automate") }
                   >
                     <NavItem>
-                      <NavItemIcon>home</NavItemIcon>
-                      <NavItemText>Automations</NavItemText>
+                      <NavItemIcon>autorenew</NavItemIcon>
+                      <NavItemText>Automate</NavItemText>
                     </NavItem>
                   </Link>
                   <Link
@@ -76,7 +75,7 @@ class Hub extends Component {
                     onClick={ () => this._setPageTitle("Routines") }
                   >
                     <NavItem>
-                      <NavItemIcon>home</NavItemIcon>
+                      <NavItemIcon>nights_stay</NavItemIcon>
                       <NavItemText>Routines</NavItemText>
                     </NavItem>
                   </Link>
@@ -107,14 +106,6 @@ class Hub extends Component {
    */
   _setPageTitle(title) {
     this.setState({ pageTitle: title });
-  }
-
-  /**
-   * Toggle the navigation drawer.
-   */
-  _toggleNavDrawer() {
-    const { isNavDrawerOpen } = this.state;
-    this.setState({ isNavDrawerOpen: !isNavDrawerOpen });
   }
 }
 

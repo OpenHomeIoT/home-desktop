@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
-import { updateNavDrawerDefined, updateNavDrawerOpen } from '../../redux/actions/ui';
+import { updateNavDrawerDefined, updateNavDrawerOpen, updateNavDrawerClosingFromToggleButton } from '../../redux/actions/ui';
 import { connect } from 'react-redux';
+import "./NavDrawer.css";
 
 const mapStateToProps = (state) => {
     return {
@@ -15,7 +16,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     updateNavDrawerDefined: (defined) => dispatch(updateNavDrawerDefined(defined)),
-    updateNavDrawerOpen: (open) => dispatch(updateNavDrawerOpen(open))
+    updateNavDrawerOpen: (open) => dispatch(updateNavDrawerOpen(open)),
+    updateNavDrawerClosingFromToggleButton: (closingFromToggle) => dispatch(updateNavDrawerClosingFromToggleButton(closingFromToggle))
 })
 
 class NavDrawer extends Component {
@@ -24,25 +26,27 @@ class NavDrawer extends Component {
         this.state = {};
         this.ref = React.createRef();
     }
+
     componentDidMount() {
         window.addEventListener("mousedown", (event) => this.handleClickOutside(event));
         window.addEventListener("touchstart", (event) => this.handleClickOutside(event));
         this.props.updateNavDrawerDefined(true);
-        this.props.updateNavDrawerOpen(this.props.open);
+        this.props.updateNavDrawerOpen(this.props.openByDefault);
     }
+
     componentWillUnmount() {
         window.removeEventListener("mousedown", (event) => this.handleClickOutside(event));
         window.removeEventListener("touchstart", (event) => this.handleClickOutside(event));
+        this.props.updateNavDrawerClosingFromToggleButton(false);
     }
 
     handleClickOutside(event) {
-        const { open, onClose } = this.props;
-        if (open &&
+        const { navDrawerOpen, updateNavDrawerOpen } = this.props;
+        if (navDrawerOpen &&
             event &&
             this.ref &&
-            !this.ref.current.contains(event.target) &&
-            onClose) {
-            onClose();
+            !this.ref.current.contains(event.target)) {
+            updateNavDrawerOpen(false);
         }
     }
 
@@ -51,7 +55,7 @@ class NavDrawer extends Component {
     }
 
     render() {
-        const { appbarDefined, appbarHeight, bottomNavDefined, bottomNavHeight, open } = this.props;
+        const { appbarDefined, appbarHeight, bottomNavDefined, bottomNavHeight, navDrawerOpen } = this.props;
         let style = {
             navDrawer: {
                 position: "fixed",
@@ -75,7 +79,7 @@ class NavDrawer extends Component {
         }
 
 
-        if (open) {
+        if (navDrawerOpen) {
             style.navDrawer.WebkitTransform = `translate(0, 0)`;
             style.navDrawer.transform = `translate(0, 0)`;
         }
@@ -93,7 +97,7 @@ NavDrawer.propTypes = {
         PropTypes.node,
         PropTypes.arrayOf(PropTypes.node)
     ]),
-    open: PropTypes.bool.isRequired,
+    openByDefault: PropTypes.bool,
     width: PropTypes.number
 };
 

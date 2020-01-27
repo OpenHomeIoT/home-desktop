@@ -2,19 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Util from "../Util";
-import { setNavDrawerOpen } from "../config";
+import { updateNavDrawerOpen } from "../../redux/actions/ui";
+
+import "./NavItem.css";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => ({})
+
+const mapDispatchToProps = (dispatch) => ({
+    updateNavDrawerOpen: (open) => dispatch(updateNavDrawerOpen(open))
+})
 
 const NavItem = (props) => {
     let style = {
         navItem: {
             width: props.width || 240,
-            display: "flex",
-            alignContent: "center",
-            padding: ".75em 1em",
-            userSelect: "none",
-            WebkitUserSelect: "none",
-            pointerEvents: "all",
-            cursor: "pointer",
             backgroundColor: props.backgroundColor || "#ffffff",
             color: props.foregroundColor || "#000000",
         }
@@ -24,7 +26,7 @@ const NavItem = (props) => {
         style.navItem.backgroundColor = `#${Util.substractHexColor(style.navItem.backgroundColor.replace("#", ""), "222222")}`;
     }
     return (
-        <div style={style.navItem} onClick={(e) => { setNavDrawerOpen(false)}}>
+        <div className="NavItem" style={style.navItem} onClick={(e) => { props.updateNavDrawerOpen(false)}}>
             {props.children}
         </div>
     );
@@ -38,4 +40,4 @@ NavItem.propTypes = {
     foregroundColor: PropTypes.string
 };
 
-export default NavItem;
+export default connect(mapStateToProps, mapDispatchToProps)(NavItem);

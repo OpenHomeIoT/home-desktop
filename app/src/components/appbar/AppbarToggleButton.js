@@ -2,7 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./AppbarToggleButton.css";
-const AppbarToggleButton = ({ children, style: compStyle, onClick, visible = true }) => {
+import { updateNavDrawerOpen, updateNavDrawerClosingFromToggleButton } from "../../redux/actions/ui";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => ({
+    navDrawerOpen: state.ui.navDrawerOpen
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    updateNavDrawerOpen: (open) => dispatch(updateNavDrawerOpen(open)),
+    updateNavDrawerClosingFromToggleButton: (closingFromToggle) => dispatch(updateNavDrawerClosingFromToggleButton(closingFromToggle))
+})
+
+const AppbarToggleButton = ({ children, navDrawerOpen, updateNavDrawerClosingFromToggleButton, updateNavDrawerOpen, style: compStyle, visible = true }) => {
     const style = {
         button: {}
     };
@@ -13,7 +25,11 @@ const AppbarToggleButton = ({ children, style: compStyle, onClick, visible = tru
 
     Object.assign(style.button, compStyle);
     return (
-        <div className={className} style={style.button} onClick={() => { onClick && onClick() }}>
+        <div className={className} style={style.button}
+        onClick={() => {
+            updateNavDrawerClosingFromToggleButton(true);
+            updateNavDrawerOpen(!navDrawerOpen);
+        }}>
             {children}
         </div>
     );
@@ -21,9 +37,7 @@ const AppbarToggleButton = ({ children, style: compStyle, onClick, visible = tru
 
 AppbarToggleButton.propTypes = {
     children: PropTypes.object,
-    onClick: PropTypes.func,
     visible: PropTypes.bool
 };
 
-
-export default AppbarToggleButton;
+export default connect(mapStateToProps, mapDispatchToProps)(AppbarToggleButton);
