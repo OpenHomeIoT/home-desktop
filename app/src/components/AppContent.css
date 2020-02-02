@@ -5,6 +5,8 @@
   background-color: #ecf0f1;
   min-width: 320;
   left: 0;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .Relative {
@@ -15,6 +17,5 @@
 
 .Content {
   z-index: 0;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  padding: 1em;
 }
