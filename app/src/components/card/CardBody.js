@@ -1,6 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
+import "./CardBody.css";
 const CardBody = ({ children, style: compStyle }) => {
     const style = {
         body: {
@@ -8,7 +9,7 @@ const CardBody = ({ children, style: compStyle }) => {
         }
     };
     Object.assign(style.body, compStyle);
-    return <div style={style.body}>{children}</div>;
+    return <div className="CardBody" style={style.body}>{children}</div>;
 }
 
 CardBody.propTypes = {

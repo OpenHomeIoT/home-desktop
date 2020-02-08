@@ -53,7 +53,6 @@ class DeviceThumb extends Component {
       },
       footer: {
         // borderTop: "1px solid #bdc3c7",
-        padding: "1em",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -100,7 +99,7 @@ class DeviceThumb extends Component {
               </div>
             }
           </CardBody>
-          <Link to={footerLink} style={{ textDecoration: "none" }} activeStyle={{}}>
+          <Link to={footerLink} style={{ textDecoration: "none" }} activestyle={{}}>
             <CardFooter style={style.footer}>
               <Text style={{ fontSize: ".75rem" }}>{ lightServiceStatus[0].status }</Text>
               <Icon size="1.5rem">arrow_right</Icon>

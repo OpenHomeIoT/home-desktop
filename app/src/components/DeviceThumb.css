@@ -5,7 +5,7 @@
 }
 
 .DeviceThumb.Center {
-  padding: 0 .45em;
+  padding: 0 .22em 0 .22em;
 }
 
 .DeviceThumb.Left {
@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2em 0;
+  padding: 1em 0;
 }
 
 .Image {
