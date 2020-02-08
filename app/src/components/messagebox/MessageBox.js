@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import Row from "../Row";
-
-import {
-    getAppbarDefined,
-    getPrimaryColor,
-    getForegroundColor,
-    getAppbarHeight,
-    clearConfigListener,
-    openMessageBox,
-} from "../config";
 
 class MessageBox extends Component {
     constructor(props) {
@@ -28,29 +19,6 @@ class MessageBox extends Component {
 
         this.ref = React.createRef();
     }
-
-    componentDidUpdate() {
-        openMessageBox(this.ref.current.getBoundingClientRect());
-    }
-
-    componentDidMount() {
-        getAppbarDefined(this.updateAppbarDefined);
-        getAppbarHeight(this.updateAppbarHeight);
-        getForegroundColor(this.updateForegroundColor);
-        getPrimaryColor(this.updatePrimaryColor);
-    }
-
-    componentWillUnmount() {
-        clearConfigListener(this.updateAppbarDefined);
-        clearConfigListener(this.updateAppbarHeight);
-        clearConfigListener(this.updateForegroundColor);
-        clearConfigListener(this.updatePrimaryColor);
-    }
-
-    updateAppbarDefined(value) { this.setState({ appbarDefined: value }); }
-    updateAppbarHeight(value) { this.setState({ appbarHeight: value }); }
-    updateForegroundColor(value) { this.setState({ foregroundColor: value }); }
-    updatePrimaryColor(value) { this.setState({ primaryColor: value }); }
 
     render() {
         const { children, style: compStyle, visible } = this.props;

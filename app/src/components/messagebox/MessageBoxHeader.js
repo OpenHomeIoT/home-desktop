@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getForegroundColor, clearConfigListener, addMessageBoxHeader } from "../config";
 import Heading from '../Heading';
 
 class MessageBoxHeader extends Component {
@@ -29,7 +28,7 @@ class MessageBoxHeader extends Component {
 
     updateForegroundColor(value) { this.setState({ foregroundColor: value }); }
 
-    render() { 
+    render() {
         const { children, style: compStyle } = this.props;
 
         const style = {
@@ -56,5 +55,5 @@ class MessageBoxHeader extends Component {
 MessageBoxHeader.propTypes = {
 
 };
- 
+
 export default MessageBoxHeader;
