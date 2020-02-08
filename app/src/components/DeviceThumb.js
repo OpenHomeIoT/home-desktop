@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Card from "./card/Card";
@@ -36,7 +38,7 @@ class DeviceThumb extends Component {
   }
 
   render() {
-    const { device, displayIndex, foregroundColor, primaryColor, style: compStyle } = this.props;
+    const { device, displayIndex, footerLink, foregroundColor, primaryColor, style: compStyle } = this.props;
     // const { } = this.state;
     const style = {
       deviceName: {
@@ -65,6 +67,8 @@ class DeviceThumb extends Component {
     if (displayIndex % 4 === 0) className += " Left";
     else if ((displayIndex + 1) % 4 === 0) className += " Right";
     else className += " Center";
+
+    const lightServiceStatus = device.serviceStatuses.filter(serviceStatus => serviceStatus.name.indexOf("OpenHomeIoT:service:switch") !== -1);
     return (
       <div className={className} style={style.deviceThumb}>
         <Card>
@@ -78,26 +82,39 @@ class DeviceThumb extends Component {
           </CardHeader>
           <CardBody style={style.body}>
             {/* Light On */}
-            { device.status.toLowerCase() === "on" &&
+            { lightServiceStatus[0].status === "on" &&
               <div className="ImageContainer">
                 <img src={LightOn} alt="Light on" className="Image" />
               </div>
             }
             {/* Light Off */}
-            { device.status.toLowerCase() === "off" &&
+            { lightServiceStatus[0].status === "off" &&
+              <div className="ImageContainer">
+                <img src={LightOff} alt="Light off" className="Image" />
+              </div>
+            }
+            {/* Unknown */}
+            { lightServiceStatus[0].status === "unknown" &&
               <div className="ImageContainer">
                 <img src={LightOff} alt="Light off" className="Image" />
               </div>
             }
           </CardBody>
-          <CardFooter style={style.footer}>
-            <Text style={{ fontSize: ".75rem" }}>{ device.status }</Text>
-            <Icon size="1.5rem">arrow_right</Icon>
-          </CardFooter>
+          <Link to={footerLink} style={{ textDecoration: "none" }} activeStyle={{}}>
+            <CardFooter style={style.footer}>
+              <Text style={{ fontSize: ".75rem" }}>{ lightServiceStatus[0].status }</Text>
+              <Icon size="1.5rem">arrow_right</Icon>
+            </CardFooter>
+          </Link>
         </Card>
       </div>
     );
   }
 }
+
+DeviceThumb.propTypes = {
+  footerLink: PropTypes.string,
+  image: PropTypes.string
+};
 
 export default connect(mapStateToProps)(DeviceThumb);
