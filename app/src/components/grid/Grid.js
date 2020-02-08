@@ -12,7 +12,7 @@ import GridItem from "./GridItem";
  */
 const renderGridItems = (children, numColumns) => {
   // split the child GridItems into groups of size <numColumns>
-  const splitChildren = _.chunk(children, numColumns);
+  const splitChildren = (Array.isArray(children)) ? _.chunk(children, numColumns) : [[children]];
   const rows = [];
   // const width = 100 / numColumns;
   splitChildren.forEach((childArray, index, _) => {
