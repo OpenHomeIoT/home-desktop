@@ -1,0 +1,17 @@
+.GridItem {
+  float: left;
+  padding-top: .25em;
+  padding-bottom: .25em;
+  padding-left: .5em;
+  padding-right: .5em;
+}
+
+.GridItem.Left {
+  padding-right: .5em;
+  padding-left: 0;
+}
+
+.GridItem.Right {
+  padding-left: .5em;
+  padding-right: 0;
+}
