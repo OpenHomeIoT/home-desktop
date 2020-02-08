@@ -5,6 +5,7 @@
   max-width: 1080px;
   overflow: hidden;
   clear: both;
+  padding: 0 0.34em;
 }
 
 @media(max-width: 720px) {
