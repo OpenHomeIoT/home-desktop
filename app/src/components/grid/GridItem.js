@@ -4,10 +4,10 @@ import "./GridItem.css";
 
 const GridItem = ({ children, gridIndex, numColumns = 4, style: compStyle }) => {
   const style = {
-    GridItem: { width: `${100 / numColumns}%`}
+    GridItem: { }
   };
   Object.assign(style.GridItem, compStyle);
-  let className = "GridItem";
+  let className = `GridItem Col-${numColumns}`;
   if (gridIndex % numColumns === 0) className += " Left";
   else if ((gridIndex + 1) % numColumns === 0) className += " Right";
   return (

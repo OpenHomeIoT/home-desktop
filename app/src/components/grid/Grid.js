@@ -23,7 +23,6 @@ const renderGridItems = (children, numColumns) => {
       <Row key={`grid-row-${index}`}>
         {
           childArray.map((child, childIndex, _) => {
-
             return <GridItem key={`grid-item-${childIndex}-${rowKey}`} gridIndex={childIndex} numColumns={numColumns}>{ child }</GridItem>;
           })
         }

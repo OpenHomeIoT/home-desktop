@@ -1,9 +1,9 @@
 .GridItem {
   float: left;
-  padding-top: .25em;
-  padding-bottom: .25em;
-  padding-left: .5em;
-  padding-right: .5em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 
 .GridItem.Left {
@@ -14,4 +14,46 @@
 .GridItem.Right {
   padding-left: .5em;
   padding-right: 0;
+}
+
+.GridItem.Col-1 { width: 100%; }
+.GridItem.Col-2 { width: 50%; }
+.GridItem.Col-3 { width: calc(100% / 3); }
+.GridItem.Col-4 { width: 25%; }
+.GridItem.Col-5 { width: calc(100% / 5); }
+.GridItem.Col-6 { width: calc(100% / 6); }
+.GridItem.Col-7 { width: calc(100% / 7); }
+.GridItem.Col-8 { width: calc(100% / 8); }
+.GridItem.Col-9 { width: calc(100% / 9); }
+.GridItem.Col-10 { width: 10%; }
+.GridItem.Col-11 { width: calc(100% / 11); }
+.GridItem.Col-12 { width: calc(100% / 12); }
+
+@media(max-width: 720px) {
+  .GridItem {
+    padding-left: 0;
+    padding-right: 0;
+    float: none;
+  }
+  .GridItem.Left {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .GridItem.Right {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .GridItem.Col-1 { width: 100%; }
+  .GridItem.Col-2 { width: 100%; }
+  .GridItem.Col-3 { width: 100%; }
+  .GridItem.Col-4 { width: 100%; }
+  .GridItem.Col-5 { width: 100%; }
+  .GridItem.Col-6 { width: 100%; }
+  .GridItem.Col-7 { width: 100%; }
+  .GridItem.Col-8 { width: 100%; }
+  .GridItem.Col-9 { width: 100%; }
+  .GridItem.Col-10 { width: 100%; }
+  .GridItem.Col-11 { width: 100%; }
+  .GridItem.Col-12 { width: 100%; }
 }
