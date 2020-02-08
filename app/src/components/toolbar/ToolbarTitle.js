@@ -8,7 +8,7 @@ const ToolbarTitle = ({ children: title, style: compStyle }) => {
       height: 60,
       display: "inline-flex",
       alignItems: "center",
-      margin: "0 0 0 1rem"
+      margin: "0 0 0 1em"
     },
     heading: {
       margin: 0
@@ -17,7 +17,7 @@ const ToolbarTitle = ({ children: title, style: compStyle }) => {
   Object.assign(style.toolbarTitle, compStyle);
   return (
     <div style={style.toolbarTitle}>
-      <Heading h={5} style={style.heading}>{ title }</Heading>
+      <Heading h={6} style={style.heading}>{ title }</Heading>
     </div>
   );
 };
