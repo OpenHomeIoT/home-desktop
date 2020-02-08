@@ -1,4 +1,4 @@
-import DeviceMangager from "../manager/DeviceManager";
+import getDeviceManagerInstance from "../manager/DeviceManager";
 
 class HomeController {
 
@@ -8,7 +8,7 @@ class HomeController {
    */
   constructor(homeView) {
     this._homeView = homeView;
-    this._deviceManager = DeviceMangager.getInstance();
+    this._deviceManager = getDeviceManagerInstance();
 
     this._handleNewDeviceToBeConfigured = this._handleNewDeviceToBeConfigured.bind(this);
     this._handleDeviceToBeConfiguredWentOffline = this._handleDeviceToBeConfiguredWentOffline.bind(this);
@@ -71,7 +71,8 @@ class HomeController {
    * Load the Open Source Home IoT devices and show them on the view.
    */
   _loadInternalDevices() {
-    // TODO: implement
+    this._deviceManager.getAllOpenHomeIoTDevices()
+    .then(iotDevices => this._homeView.showAllOpenHomeIoTDevices(iotDevices));
   }
 }
 

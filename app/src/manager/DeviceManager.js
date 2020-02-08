@@ -1,17 +1,17 @@
 import request from "request";
 
-class DeviceMangager {
+let instance = null;
 
-  static _instance = null;
+/**
+ * Get the DeviceManager instance.
+ * @returns {DeviceManager}
+ */
+const getDeviceManagerInstance = () => {
+  if (instance == null) instance = new DeviceManager();
+  return instance;
+};
 
-  /**
-   * Get the DeviceMangager instance.
-   * @returns {DeviceMangager} the instance.
-   */
-  static getInstance() {
-    if (DeviceMangager._instance == null) DeviceMangager._instance = new DeviceMangager();
-    return DeviceMangager._instance;
-  }
+class DeviceManager {
 
   /**
    * Create a new DeviceMangager.
@@ -20,9 +20,9 @@ class DeviceMangager {
 
     // binding
     this.getAllExternal = this.getAllExternal.bind(this);
-    this.getAllInternal = this.getAllInternal.bind(this);
+    this.getAllOpenHomeIoTDevices = this.getAllOpenHomeIoTDevices.bind(this);
     this.getExternal = this.getExternal.bind(this);
-    this.getInternal = this.getInternal.bind(this);
+    this.getOpenHomeIoTDevice = this.getOpenHomeIoTDevice.bind(this);
 
     this._get = this._get.bind(this);
   }
@@ -39,25 +39,8 @@ class DeviceMangager {
    * Get all internal OpenHomeIoT devices.
    * @returns {Promise<any>} // TODO: type signature
    */
-  getAllInternal() {
-    return this._get("/device/internal");
-  }
-
-  /**
-   * Get all device that need to be setup.
-   * @returns {Promise<{ _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }[]>}
-   */
-  getAllToBeConfigured() {
-    return this._get("/device/configurable");
-  }
-
-  /**
-   * Get a device that needs to be configured.
-   * @param {string} id the id of the device that needs to be configured.
-   * @returns {Promise<{ _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }>}
-   */
-  getDeviceToBeConfigured(id) {
-    return this._get(`/device/configurable/${id}`);
+  getAllOpenHomeIoTDevices() {
+    return this._get("/device/OpenHomeIoT");
   }
 
   /**
@@ -74,8 +57,8 @@ class DeviceMangager {
    * @param {string} usn the usn of the device.
    * @returns {Promise<any>} // TODO: type signature
    */
-  getInternal(usn) {
-    return this._get(`/device/internal/${usn}`);
+  getOpenHomeIoTDevice(usn) {
+    return this._get(`/device/OpenHomeIoT/${usn}`);
   }
 
   /**
@@ -85,7 +68,7 @@ class DeviceMangager {
    */
   _get(path) {
     return new Promise((resolve, reject) => {
-      const host = "127.0.0.1";
+      const host = "homehubdev.local";
       const port = 30027;
       request({
         url: `http://${host}:${port}${path}`,
@@ -100,4 +83,5 @@ class DeviceMangager {
   }
 }
 
-export default DeviceMangager;
+export default getDeviceManagerInstance;
+export { DeviceManager };
