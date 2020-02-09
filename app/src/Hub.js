@@ -72,7 +72,6 @@ class Hub extends Component {
                   <Link
                     to="/routines"
                     style={{textDecoration: "none"}}
-                    onClick={ () => this._setPageTitle("Routines") }
                   >
                     <NavItem>
                       <NavItemIcon>nights_stay</NavItemIcon>
@@ -80,9 +79,17 @@ class Hub extends Component {
                     </NavItem>
                   </Link>
                   <Link
+                    to="/services"
+                    style={{textDecoration: "none"}}
+                  >
+                    <NavItem>
+                      <NavItemIcon>explore</NavItemIcon>
+                      <NavItemText>Services</NavItemText>
+                    </NavItem>
+                  </Link>
+                  <Link
                     to="/settings"
                     style={{textDecoration: "none"}}
-                    onClick={ () => this._setPageTitle("Settings") }
                   >
                     <NavItem>
                       <NavItemIcon>settings</NavItemIcon>
