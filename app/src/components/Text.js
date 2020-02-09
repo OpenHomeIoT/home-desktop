@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux';
 import "./Text.css";
-const Text = ({ children, style: compStyle, type = 1 }) => {
-    const style = {
-        text: {}
-    };
 
-    if (type === 2) {
-        style.text["fontSize"] = 14;
-        style.text["letterSpacing"] = 0.25;
-    }
+const mapStateToProps = (state) => ({
+    foregroundColor: state.ui.foregroundColor
+});
+
+const Text = ({ children, color, fontSize="1rem", foregroundColor, style: compStyle }) => {
+    const style = {
+        text: {
+            fontSize,
+            color: color || foregroundColor,
+        }
+    };
 
     Object.assign(style.text, compStyle);
     return (
@@ -19,9 +22,7 @@ const Text = ({ children, style: compStyle, type = 1 }) => {
 }
 
 Text.propTypes = {
-    children: PropTypes.string,
-    size: PropTypes.number,
-    type: PropTypes.number,
+    color: PropTypes.string
 };
 
-export default Text;
+export default connect(mapStateToProps)(Text);
