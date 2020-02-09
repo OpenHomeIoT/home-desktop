@@ -71,7 +71,7 @@ class DeviceThumb extends Component {
     return (
       <div className={className} style={style.deviceThumb}>
         <Card>
-          <CardHeader className="Header">
+          <CardHeader>
             <Text style={style.deviceName}>{ device.name }</Text>
             <DropdownButton icon="more_vert" color="#000000">
               <DropdownButtonItem>
