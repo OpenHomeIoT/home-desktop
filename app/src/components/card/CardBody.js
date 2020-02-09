@@ -4,9 +4,7 @@ import React from 'react';
 import "./CardBody.css";
 const CardBody = ({ children, style: compStyle }) => {
     const style = {
-        body: {
-
-        }
+        body: {}
     };
     Object.assign(style.body, compStyle);
     return <div className="CardBody" style={style.body}>{children}</div>;
