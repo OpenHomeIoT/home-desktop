@@ -5,10 +5,10 @@ import Heading from "../Heading";
 const ToolbarTitle = ({ children: title, style: compStyle }) => {
   const style = {
     toolbarTitle: {
-      height: 60,
+      height: "4em",
       display: "inline-flex",
       alignItems: "center",
-      margin: "0 0 0 1em"
+      margin: "0 0 0 1.5em"
     },
     heading: {
       margin: 0
