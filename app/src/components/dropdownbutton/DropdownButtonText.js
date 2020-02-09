@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 const DropdownButtonText = (props) => {
     const style = {
         dropdownText: {
-            margin: "3px 0 0 0",
             fontSize: ".8rem"
         }
     };
@@ -19,5 +18,5 @@ const DropdownButtonText = (props) => {
 DropdownButtonText.propTypes = {
     children: PropTypes.string
 };
- 
+
 export default DropdownButtonText;

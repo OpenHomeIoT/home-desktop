@@ -40,9 +40,9 @@ class DropdownButton extends Component {
                 visibility: "hidden",
                 position: "absolute",
                 width: 160,
-                boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
+                boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
                 zIndex: 50,
-                top: 50,
+                top: 30,
                 transform: "translate(-80%, 0)",
                 borderRadius: 4,
                 backgroundColor: "#ffffff",
@@ -52,8 +52,8 @@ class DropdownButton extends Component {
             arrow: {
                 content: "",
                 position: "absolute",
-                top: 55,
-                left: 23,
+                top: 35,
+                left: 21,
                 width: 0,
                 height: 0,
                 border: "5px solid transparent",
@@ -96,6 +96,7 @@ class DropdownButton extends Component {
 
 
 DropdownButton.propTypes = {
+    color: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.arrayOf(PropTypes.node)
