@@ -1,4 +1,5 @@
 import { jsonGet } from "../http/client";
+import Cache from "./cache/Cache";
 
 let instance = null;
 
@@ -17,6 +18,8 @@ class DeviceManager {
    * Create a new DeviceMangager.
    */
   constructor() {
+    this._externalCache = new Cache("ExternalDevices");
+    this._openHomeIoTCache = new Cache("OpenHomeIoTDevices");
 
     // binding
     this.getAllExternal = this.getAllExternal.bind(this);
@@ -30,7 +33,14 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getAllExternal() {
-    return jsonGet("/device/external");
+    return this._externalCache.count()
+    .then(count => {
+      if (count > 0) {
+        this._loadAllExternal();
+        return this._externalCache.getAll();
+      }
+      return this._loadAllExternal();
+    });
   }
 
   /**
@@ -38,7 +48,14 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getAllOpenHomeIoTDevices() {
-    return jsonGet("/device/OpenHomeIoT");
+    return this._openHomeIoTCache.count()
+    .then(count => {
+      if (count > 0) {
+        this._loadAllOpenHomeIoT()
+        return this._openHomeIoTCache.getAll();
+      }
+      return this._loadAllOpenHomeIoT();
+    });
   }
 
   /**
@@ -47,7 +64,8 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getExternal(usn) {
-    return jsonGet(`/device/external/${usn}`);
+    return this._externalCache.exists(usn)
+    .then(exists => (exists) ? this._externalCache.get(usn) : this._loadExternal(usn));
   }
 
   /**
@@ -56,7 +74,55 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getOpenHomeIoTDevice(usn) {
-    return jsonGet(`/device/OpenHomeIoT/${usn}`);
+    return this._openHomeIoTCache.exists(usn)
+    .then(exists => (exists) ? this._openHomeIoTCache.get(usn) : this._loadOpenHomeIoT(usn));
+  }
+
+  /**
+   * Load and cache all external devices.
+   * @returns Promise<any[]> // TODO: type signature.
+   */
+  _loadAllExternal() {
+    return jsonGet("/device/external")
+    .then(externalDevices => {
+      externalDevices.forEach(externalDevice => this._externalCache.insert(externalDevice));
+      return externalDevices;
+    });
+  }
+
+  /**
+   * Load and cache all OpenHomeIoT devices.
+   */
+  _loadAllOpenHomeIoT() {
+    return jsonGet("/device/OpenHomeIoT")
+    .then(iotDevices => {
+      iotDevices.forEach(iotDevice => this._openHomeIoTCache.insert(iotDevice));
+      return iotDevices;
+    });
+  }
+
+  /**
+   * Load and cache an external device.
+   * @param {string} usn the usn of the device.
+   */
+  _loadExternal(usn) {
+    return jsonGet(`/device/external/${usn}`)
+    .then(externalDevice => {
+      this._externalCache.insert(externalDevice);
+      return externalDevice;
+    });
+  }
+
+  /**
+   * Load the OpenHomeIoT device and cache it.
+   * @param {string} usn the usn of the device.
+   */
+  _loadOpenHomeIoT(usn) {
+    return jsonGet(`/device/OpenHomeIoT/${usn}`)
+    .then(iotDevice => {
+      this._openHomeIoTCache.insert(iotDevice);
+      return iotDevice;
+    })
   }
 }
 
