@@ -1,4 +1,4 @@
-import request from "request";
+import { jsonGet } from "../http/client";
 
 let instance = null;
 
@@ -23,8 +23,6 @@ class DeviceManager {
     this.getAllOpenHomeIoTDevices = this.getAllOpenHomeIoTDevices.bind(this);
     this.getExternal = this.getExternal.bind(this);
     this.getOpenHomeIoTDevice = this.getOpenHomeIoTDevice.bind(this);
-
-    this._get = this._get.bind(this);
   }
 
   /**
@@ -32,7 +30,7 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getAllExternal() {
-    return this._get("/device/external");
+    return jsonGet("/device/external");
   }
 
   /**
@@ -40,7 +38,7 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getAllOpenHomeIoTDevices() {
-    return this._get("/device/OpenHomeIoT");
+    return jsonGet("/device/OpenHomeIoT");
   }
 
   /**
@@ -49,7 +47,7 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getExternal(usn) {
-    return this._get(`/device/external/${usn}`);
+    return jsonGet(`/device/external/${usn}`);
   }
 
   /**
@@ -58,28 +56,7 @@ class DeviceManager {
    * @returns {Promise<any>} // TODO: type signature
    */
   getOpenHomeIoTDevice(usn) {
-    return this._get(`/device/OpenHomeIoT/${usn}`);
-  }
-
-  /**
-   * Perform a HTTP GET request.
-   * @param {string} path the path.
-   * @returns Promise<object> the response
-   */
-  _get(path) {
-    return new Promise((resolve, reject) => {
-      const host = "homehubdev.local";
-      const port = 30027;
-      request({
-        url: `http://${host}:${port}${path}`,
-        method: "GET"
-      }, (err, response, body) => {
-        if (err)
-          reject(err);
-        else
-          resolve(JSON.parse(body));
-      });
-    });
+    return jsonGet(`/device/OpenHomeIoT/${usn}`);
   }
 }
 
