@@ -9,9 +9,6 @@ class HomeController {
   constructor(homeView) {
     this._homeView = homeView;
     this._deviceManager = getDeviceManagerInstance();
-
-    this._handleNewDeviceToBeConfigured = this._handleNewDeviceToBeConfigured.bind(this);
-    this._handleDeviceToBeConfiguredWentOffline = this._handleDeviceToBeConfiguredWentOffline.bind(this);
   }
 
   /**
@@ -19,29 +16,8 @@ class HomeController {
    */
   viewInitialized() {
     this._loadHome();
-    this._loadDevicesToBeSetup();
     this._loadExternalDevices();
-    this._loadInternalDevices();
-
-    // this._deviceMediator.listenForNewDeviceToBeConfigured(this._handleNewDeviceToBeConfigured);
-    // this._deviceMediator.listenForDeviceToBeConfiguredWentOffline(this._handleDeviceToBeConfiguredWentOffline);
-  }
-
-
-  /**
-   *
-   * @param {{ _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }} device
-   */
-  _handleDeviceToBeConfiguredWentOffline = (device) => {
-    this._homeView.removeDeviceToBeConfigured(device);
-  }
-
-  /**
-   *
-   * @param {{ _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }} device
-   */
-  _handleNewDeviceToBeConfigured = (device) => {
-    this._homeView.showNewDeviceToBeConfigured(device);
+    this._loadOpenHomeIoTDevices();
   }
 
   /**
@@ -70,7 +46,7 @@ class HomeController {
   /**
    * Load the Open Source Home IoT devices and show them on the view.
    */
-  _loadInternalDevices() {
+  _loadOpenHomeIoTDevices() {
     this._deviceManager.getAllOpenHomeIoTDevices()
     .then(iotDevices => this._homeView.showAllOpenHomeIoTDevices(iotDevices));
   }
