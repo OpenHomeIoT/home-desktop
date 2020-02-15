@@ -8,19 +8,8 @@ import ToolbarTitle from "../../components/toolbar/ToolbarTitle";
 import ToolbarOptionContainer from "../../components/toolbar/ToolbarOptionContainer";
 import IconButton from "../../components/IconButton";
 import Grid from "../../components/grid/Grid";
-import Heading from "../../components/Heading";
-import Card from "../../components/card/Card";
-import CardHeader from "../../components/card/CardHeader";
-import CardBody from "../../components/card/CardBody";
-import CardFooter from "../../components/card/CardFooter";
-import DropdownButton from "../../components/dropdownbutton/DropdownButton";
-import DropdownButtonItem from "../../components/dropdownbutton/DropdownButtonItem";
-import DropdownButtonText from "../../components/dropdownbutton/DropdownButtonText";
-import Icon from "../../components/Icon";
-import DropdownButtonIcon from "../../components/dropdownbutton/DropdownButtonIcon";
-import Text from "../../components/Text";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import ServiceThumb from "../../components/ServiceThumb";
 
 const mapStateToProps = (state) => ({
   primaryColor: state.ui.primaryColor
@@ -30,32 +19,7 @@ const renderServices = (services, primaryColor) => {
   if (!services) return;
   // TODO: move below to ServiceThumb.js
   return (services) ? services.map((service, index, _) => (
-    <Card key={`service-${index}`}>
-      <CardHeader>
-        <div>
-          <Heading h={6}>{ service.friendlyName }</Heading>
-          <Text fontSize=".6rem" color="#555">{ service.name }</Text>
-        </div>
-        <DropdownButton icon="more_vert" color="#000000">
-          <DropdownButtonItem>
-            <DropdownButtonIcon color="#000000">settings</DropdownButtonIcon>
-            <DropdownButtonText>Settings</DropdownButtonText>
-          </DropdownButtonItem>
-        </DropdownButton>
-      </CardHeader>
-      <CardBody>
-        <Text color="#000" fontSize=".75rem">Author: { service.author }</Text>
-        <Text color="#000" fontSize=".75rem">Enabled: { (service.enabled) ? "Yes" : "No" }</Text>
-        <Text color="#000" fontSize=".75rem">Version: { service.version }</Text>
-        <Text color="#000" fontSize=".75rem">Repository: <a href={service.repositoryUrl} target="__blank">{ service.repositoryUrl }</a></Text>
-      </CardBody>
-      <Link to={`/services/${service._id}`} style={{textDecoration: "none"}}>
-        <CardFooter style={{ backgroundColor: primaryColor, display: "flex", alignContent: "center", justifyContent: "space-between" }}>
-          <span style={{ color: "#ffffff" }}>More Info</span>
-          <Icon>arrow_right</Icon>
-        </CardFooter>
-      </Link>
-    </Card>
+    <ServiceThumb key={`service-${index}`} service={service} footerLink={`/services/${service._id}`} footerText="More Info" />
   )) : null;
 }
 

@@ -62,8 +62,7 @@ class ServiceView extends Component {
         <Row>
           <Card>
             <CardBody>
-              <Card style={{ padding: ".5em", backgroundColor: primaryColor }}><Text fontSize=".75rem">{ service.description }</Text></Card>
-
+              <Card style={{ padding: ".5em", marginBottom: "1em", backgroundColor: primaryColor }}><Text fontSize=".75rem">{ service.description }</Text></Card>
               <Text color="#000" fontSize=".75rem">Author: { service.author }</Text>
               <Text color="#000" fontSize=".75rem">Service ID: { service._id }</Text>
               <Text color="#000" fontSize=".75rem">Enabled: { (service.enabled) ? "Yes" : "No" }</Text>

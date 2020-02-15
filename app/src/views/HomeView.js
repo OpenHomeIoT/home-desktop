@@ -72,19 +72,6 @@ class HomeView extends Component {
   }
 
   /**
-   * Remove the device to be configured from the array.
-   * @param {{ _id: string, ssid: string, timeDiscovered: number, timeLastSeen: number }} deviceToRemove
-   */
-  removeDeviceToBeConfigured(deviceToRemove) {
-    const { devicesToBeConfigured } = this.state;
-    const idx = this._getIndexOfDeviceToBeConfigured(deviceToRemove);
-    if (idx !== -1) {
-      devicesToBeConfigured.splice(idx, 1);
-    }
-    this.setState({ devicesToBeConfigured });
-  }
-
-  /**
    *
    * @param {{ name: string, timeCreated: number, timeLastUpdated: number }} home the home.
    */
@@ -98,30 +85,6 @@ class HomeView extends Component {
    */
   showAllOpenHomeIoTDevices(openHomeIoTDevices) {
     this.setState({ openHomeIoTDevices })
-  }
-
-  _getIndexOfDeviceToBeConfigured(deviceToBeConfigured) {
-    const { devicesToBeConfigured } = this.state;
-    let i = 0;
-    let found = false;
-    for (const device of devicesToBeConfigured) {
-      if (device._id === deviceToBeConfigured._id) {
-        found = true;
-        break;
-      }
-      i++;
-    }
-    return (found) ? i : -1;
-  }
-
-  _getDevicesToBeConfiguredText() {
-    const { devicesToBeConfigured } = this.state;
-    if (devicesToBeConfigured.length > 1) {
-      return `There are ${devicesToBeConfigured.length} devices to be configured.`;
-    }
-    if (devicesToBeConfigured.length === 1) {
-      return `There is a device that needs to be configured.`;
-    }
   }
 
   /**

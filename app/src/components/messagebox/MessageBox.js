@@ -6,16 +6,7 @@ import Row from "../Row";
 class MessageBox extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            appbarDefined: false,
-            appbarHeight: 0,
-            foregroundColor: "",
-            primaryColor: "",
-        }
-        this.updateAppbarDefined = this.updateAppbarDefined.bind(this);
-        this.updateAppbarHeight = this.updateAppbarHeight.bind(this);
-        this.updateForegroundColor = this.updateForegroundColor.bind(this);
-        this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
+        this.state = {};
 
         this.ref = React.createRef();
     }

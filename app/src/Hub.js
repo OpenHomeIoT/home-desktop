@@ -8,6 +8,7 @@ import App from "./components/App";
 import AppContent from "./components/AppContent";
 import Appbar from "./components/appbar/Appbar";
 import AppbarToggleButton from "./components/appbar/AppbarToggleButton";
+import AppbarToolbar from "./components/appbar/AppbarToolbar";
 import AppTitle from "./components/appbar/AppTitle";
 import AppTitleContainer from "./components/appbar/AppTitleContainer";
 import NavContent from "./components/navdrawer/NavContent";
@@ -18,8 +19,6 @@ import NavItemIcon from "./components/navdrawer/NavItemIcon";
 import NavItemText from "./components/navdrawer/NavItemText";
 import IconButton from "./components/IconButton";
 import routes from "./routes";
-
-// TODO: implement redux
 
 class Hub extends Component {
   constructor(props) {
@@ -33,7 +32,7 @@ class Hub extends Component {
     const { pageTitle } = this.state;
     // const { } = this.props;
     return (
-      <App primaryColor="#0984e3">
+      <App primaryColor="#00b894">
         <Router>
           <div>
             <Appbar>
@@ -43,6 +42,9 @@ class Hub extends Component {
               <AppTitleContainer>
                 <AppTitle style={{ color: "#fff" }}>{ pageTitle }</AppTitle>
               </AppTitleContainer>
+              <AppbarToolbar>
+
+              </AppbarToolbar>
             </Appbar>
             <NavDrawer>
               <NavHeader>

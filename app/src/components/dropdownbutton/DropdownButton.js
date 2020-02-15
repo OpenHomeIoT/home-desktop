@@ -14,11 +14,11 @@ class DropdownButton extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("touchstart", (event) => this.handleClickOutside(event));
+        window.addEventListener("touchend", (event) => this.handleClickOutside(event));
     }
 
     componentWillUnmount() {
-        window.removeEventListener("touchstart", (event) => this.handleClickOutside(event));
+        window.removeEventListener("touchend", (event) => this.handleClickOutside(event));
     }
 
     handleClickOutside(event) {
@@ -41,13 +41,14 @@ class DropdownButton extends Component {
                 position: "absolute",
                 width: 160,
                 boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
-                zIndex: 50,
+                zIndex: 2,
                 top: 30,
                 transform: "translate(-80%, 0)",
                 borderRadius: 4,
                 backgroundColor: "#ffffff",
                 opacity: 0,
-                transition: "opacity .2s ease-in-out"
+                transition: "opacity .2s ease-in-out",
+                cursorEvents: "all"
             },
             arrow: {
                 content: "",

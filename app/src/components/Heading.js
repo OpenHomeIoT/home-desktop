@@ -26,7 +26,7 @@ const Heading = ({ children, h = 1, style: compStyle, }) => {
 
 Heading.propTypes = {
     children: PropTypes.string,
-    h: PropTypes.number.isRequired
+    h: PropTypes.number
 };
 
 export default Heading;

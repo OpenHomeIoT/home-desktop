@@ -58,7 +58,7 @@ const Room = ({ devices, name, style: compStyle }) => {
           <Toolbar backgroundColor="#ffffff" foregroundColor="#000000">
             <ToolbarTitle>{ name }</ToolbarTitle>
             <ToolbarOptionContainer>
-              <DropdownButton icon="more_vert" color="#000000" iconSize="1.5rem">
+              <DropdownButton icon="more_vert" color="#000">
                 <DropdownButtonItem>
                   <DropdownButtonText>Settings</DropdownButtonText>
                 </DropdownButtonItem>

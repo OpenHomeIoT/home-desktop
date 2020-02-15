@@ -1,12 +1,13 @@
 import React from "react";
 import { Switch, Route, useParams } from "react-router-dom";
 
-import AutomationsView from "./views/AutomationsView";
+import AutomationsView from "./views/automation/AutomationsView";
 import HomeView from "./views/HomeView";
 import RoutinesView from "./views/RoutinesView";
 import SettingsView from "./views/SettingsView";
 import ServicesView from "./views/service/ServicesView";
 import ServiceView from "./views/service/ServiceView";
+import CreateAutomationView from "./views/automation/CreateAutomationView";
 
 const ServiceViewWrapper = () => {
   const { id } = useParams();
@@ -18,7 +19,10 @@ export default (
     <Route exact path="/">
       <HomeView />
     </Route>
-    <Route path="/automate">
+    <Route path="/automate/create">
+      <CreateAutomationView />
+    </Route>
+    <Route exact path="/automate">
       <AutomationsView />
     </Route>
     <Route path="/routines">

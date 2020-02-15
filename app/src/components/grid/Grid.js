@@ -14,10 +14,7 @@ const renderGridItems = (children, numColumns) => {
   // split the child GridItems into groups of size <numColumns>
   const splitChildren = (Array.isArray(children)) ? _.chunk(children, numColumns) : [[children]];
   const rows = [];
-  // const width = 100 / numColumns;
   splitChildren.forEach((childArray, index, _) => {
-    // const style = { width: `${width}%` }
-    // childArray.forEach(child => child.style = style);
     const rowKey = `grid-row-${index}`;
     rows.push((
       <Row key={`grid-row-${index}`}>
