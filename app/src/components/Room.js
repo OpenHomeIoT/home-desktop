@@ -3,13 +3,16 @@ import React from "react";
 
 // import IconButton from "../components/IconButton";
 import DeviceThumb from "../components/DeviceThumb";
-import Row from "./Row";
-import Toolbar from "../components/toolbar/Toolbar";
-import ToolbarTitle from "../components/toolbar/ToolbarTitle";
-import ToolbarOptionContainer from "./toolbar/ToolbarOptionContainer";
-import DropdownButtonText from "./dropdownbutton/DropdownButtonText";
-import DropdownButton from "./dropdownbutton/DropdownButton";
-import DropdownButtonItem from "./dropdownbutton/DropdownButtonItem";
+
+import {
+  Row,
+  Toolbar,
+  ToolbarTitle,
+  ToolbarOptionContainer,
+  DropdownButtonText,
+  DropdownButton,
+  DropdownButtonItem
+} from "react-uix";
 
 import "./Room.css";
 

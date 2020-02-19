@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 
 import HomeController from "../controller/HomeController";
 
-import Heading from "../components/Heading";
+import { Heading, Row } from "react-uix";
 import Room from "../components/Room";
-import Row from '../components/Row';
 
 class HomeView extends Component {
   constructor(props) {

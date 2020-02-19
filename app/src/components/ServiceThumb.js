@@ -2,22 +2,23 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./ServiceThumb.css";
-import Card from "./card/Card";
-import CardBody from "./card/CardBody";
-import CardFooter from "./card/CardFooter";
-import CardHeader from "./card/CardHeader";
-import Icon from "./Icon";
-import Text from "./Text";
-import Heading from "./Heading";
-import DropdownButton from "./dropdownbutton/DropdownButton";
-import DropdownButtonItem from "./dropdownbutton/DropdownButtonItem";
-import DropdownButtonIcon from "./dropdownbutton/DropdownButtonIcon";
-import DropdownButtonText from "./dropdownbutton/DropdownButtonText";
-import { connect } from "react-redux";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Icon,
+  Text,
+  Heading,
+  DropdownButton,
+  DropdownButtonItem,
+  DropdownButtonIcon,
+  DropdownButtonText
+} from "react-uix";
 
-const mapStateToProps = (state) => ({
-  primaryColor: state.ui.primaryColor
-});
+// const mapStateToProps = (state) => ({
+//   primaryColor: state.ui.primaryColor
+// });
 
 class ServiceThumb extends Component {
 
@@ -90,4 +91,4 @@ ServiceThumb.propTypes = {
   service: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps)(ServiceThumb);
+export default ServiceThumb;

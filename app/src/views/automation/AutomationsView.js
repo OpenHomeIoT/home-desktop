@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import Row from '../../components/Row';
-import Toolbar from '../../components/toolbar/Toolbar';
-import ToolbarTitle from '../../components/toolbar/ToolbarTitle';
-import ToolbarOptionContainer from '../../components/toolbar/ToolbarOptionContainer';
-import IconButton from '../../components/IconButton';
-import Grid from '../../components/grid/Grid';
-import Card from "../../components/card/Card";
-import CardBody from "../../components/card/CardBody";
-import CardFooter from "../../components/card/CardFooter";
-import CardHeader from "../../components/card/CardHeader";
-import Heading from '../../components/Heading';
+import {
+  Row,
+  Toolbar,
+  ToolbarTitle,
+  ToolbarOptionContainer,
+  IconButton,
+  Grid,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Heading
+} from "react-uix";
+
 import AutomationsViewController from '../../controller/automation/AutomationsViewController';
 import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';

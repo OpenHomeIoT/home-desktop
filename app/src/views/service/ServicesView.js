@@ -2,18 +2,20 @@
 import React, { Component } from "react";
 // import PropTypes from "prop-types";
 import ServicesViewController from "../../controller/service/ServicesViewController";
-import Row from "../../components/Row";
-import Toolbar from "../../components/toolbar/Toolbar";
-import ToolbarTitle from "../../components/toolbar/ToolbarTitle";
-import ToolbarOptionContainer from "../../components/toolbar/ToolbarOptionContainer";
-import IconButton from "../../components/IconButton";
-import Grid from "../../components/grid/Grid";
-import { connect } from "react-redux";
+import {
+  Row,
+  Toolbar,
+  ToolbarTitle,
+  ToolbarOptionContainer,
+  IconButton,
+  Grid
+} from "react-uix";
+
 import ServiceThumb from "../../components/ServiceThumb";
 
-const mapStateToProps = (state) => ({
-  primaryColor: state.ui.primaryColor
-});
+// const mapStateToProps = (state) => ({
+//   primaryColor: state.ui.primaryColor
+// });
 
 const renderServices = (services, primaryColor) => {
   if (!services) return;
@@ -24,7 +26,6 @@ const renderServices = (services, primaryColor) => {
 }
 
 class ServicesView extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -76,4 +77,4 @@ class ServicesView extends Component {
 
 ServicesView.propTypes = {};
 
-export default connect(mapStateToProps)(ServicesView);
+export default ServicesView;

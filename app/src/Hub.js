@@ -4,20 +4,23 @@ import {
   Link
 } from "react-router-dom";
 
-import App from "./components/App";
-import AppContent from "./components/AppContent";
-import Appbar from "./components/appbar/Appbar";
-import AppbarToggleButton from "./components/appbar/AppbarToggleButton";
-import AppbarToolbar from "./components/appbar/AppbarToolbar";
-import AppTitle from "./components/appbar/AppTitle";
-import AppTitleContainer from "./components/appbar/AppTitleContainer";
-import NavContent from "./components/navdrawer/NavContent";
-import NavDrawer from "./components/navdrawer/NavDrawer";
-import NavHeader from "./components/navdrawer/NavHeader";
-import NavItem from "./components/navdrawer/NavItem";
-import NavItemIcon from "./components/navdrawer/NavItemIcon";
-import NavItemText from "./components/navdrawer/NavItemText";
-import IconButton from "./components/IconButton";
+import {
+  App,
+  AppContent,
+  Appbar,
+  AppbarToggleButton,
+  AppbarToolbar,
+  AppTitle,
+  AppTitleContainer,
+  NavContent,
+  NavDrawer,
+  NavHeader,
+  NavItem,
+  NavItemIcon,
+  NavItemText,
+  IconButton
+} from "react-uix";
+
 import routes from "./routes";
 
 class Hub extends Component {

@@ -1,28 +1,28 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 
-import Card from "./card/Card";
-import CardBody from "./card/CardBody";
-import CardFooter from "./card/CardFooter";
-import CardHeader from "./card/CardHeader";
-import Text from "./Text";
-import Icon from "./Icon";
-import DropdownButton from "./dropdownbutton/DropdownButton";
-// import DropdownButtonIcon from "./dropdownbutton/DropdownButtonIcon";
-import DropdownButtonItem from "./dropdownbutton/DropdownButtonItem";
-import DropdownButtonText from "./dropdownbutton/DropdownButtonText";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Text,
+  Icon,
+  DropdownButton,
+  DropdownButtonText,
+  DropdownButtonItem
+} from "react-uix";
 
 import LightOn from "../drawable/internal/light-on.png";
 import LightOff from "../drawable/internal/light-off.png";
 
 import "./DeviceThumb.css";
 
-const mapStateToProps = (state) => ({
-  primaryColor: state.ui.primaryColor,
-  foregroundColor: state.ui.foregroundColor
-});
+// const mapStateToProps = (state) => ({
+//   primaryColor: state.ui.primaryColor,
+//   foregroundColor: state.ui.foregroundColor
+// });
 
 class DeviceThumb extends Component {
 
@@ -116,4 +116,4 @@ DeviceThumb.propTypes = {
   image: PropTypes.string
 };
 
-export default connect(mapStateToProps)(DeviceThumb);
+export default DeviceThumb;

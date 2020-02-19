@@ -1,8 +1,10 @@
 import React from "react";
 import "LightSimpleView.css";
-import Row from "../../components/Row";
-import Toolbar from "../../components/toolbar/Toolbar";
-import ToolbarTitle from "../../components/toolbar/ToolbarTitle";
+import {
+  Row,
+  Toolbar,
+  ToolbarTitle
+} from "react-uix";
 
 const LightSimpleView = ({ style: compStyle }) => {
   const style = {

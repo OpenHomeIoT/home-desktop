@@ -1,9 +1,0 @@
-.NavItem {
-  display: flex;
-  align-items: center;
-  padding: .75em 1em;
-  user-select: none;
-  -webkit-user-select: none;
-  pointer-events: all;
-  cursor: pointer;
-}

@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 // import PropTypes from "prop-types";
-import Row from "../../components/Row";
-import Card from "../../components/card/Card";
-import CardHeader from "../../components/card/CardHeader";
-import Heading from "../../components/Heading";
-import CardBody from "../../components/card/CardBody";
-import Grid from "../../components/grid/Grid";
+import {
+  Row,
+  Card,
+  CardHeader,
+  Heading,
+  CardBody,
+  Grid,
+  Paragraph,
+  Toolbar,
+  ToolbarTitle
+} from "react-uix";
 import CreateAutomationsViewController from "../../controller/automation/CreateAutomationsViewController";
-import Paragraph from "../../components/Paragraph";
-import Toolbar from "../../components/toolbar/Toolbar";
-import ToolbarTitle from "../../components/toolbar/ToolbarTitle";
 import ServiceThumb from "../../components/ServiceThumb";
 
 class CreateAutomationView extends Component {
