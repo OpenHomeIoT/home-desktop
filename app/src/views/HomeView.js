@@ -62,7 +62,10 @@ class HomeView extends Component {
         {
           // render the rooms in the home
           rooms.map((room, index, rooms) => {
-            const devices  = openHomeIoTDevices.filter(device => device.room === room).concat(externalDevices.filter(device => device.room === room));
+            let devices = [];
+            if (openHomeIoTDevices) {
+              devices  = openHomeIoTDevices.filter(device => device.room === room).concat(externalDevices.filter(device => device.room === room));
+            }
             return <Room name={room} devices={devices} key={`${index}-room-${room}`} />;
           })
         }
@@ -91,7 +94,10 @@ class HomeView extends Component {
    */
   _renderDevicesWithNoRoom() {
     const { externalDevices, openHomeIoTDevices } = this.state;
-    const devices = openHomeIoTDevices.filter(device => device.room === "none").concat(externalDevices.filter(device => device.room === "none"));
+    let devices = [];
+    if (openHomeIoTDevices) {
+      devices = openHomeIoTDevices.filter(device => device.room === "none").concat(externalDevices.filter(device => device.room === "none"));
+    }
     return <Room name="none" devices={devices} key={'room-none'} />;
   }
 }

@@ -85,7 +85,9 @@ class DeviceManager {
   _loadAllExternal() {
     return jsonGet("/device/external")
     .then(externalDevices => {
-      externalDevices.forEach(externalDevice => this._externalCache.insert(externalDevice));
+      if (externalDevices) {
+        externalDevices.forEach(externalDevice => this._externalCache.insert(externalDevice));
+      }
       return externalDevices;
     });
   }
@@ -96,7 +98,9 @@ class DeviceManager {
   _loadAllOpenHomeIoT() {
     return jsonGet("/device/OpenHomeIoT")
     .then(iotDevices => {
-      iotDevices.forEach(iotDevice => this._openHomeIoTCache.insert(iotDevice));
+      if (iotDevices) {
+        iotDevices.forEach(iotDevice => this._openHomeIoTCache.insert(iotDevice));
+      }
       return iotDevices;
     });
   }

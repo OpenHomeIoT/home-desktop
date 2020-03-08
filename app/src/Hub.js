@@ -18,10 +18,18 @@ import {
   NavItem,
   NavItemIcon,
   NavItemText,
-  IconButton
 } from "react-uix";
 
 import routes from "./routes";
+
+const theme = {
+  colorPrimary: "#00b894",
+  colorSecondary: "",
+  text: {
+    colorOnLight: "#111",
+    colorOnDark: "#fff"
+  }
+};
 
 class Hub extends Component {
   constructor(props) {
@@ -35,13 +43,11 @@ class Hub extends Component {
     const { pageTitle } = this.state;
     // const { } = this.props;
     return (
-      <App primaryColor="#00b894">
+      <App theme={theme}>
         <Router>
           <div>
             <Appbar>
-              <AppbarToggleButton onClick={ () => this._toggleNavDrawer() }>
-                <IconButton color="#fff">menu</IconButton>
-              </AppbarToggleButton>
+              <AppbarToggleButton>menu</AppbarToggleButton>
               <AppTitleContainer>
                 <AppTitle style={{ color: "#fff" }}>{ pageTitle }</AppTitle>
               </AppTitleContainer>
