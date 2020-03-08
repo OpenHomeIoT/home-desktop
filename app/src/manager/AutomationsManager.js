@@ -39,7 +39,9 @@ class AutomationsManager {
   _loadAll() {
     return jsonGet("/automation")
     .then(automations => {
-      automations.forEach(automation => this._cache.insert(automation));
+      if (automations) {
+        automations.forEach(automation => this._cache.insert(automation));
+      }
       return automations;
     });
   }

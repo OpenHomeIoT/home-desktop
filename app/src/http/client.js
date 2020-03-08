@@ -1,6 +1,6 @@
 import * as rp from "request-promise";
 
-const HOST = "homehubdev.local";
+const HOST = "localhost";
 const PORT = 30027;
 
 /**

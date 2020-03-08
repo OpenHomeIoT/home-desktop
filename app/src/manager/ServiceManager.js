@@ -47,7 +47,9 @@ class ServiceManager {
   _loadAllServices() {
     return jsonGet("/service")
     .then(services => {
-      services.forEach(service => this._cache.insert(service));
+      if (services) {
+        services.forEach(service => this._cache.insert(service));
+      }
       return services;
     });
   }
