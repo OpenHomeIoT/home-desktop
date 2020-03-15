@@ -35,7 +35,7 @@ class ServiceView extends Component {
   }
 
   render() {
-    const { primaryColor, style: compStyle } = this.props;
+    const { style: compStyle } = this.props;
     const { service } = this.state;
     const style = {
       ServiceView: {}

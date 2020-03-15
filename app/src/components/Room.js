@@ -1,5 +1,6 @@
 import React from "react";
 // import PropTypes from "prop-types";
+import styled from "styled-components";
 
 // import IconButton from "../components/IconButton";
 import DeviceThumb from "../components/DeviceThumb";
@@ -14,7 +15,12 @@ import {
   DropdownButtonItem
 } from "react-uix";
 
-import "./Room.css";
+const Wrapper = styled.div`
+  display: block;
+  padding: 0 0 2em 0;
+  overflow: hidden;
+  min-height: 200px;
+`;
 
 /**
  * Render the devices.
@@ -42,7 +48,7 @@ const renderDevices = devices => {
       // there is only one device in the row
       devicesForRow = [deviceThumbs[0]];
     }
-    rows.push(<Row key={`dr-${i}`} style={{ padding: "0 .2em 1em .2em"}} >{ devicesForRow }</Row>);
+    rows.push(<Row key={`dr-${i}`}>{ devicesForRow }</Row>);
   }
   return rows;
 }
@@ -54,10 +60,10 @@ const Room = ({ devices, name, style: compStyle }) => {
   };
   Object.assign(style.room, compStyle);
   return (
-    <div style={style.room} className="Room">
+    <Wrapper style={style.room}>
       {/* The "none" room should not contain a toolbar */}
       { name !== "none" &&
-        <Row style={{ padding: "0 .2em" }}>
+        <Row>
           <Toolbar backgroundColor="#ffffff" foregroundColor="#000000">
             <ToolbarTitle>{ name }</ToolbarTitle>
             <ToolbarOptionContainer>
@@ -76,7 +82,7 @@ const Room = ({ devices, name, style: compStyle }) => {
       {
         renderDevices(devices)
       }
-    </div>
+    </Wrapper>
   );
 }
 

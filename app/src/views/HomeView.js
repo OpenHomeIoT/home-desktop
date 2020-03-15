@@ -94,11 +94,11 @@ class HomeView extends Component {
    */
   _renderDevicesWithNoRoom() {
     const { externalDevices, openHomeIoTDevices } = this.state;
-    let devices = [];
-    if (openHomeIoTDevices) {
-      devices = openHomeIoTDevices.filter(device => device.room === "none").concat(externalDevices.filter(device => device.room === "none"));
+    if (openHomeIoTDevices && openHomeIoTDevices.length > 0) {
+      const devices = openHomeIoTDevices.filter(device => device.room === "none").concat(externalDevices.filter(device => device.room === "none"));
+      return <Room name="none" devices={devices} key={'room-none'} />;
     }
-    return <Room name="none" devices={devices} key={'room-none'} />;
+    return <div style={{display: "none"}} />;
   }
 }
 
