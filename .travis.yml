@@ -7,7 +7,9 @@ branches:
   only:
   - master
 before_script:
+  - pushd app/
   - npm install
+  - popd
 
 script:
 - pushd app/
