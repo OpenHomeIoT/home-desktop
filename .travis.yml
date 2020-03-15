@@ -1,9 +1,17 @@
 language: node_js
 node_js:
+  - 10
+  - 11
   - 12
-
+branches:
+  only:
+  - master
 before_script:
-  - npm install -g gulp-cli
+  - pushd app/
   - npm install
+  - popd
 
-script: gulp test
+script:
+- pushd app/
+- npm run build
+- popd
