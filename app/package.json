@@ -52,7 +52,7 @@
     "react-app-polyfill": "1.0.5",
     "react-dev-utils": "10.0.0",
     "react-dom": "16.13.0",
-    "react-redux": "7.1.3",
+    "react-redux": "7.2.0",
     "react-router-dom": "5.1.2",
     "react-uix": "0.1.2",
     "redux": "4.0.5",
