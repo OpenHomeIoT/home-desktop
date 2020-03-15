@@ -14,5 +14,4 @@ before_script:
 script:
 - pushd app/
 - npm build
-- npm test
 - popd
