@@ -7,7 +7,10 @@ branches:
   only:
   - master
 before_script:
-  - npm install -g gulp-cli
   - npm install
 
-script: gulp test
+script:
+- pushd app/
+- npm build
+- npm test
+- popd
