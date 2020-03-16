@@ -54,7 +54,7 @@
     "react-dom": "16.13.0",
     "react-redux": "7.2.0",
     "react-router-dom": "5.1.2",
-    "react-uix": "0.1.2",
+    "react-uix": "0.1.5",
     "redux": "4.0.5",
     "request": "2.88.0",
     "request-promise": "4.2.5",
