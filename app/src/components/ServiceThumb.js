@@ -14,7 +14,7 @@ import {
   DropdownButtonItem,
   DropdownButtonIcon,
   DropdownButtonText
-} from "react-uix";
+} from "@react-uix/web";
 
 // const mapStateToProps = (state) => ({
 //   primaryColor: state.ui.primaryColor

@@ -18,7 +18,7 @@ import {
   NavItem,
   NavItemIcon,
   NavItemText,
-} from "react-uix";
+} from "@react-uix/web";
 
 import routes from "./routes";
 

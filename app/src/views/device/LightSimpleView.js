@@ -4,7 +4,7 @@ import {
   Row,
   Toolbar,
   ToolbarTitle
-} from "react-uix";
+} from "@react-uix/web";
 
 const LightSimpleView = ({ style: compStyle }) => {
   const style = {

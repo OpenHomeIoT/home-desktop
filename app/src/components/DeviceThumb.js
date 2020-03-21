@@ -12,7 +12,7 @@ import {
   DropdownButton,
   DropdownButtonText,
   DropdownButtonItem
-} from "react-uix";
+} from "@react-uix/web";
 
 import LightOn from "../drawable/internal/light-on.png";
 import LightOff from "../drawable/internal/light-off.png";

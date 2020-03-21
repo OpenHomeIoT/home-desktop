@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Card, CardHeader, CardBody, Heading, Spacer } from 'react-uix';
+import { Row, Card, CardHeader, CardBody, Heading, Spacer } from '@react-uix/web';
 // import PropTypes from 'prop-types';
 
 class RoutinesView extends Component {

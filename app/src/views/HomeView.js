@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import HomeController from "../controller/HomeController";
 
-import { Heading, Row } from "react-uix";
+import { Heading, Row } from "@react-uix/web";
 import Room from "../components/Room";
 
 class HomeView extends Component {

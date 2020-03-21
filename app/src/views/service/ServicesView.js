@@ -9,7 +9,7 @@ import {
   ToolbarOptionContainer,
   IconButton,
   Grid
-} from "react-uix";
+} from "@react-uix/web";
 
 import ServiceThumb from "../../components/ServiceThumb";
 

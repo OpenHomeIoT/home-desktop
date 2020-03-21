@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   Heading
-} from "react-uix";
+} from "@react-uix/web";
 
 import AutomationsViewController from '../../controller/automation/AutomationsViewController';
 import { Link } from 'react-router-dom';

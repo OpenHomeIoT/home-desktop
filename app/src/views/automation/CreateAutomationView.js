@@ -10,7 +10,7 @@ import {
   Paragraph,
   Toolbar,
   ToolbarTitle
-} from "react-uix";
+} from "@react-uix/web";
 import CreateAutomationsViewController from "../../controller/automation/CreateAutomationsViewController";
 import ServiceThumb from "../../components/ServiceThumb";
 

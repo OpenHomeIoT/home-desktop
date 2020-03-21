@@ -13,7 +13,7 @@ import {
   DropdownButtonText,
   DropdownButton,
   DropdownButtonItem
-} from "react-uix";
+} from "@react-uix/web";
 
 const Wrapper = styled.div`
   display: block;

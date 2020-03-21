@@ -11,7 +11,7 @@ import {
   Card,
   CardBody,
   Text
-} from "react-uix";
+} from "@react-uix/web";
 import ServiceViewController from "../../controller/service/ServiceViewController";
 import PropTypes from "prop-types";
 
