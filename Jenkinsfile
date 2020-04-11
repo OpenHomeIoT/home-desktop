@@ -13,13 +13,17 @@ pipeline {
   stages {
     stage("Install") {
       steps {
-        sh "pushd app; npm install; popd"
+        dir("app") {
+          sh "npm install"
+        }
       }
     }
 
     stage("Build") {
       steps {
-        sh "pushd app; npm run build; popd"
+        dir("app") {
+          sh "npm run build"
+        }
       }
     }
   }
