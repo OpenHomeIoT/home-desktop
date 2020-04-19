@@ -3,11 +3,8 @@ pipeline {
     docker {
       image "node:12"
       args "-u root:root"
+      label "docker && linux && digitalocean"
     }
-  }
-
-  environment {
-    CI = 'true'
   }
 
   stages {
