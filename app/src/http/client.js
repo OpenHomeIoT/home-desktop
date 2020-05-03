@@ -1,6 +1,6 @@
 import * as rp from "request-promise";
 
-const HOST = "localhost";
+const HOST = "plug.local";
 const PORT = 30027;
 
 /**

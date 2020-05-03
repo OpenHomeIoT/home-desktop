@@ -4,7 +4,7 @@ import { Switch, Route, useParams } from "react-router-dom";
 import AutomationsView from "./views/automation/AutomationsView";
 import HomeView from "./views/HomeView";
 import RoutinesView from "./views/RoutinesView";
-import SettingsView from "./views/SettingsView";
+import SettingsView from "./views/settings/SettingsView";
 import ServicesView from "./views/service/ServicesView";
 import ServiceView from "./views/service/ServiceView";
 import CreateAutomationView from "./views/automation/CreateAutomationView";

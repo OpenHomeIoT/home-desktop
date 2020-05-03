@@ -33,7 +33,7 @@ class HomeView extends Component {
     const { externalDevices, home, openHomeIoTDevices, rooms } = this.state;
     const style = {
       homeView: {
-        userSelect: "none", // TODO: move this to AppContent
+        userSelect: "none",
       },
       homeName: {
         textAlign: "center",
