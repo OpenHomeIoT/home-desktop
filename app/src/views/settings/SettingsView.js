@@ -126,7 +126,9 @@ class SettingsView extends Component {
           <Card>
             <CardFooter>
               <div style={{display:"flex", justifyContent: "flex-end"}}>
-                <Button>Save</Button>
+                <Button
+                  onClick={() => this._saveSettings()}
+                >Save</Button>
               </div>
             </CardFooter>
           </Card>
@@ -135,13 +137,30 @@ class SettingsView extends Component {
     );
   }
 
+  /**
+   * Show an error.
+   * @param {Error} err any error that occurs.
+   */
   showError(err) {
-    alert(err); // TODO: better error handling
+    alert(err);
+    // TODO: better error handling
   }
 
+  /**
+   * Show the settings.
+   * @param {{ network: object, theme: object }} settings the settings. 
+   */
   showSettings(settings) {
-    if (settings) {
-      this.setState({ settings });
+    if (typeof settings === "object") {
+      const network = Object.assign({}, this.state.settings.network);
+      const theme = Object.assign({}, this.state.settings.theme);
+      if (settings.network) {
+        Object.assign(network, settings.network);
+      }
+      if (settings.theme) {
+        Object.assign(theme, settings.theme)
+      }
+      this.setState({ settings: { network, theme } });
     }
   }
 
@@ -152,8 +171,7 @@ class SettingsView extends Component {
   _onApiServicesPortUpdated(apiServicesPort) {
     try {
       const port = parseInt(apiServicesPort);
-      const settings = {};
-      Object.assign(settings, this.state.settings);
+      const settings = Object.assign({}, this.state.settings);
       settings.network.servicesPort = port;
       this.setState({ settings });
     } catch (e) {
@@ -170,6 +188,14 @@ class SettingsView extends Component {
     Object.assign(settings, this.state.settings);
     settings.network.hostname = hostname;
     this.setState({ settings });
+  }
+
+  /**
+   * Save the settings.
+   */
+  _saveSettings() {
+    const { controller } = this.state;
+    controller.saveSettings(this.state.settings);
   }
 }
 

@@ -1,6 +1,6 @@
-import * as rp from "request-promise";
+import axios from "axios";
 
-const HOST = "plug.local";
+const HOST = "localhost";
 const PORT = 30027;
 
 /**
@@ -9,9 +9,7 @@ const PORT = 30027;
  * @param {any} data the data to DELETE.
  */
 const jsonDelete = (url, data) => {
-  const request = _buildRequest(url, "DELETE", data);
-  return rp(request)
-  .catch(err => console.error(`Unable to DELETE ${url}: ${err}`));
+  return axios.delete(_buildUrl(url), { data: data }).then(response => response.data);
 }
 
 /**
@@ -20,9 +18,7 @@ const jsonDelete = (url, data) => {
  * @returns {Promise<object>}
  */
 const jsonGet = (url) => {
-  const request = _buildRequest(url, "GET");
-  return rp(request)
-  .catch(err => console.error(`Unable to GET ${url}: ${err}`));
+  return axios.get(_buildUrl(url)).then(response => response.data);
 };
 
 /**
@@ -32,9 +28,7 @@ const jsonGet = (url) => {
  * @returns {Promise<object>}
  */
 const jsonPost = (url, data) => {
-  const request = _buildRequest(url, "POST", data);
-  return rp(request)
-  .catch(err => console.error(`Unable to POST ${url}: ${err}`));
+  return axios.post(_buildUrl(url), data).then(response => response.data);
 };
 
 /**
@@ -44,24 +38,13 @@ const jsonPost = (url, data) => {
  * @returns {Promise<object>}
  */
 const jsonPut = (url, data) => {
-  const request = _buildRequest(url, "PUT", data);
-  return rp(request)
-  .catch(err => console.error(`Unable to PUT ${url}: ${err}`));
+  return axios.put(_buildUrl(url), data).then(response => response.data);
 };
 
 /**
- * Build a request.
- * @param {string} url the url
- * @param {string} method the http method.
- * @param {any} data the data, if any.
+ * Build out a full url to the api.
+ * @param {string} url the url.
  */
-const _buildRequest = (url, method, data) => {
-  return {
-    url: `http://${HOST}:${PORT}${url}`,
-    method: method,
-    body: data,
-    transform: (body) => JSON.parse(body)
-  };
-};
+const _buildUrl = url => `http://${HOST}:${PORT}${url}`;
 
 export { jsonDelete, jsonGet, jsonPost, jsonPut };

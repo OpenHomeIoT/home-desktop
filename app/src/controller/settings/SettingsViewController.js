@@ -17,12 +17,19 @@ class SettingsViewController {
 
   /**
    * Initialize the view.
-   * @param {string} id the id of the service.
    */
-  initView(id) {
+  initView() {
     this._settingsManager.getSettings()
     .then(settings => this._settingsView.showSettings(settings))
     .catch(err => this._settingsView.showError(err));
+  }
+
+  /**
+   * Save the settings.
+   * @param {object} settings the settings.
+   */
+  saveSettings(settings) {
+    this._settingsManager.saveSettings(settings);
   }
 }
 

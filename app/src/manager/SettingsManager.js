@@ -1,5 +1,4 @@
-import { jsonGet } from "../http/client";
-import Cache from "./cache/Cache";
+import { jsonGet, jsonPost } from "../http/client";
 
 let instance = null;
 /**
@@ -14,7 +13,9 @@ const getSettingsManagerInstance = () => {
 class SettingsManager {
 
   constructor() {
-    this._cache = new Cache("settings");
+    this._settings = null;
+
+    this._loadAllSettings = this._loadAllSettings.bind(this);
   }
 
   /**
@@ -22,14 +23,22 @@ class SettingsManager {
    * @returns {Promise<object[]>}
    */
   getSettings() {
-    return this._cache.getAll()
-    .then(cachedSettings => {
-      if (!cachedSettings) {
-        return this._loadAllSettings()
-      }
-      this._loadAllSettings();
-      return cachedSettings;
-    });
+    if (!this._settings) {
+      return this._loadAllSettings();
+    }
+
+    // TODO: implement proper caching
+    this._loadAllSettings();
+    return this._settings;
+  }
+
+  /**
+   * Send the updated settings to the API for saving.
+   * @param {object} settings the settings.
+   * @returns {Promise<object>}
+   */
+  saveSettings(settings) {
+    return jsonPost("/settings", settings);
   }
 
   /**
@@ -40,22 +49,12 @@ class SettingsManager {
     return jsonGet("/settings")
     .then(settings => {
       if (settings) {
-        this._cache.insert(settings);
+        delete settings._id;
+        delete settings.recordCreated;
+        delete settings.recordUpdated;
+        this._settings = settings;
       }
       return settings;
-    });
-  }
-
-  /**
-   * Load and cache a service.
-   * @param {string} id the id of the service.
-   * @returns {Promise<any>} // TODO: type signature
-   */
-  _loadService(id) {
-    return jsonGet(`/settings/${id}`)
-    .then(service => {
-      this._cache.insert(service);
-      return service;
     });
   }
 }
