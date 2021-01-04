@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-uix/web": "0.0.15",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "camelcase": "5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "connected-react-router": "6.6.1",
